@@ -4,26 +4,33 @@
 <div class="page" id="suprss">
     <h1>SUP<em id="rss">rss</em></h1>
     <h2>top articles</h2>
-    <ul>
-        <li>
-            <article>
-    			<p class="date"></p>
-    			<div class="text">
+    <div id="feedlist" class="scrollView">
+        <ul>
+            <li>
+                <article>
+        			<p class="date"></p>
+        			<div class="text">
     			
-    			</div>
-    		</article>
-        </li>    
-        <script type="text/html" id="item_tmpl">
-    		<li class="item">
-    		    <a class="" href="#"><%=title%></a>
-    			<article>
-    				<p class="date"><%=date%></p>
-					<div class="text">
-						<%=description%>
-					</div>
-    			</article>
-    			</li>
-    	</script>
+        			</div>
+        		</article>
+            </li>    
+            <script type="text/html" id="item_tmpl">
+        		<li class="item">
+        		    <a class="" href="#"><%=title%></a>
+        			<article>
+        				<p class="date"><%=date%></p>
+    					<div class="text">
+    						<%=description%>
+    					</div>
+        			</article>
+        			</li>
+        	</script>
+        </ul>
+    </div>
+    <ul class="buttonView">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
     </ul>
-    
 </div>
