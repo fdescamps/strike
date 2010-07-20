@@ -27,7 +27,7 @@ h2
     +page-title
     
 #feedlist
-    overflow: hidden
+    height: 333px
     li
         border-bottom= 1px solid !colortheme
         a
@@ -40,6 +40,14 @@ h2
             background-color= !orange
             article
                 display: block
+
+.tabBarView
+    +iphone-header(!orange)
+    height: 49px
+    padding: 0
+    li
+        width: 33%
+
 article
     display: none
     background: -webkit-gradient(linear, 0 0, 0 100, from(#bbb), to(#fff))
