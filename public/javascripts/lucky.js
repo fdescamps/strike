@@ -130,7 +130,7 @@ this.tmpl = function tmpl(str, data) {
 HTMLElement.prototype.on = function(event, handler) {
     if (event=='touchend' && !onMobile) event = 'mouseup';
     if (event=='touchstart' && !onMobile) event = 'mousedown';
-    this.addEventListener(event, handler);
+    this.addEventListener(event, handler, false);
 }
 
 /**
@@ -188,6 +188,7 @@ window.log = function(message) {
 Lucky = {
     commandQueue:[],
     currentPage: null,
+    previousPage: null,
     onReadyHandlers: [],
     onOrientationChangeHandlers: [],
     handlers : {},
@@ -298,6 +299,7 @@ Lucky = {
     transition: function( type, duration, easing, isReverse, toPage, fromPage ){
         Lucky._cleanPage(toPage);
         fromPage = fromPage || Lucky.currentPage;
+        Lucky.previousPage = fromPage;
         new Transition( type, duration, easing ).perform( $(toPage), $(fromPage), isReverse );
         Lucky.currentPage = toPage;
         
@@ -340,7 +342,13 @@ Lucky = {
     swap: function(page) {
         this.transition( 'swap', 0.55, 'linear', false, page );
     },
-    
+
+    back: function(){
+        if(Lucky.previousPage){
+            Lucky.prev(Lucky.previousPage);
+        }
+    },
+
     _cleanPage: function(page) {
         // Clean lists
         $(page).querySelectorAll('.list li').each(function(it) {
