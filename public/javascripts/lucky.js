@@ -75,6 +75,8 @@ $ajax = function(method, url, callback){
                     if (this.responseXML) callback(this.responseXML)
                     else callback(eval('('+this.responseText+')'))
                 } catch (e){
+					callback(this.responseText);
+					return;
                     console.log('cannot parse json because of '+e)
                     error(e)
                 }
@@ -197,12 +199,7 @@ Lucky = {
 
     //~~~~~~~ SYSTEM ~~~~~~~//
     init: function(){
-        $(".scrollView").each(function( item ){
-            // Attach scroller object to the DOM element
-            // TODO: better way to determine contents? (because firstChild is a text node)
-            var contents = item.firstChild.nextSibling;
-            item.scroller = new iScroll( contents, { desktopCompatibility: !onMobile } );            
-        });
+        this.bindScrollers();
     },
     nextCommand : function(message, args){
         return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
@@ -358,6 +355,15 @@ Lucky = {
     _rebindScroller: function(){
         var scroll = $(Lucky.currentPage + " .scrollView");
         scroll.length && scroll[ 0 ].scroller.refresh();
+    },
+    bindScrollers: function(context){
+		context = context ? context + " " : "";
+        $(context + ".scrollView").each(function( item ){
+            // Attach scroller object to the DOM element
+            // TODO: better way to determine contents? (because firstChild is a text node)
+            var contents = item.firstChild.nextSibling;
+            item.scroller = new iScroll( contents, { desktopCompatibility: !onMobile } );            
+        });
     },
     currentPanel: null,
     
