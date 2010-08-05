@@ -75,8 +75,6 @@ $ajax = function(method, url, callback){
                     if (this.responseXML) callback(this.responseXML)
                     else callback(eval('('+this.responseText+')'))
                 } catch (e){
-					callback(this.responseText);
-					return;
                     console.log('cannot parse json because of '+e)
                     error(e)
                 }
