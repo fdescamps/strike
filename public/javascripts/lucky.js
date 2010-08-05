@@ -136,7 +136,7 @@ HTMLElement.prototype.on = function(event, handler) {
 /**
 * DEV &  TOOLS
 **/
-onMobile = navigator.userAgent.indexOf('Android') + navigator.userAgent.indexOf('iPhone;') > 0
+onMobile = navigator.userAgent.indexOf('Android') + navigator.userAgent.indexOf('iPhone') > 0
 
 if (!onMobile){
     var cacheStatusValues = [];
@@ -180,10 +180,6 @@ window.applicationCache.addEventListener(
     false
 );
 
-window.log = function(message) {
-    if (onMobile)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
-    else console.log(message)
-}
 // ~~~~~~~~~~~~~~~~~~~~ Lucky
 Lucky = {
     commandQueue:[],
@@ -192,55 +188,28 @@ Lucky = {
     onOrientationChangeHandlers: [],
     handlers : {},
     currentSlide: null,
+    onMobile : onMobile,
+    serverURL : document.location.protocol+'//'+document.location.host,
     storage: window.localStorage,
-
-    //~~~~~~~ SYSTEM ~~~~~~~//
-    nextCommand : function(message, args){
-        return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
-    },
-    commandResult : function(type, args){
-        if (this.handlers[type]) this.handlers[type](args);
-    },
-    pushCommand : function(command){
-        this.commandQueue.push(command);
-    },
     maps : function(query){
         window.open('http://maps.google.com?'+query)
-        //this.pushCommand('maps://dummy?'+encodeURI(query));
-    },
-    showMap: function() {
-        this.pushCommand('showMap://dummy');
-    },
-
-    hideMap: function() {
-        this.pushCommand('hideMap://dummy');
-    },
-
-    setMarkers: function(def) {
-        this.pushCommand('setMarkers://dummy?');
     },
     
     locate: function(handler){
         Lucky.handlers['locate'] = handler;
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position){
+            Lucky.stopLocate()
+            Lucky.watchPosition = navigator.geolocation.watchPosition(function(position){
                 handler(position.coords)
             })
         }
     },
-   
-    getContacts : function(){
-        if (onMobile) this.pushCommand('contacts://dummy?start') ;
-        else {
-            Lucky._contacts = [ ]
-        }
-    },
     stopLocate: function(){
-        if (onMobile)this.pushCommand('locate://dummy?stop');
-        else console.log("Stopping Localisation : no implemented in webkit mode");
+        if (Lucky.watchPosition) navigator.geolocation.clearWatch(Lucky.watchPosition)
     },
     
     lang: function(handler) {
+        handler()
         this.handlers['lang'] = handler;
         if (onMobile){
             this.pushCommand('lang://dummy');
@@ -273,7 +242,6 @@ Lucky = {
         this.onReadyHandlers.each(function(handler){
             handler();
         });
-        this.pushCommand('ready')
     },
     onorientationchange: function(handler){
         Lucky.onOrientationChangeHandlers.push(handler);
@@ -282,7 +250,6 @@ Lucky = {
         this.onOrientationChangeHandlers.each(function(handler){
             handler( orientation );
         });
-        this.pushCommand('orientationChange');
     },
     //~~~~~~~ UI ~~~~~~~//
     
@@ -315,8 +282,6 @@ Lucky = {
         var transition = new Transition('push', 0.35, 'ease');
         transition.perform($(page), $(Lucky.currentPage), true);            
         Lucky.currentPage = page;
-        
-        Events.fire("Page_Transition", page); 
     },
     
     rotateRight: function(page) {
@@ -1234,17 +1199,3 @@ Transition._addDelayedTransitionCallback = function(callback)
     }
     Transition._delayedCallbacks.push(callback);
 }
-
-var Events = {
-    bind: function( eventName, callback ){
-        document.addEventListener( eventName, callback, false);
-    },
-    fire: function( eventName, eventData ){
-        var evt = document.createEvent("Events");
-        evt.initEvent( eventName, true, true);
-        if( eventData )
-            evt.data = eventData;
-        document.dispatchEvent(evt);
-    }
-};
-
