@@ -194,6 +194,15 @@ Lucky = {
     onMobile : onMobile,
     serverURL : document.location.protocol+'//'+document.location.host,
     storage: window.localStorage,
+
+    init: function(){
+        $(".scrollView").each(function( item ){
+            // Attach scroller object to the DOM element
+            // TODO: better way to determine contents? (because firstChild is a text node)
+            var contents = item.firstChild.nextSibling;
+            item.scroller = new iScroll( contents, { desktopCompatibility: !onMobile } );            
+        });
+    },
     maps : function(query){
         window.open('http://maps.google.com?'+query)
     },
