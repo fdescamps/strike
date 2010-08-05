@@ -1,7 +1,9 @@
-!colortheme= #2f2f2f
+!colortheme= #47686A
+
 @import iphone.sass
 h1
-    +iphone-header
+    height: 30px
+    background: #000 url(/public/images/header.png) no-repeat
 
 .back
     +iphone-back-button
@@ -31,4 +33,39 @@ button
 ul
     +iphone-list
 li
-    +iphone-list-item
+    a
+        color= !colortheme
+
+.tabBarPages
+    height: 372px
+    #practique,#newsItem
+        background-color: #fff
+
+.tabBarPages > div
+    height: 372px
+    li
+        +iphone-list-item
+        a
+            color= !colortheme
+            text-decoration: none
+        &.active
+            background-color= #000
+            
+#emploi .scrollView
+    height: 100%
+    
+.tabBarControls
+    height: 40px
+    background: #000 url(/public/images/footer.png) repeat-x
+    li
+        width: 20%
+        
+#plus
+    display: none
+    position: absolute
+    bottom: 41px
+    height: 100px
+    width: 310px
+    background-color: #999
+    border: 5px solid black
+    z-index: 1000

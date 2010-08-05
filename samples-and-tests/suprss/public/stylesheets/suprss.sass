@@ -25,18 +25,29 @@ em
         
 h2
     +page-title
-li
-    border-bottom= 1px solid !colortheme
-    a
-        padding: 10px
-        text-shadow: rgba(0,0,0,0.5) -1px -1px 1px
-        color: #fff
-        display: block
-        font-size: 18px
-    &.active
-        background-color= !orange
-        article
+    
+#feedlist
+    height: 372px
+    li
+        border-bottom= 1px solid !colortheme
+        a
+            padding: 10px
+            text-shadow: rgba(0,0,0,0.5) -1px -1px 1px
+            color: #fff
             display: block
+            font-size: 18px
+        &.active
+            background-color= !orange
+            article
+                display: block
+
+.tabBarView
+    +iphone-header(!orange)
+    height: 49px
+    padding: 0
+    li
+        width: 20%
+
 article
     display: none
     background: -webkit-gradient(linear, 0 0, 0 100, from(#bbb), to(#fff))

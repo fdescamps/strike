@@ -1,29 +1,34 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
-
 <div class="page" id="suprss">
     <h1>SUP<em id="rss">rss</em></h1>
-    <h2>top articles</h2>
-    <ul>
-        <li>
-            <article>
-    			<p class="date"></p>
-    			<div class="text">
-    			
-    			</div>
-    		</article>
-        </li>    
-        <script type="text/html" id="item_tmpl">
-    		<li class="item">
-    		    <a class="" href="#"><%=title%></a>
-    			<article>
-    				<p class="date"><%=date%></p>
-					<div class="text">
-						<%=description%>
-					</div>
-    			</article>
-    			</li>
-    	</script>
+    <!--<h2>top articles</h2>-->
+    <div id="feedlist" class="scrollView">
+        <ul>
+            <li>
+                <article>
+                    <p class="date"></p>
+                    <div class="text"></div>
+                </article>
+            </li>    
+            <script type="text/html" id="item_tmpl">
+                <li class="item">
+                    <a class="" href="#"><%=title%></a>
+                    <article>
+                        <p class="date"><%=date%></p>
+                        <div class="text">
+                            <%=description%>
+                        </div>
+                    </article>
+                </li>
+            </script>
+        </ul>
+    </div>
+    <ul class="tabBarView">
+        <li><a href="#">home</a></li>
+        <li><a href="#">emploi</a></li>
+        <li><a href="#">test</a></li>
+        <li><a href="#">refresh</a></li>
+        <li><a href="#">plus +</a></li>
     </ul>
-    
 </div>

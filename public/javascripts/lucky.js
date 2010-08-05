@@ -75,6 +75,8 @@ $ajax = function(method, url, callback){
                     if (this.responseXML) callback(this.responseXML)
                     else callback(eval('('+this.responseText+')'))
                 } catch (e){
+					callback(this.responseText);
+					return;
                     console.log('cannot parse json because of '+e)
                     error(e)
                 }
@@ -130,7 +132,7 @@ this.tmpl = function tmpl(str, data) {
 HTMLElement.prototype.on = function(event, handler) {
     if (event=='touchend' && !onMobile) event = 'mouseup';
     if (event=='touchstart' && !onMobile) event = 'mousedown';
-    this.addEventListener(event, handler);
+    this.addEventListener(event, handler, false);
 }
 
 /**
@@ -184,6 +186,7 @@ window.applicationCache.addEventListener(
 Lucky = {
     commandQueue:[],
     currentPage: null,
+    previousPage: null,
     onReadyHandlers: [],
     onOrientationChangeHandlers: [],
     handlers : {},
@@ -239,6 +242,7 @@ Lucky = {
         Lucky.onReadyHandlers.push(handler);
     },
     ready : function(){
+        this.init();
         this.onReadyHandlers.each(function(handler){
             handler();
         });
@@ -253,75 +257,85 @@ Lucky = {
     },
     //~~~~~~~ UI ~~~~~~~//
     
+    transition: function( type, duration, easing, isReverse, toPage, fromPage ){
+        Lucky._cleanPage(toPage);
+        fromPage = fromPage || Lucky.currentPage;
+        Lucky.previousPage = fromPage;
+        new Transition( type, duration, easing ).perform( $(toPage), $(fromPage), isReverse );
+        Lucky.currentPage = toPage;
+        
+        // Rebind scrollers
+        this._rebindScroller();
+    },
+    
     show: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('none', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'none', 0.35, 'linear', false, page );
     },
     
     flip: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'flip', 0.65, 'linear', false, page );
     },
     
     unflip: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), true);
-        Lucky.currentPage = page;
+        this.transition( 'flip', 0.65, 'linear', true, page );
     },
     
     next: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('push', 0.35, 'ease').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'push', 0.35, 'ease', false, page );
     },
     
     prev: function(page) {
-        Lucky._cleanPage(page);
-        var transition = new Transition('push', 0.35, 'ease');
-        transition.perform($(page), $(Lucky.currentPage), true);            
-        Lucky.currentPage = page;
+        this.transition( 'push', 0.35, 'ease', true, page );
     },
     
     rotateRight: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'cube', 0.55, 'ease', false, page );
     },
     
     rotateLeft: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), true);
-        Lucky.currentPage = page;
+        this.transition( 'cube', 0.55, 'ease', true, page );
     },
     
     fade: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('dissolve', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'dissolve', 0.35, 'linear', false, page );
     },
     
     swap: function(page) {
-        Lucky._cleanPage(page);
-        new Transition('swap', 0.55, 'linear').perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPage = page;
+        this.transition( 'swap', 0.55, 'linear', false, page );
     },
-    
+
+    back: function(){
+        if(Lucky.previousPage){
+            Lucky.prev(Lucky.previousPage);
+        }
+    },
+
     _cleanPage: function(page) {
         // Clean lists
         $(page).querySelectorAll('.list li').each(function(it) {
             $removeClass(it, 'selected');
         });
     },
-    
+    _rebindScroller: function(){
+        var scroll = $(Lucky.currentPage + " .scrollView");
+        scroll.length && scroll[ 0 ].scroller.refresh();
+    },
+    bindScrollers: function(context){
+		context = context ? context + " " : "";
+        $(context + ".scrollView").each(function( item ){
+            // Attach scroller object to the DOM element
+            // TODO: better way to determine contents? (because firstChild is a text node)
+            var contents = item.firstChild.nextSibling;
+            item.scroller = new iScroll( contents, { desktopCompatibility: !onMobile } );            
+        });
+    },
     currentPanel: null,
     
     openPanel: function(page) {
         var transition = new Transition('slide', 0.35, 'ease');
         transition.direction = 'bottom-top';
         transition.perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPanel = page;      
+        Lucky.currentPanel = page;
     },
     
     closePanel: function() {
