@@ -51,37 +51,38 @@ function css(prop, value)
 HTMLElement.prototype.css = css;
 
 $ajax = function(method, url, callback){
-    var error = method.error
-    var params = method.params
-    var async = method.async === undefined ? true : false
+    var type = "json",
+        error = method.error || function(e){ throw e },
+        params = method.params
+        async = method.async === undefined ? true : method.async
     
     if (method.constructor != String){
+        type = (method.type || type).toLowerCase();
         url = method.url
         callback = method.success
+        error = method.error || error;
         method = method.method
     }
-    if(!error) {
-        error = function(e){
-            throw e
-        }
-    }
-    async = async ? async : false
+
     var req = new XMLHttpRequest()
     req.open(method, url, async)
-    req.setRequestHeader('Accept', 'text/json')
+    req.setRequestHeader('Accept', type == "html" ? 'text/html' : 'text/json')
     req.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                try{
-                    if (this.responseXML) callback(this.responseXML)
-                    else callback(eval('('+this.responseText+')'))
-                } catch (e){
-                    console.log('cannot parse json because of '+e)
-                    error(e)
+        if (this.readyState == 4 && this.status == 200){
+            try{
+                if (this.responseXML) callback(this.responseXML)
+                else {
+                    var responseContent = type == "html" ? this.responseText : eval('('+this.responseText+')');
+                    callback(responseContent)
                 }
+            } catch (e){
+                console.log('cannot parse json because of '+e)
+                error(e)
             }
-            if (this.readyState == 4 && this.status != 200){
-                error(this.status)
-            }
+        }
+        if (this.readyState == 4 && this.status != 200){
+            error(this.status)
+        }
     }
     req.send(params)
 }
@@ -194,12 +195,7 @@ Lucky = {
     storage: window.localStorage,
 
     init: function(){
-        $(".scrollView").each(function( item ){
-            // Attach scroller object to the DOM element
-            // TODO: better way to determine contents? (because firstChild is a text node)
-            var contents = item.firstChild.nextSibling;
-            item.scroller = new iScroll( contents, { desktopCompatibility: !onMobile } );            
-        });
+        this.bindScrollers();
     },
     maps : function(query){
         window.open('http://maps.google.com?'+query)
@@ -268,11 +264,18 @@ Lucky = {
         Lucky._cleanPage(toPage);
         fromPage = fromPage || Lucky.currentPage;
         Lucky.previousPage = fromPage;
-        new Transition( type, duration, easing ).perform( $(toPage), $(fromPage), isReverse );
+        var $toPage = $(toPage);
+        new Transition( type, duration, easing ).perform( $toPage, $(fromPage), isReverse );
+        $toPage.style.top = "0px"; // Fix for transistion issue with padding.
         Lucky.currentPage = toPage;
         
         // Rebind scrollers
+        var _this = this;
+
         this._rebindScroller();
+        setTimeout(function(){
+            _this._rebindScroller();
+        }, 2000);
     },
     
     show: function(page) {
@@ -325,10 +328,10 @@ Lucky = {
     },
     _rebindScroller: function(){
         var scroll = $(Lucky.currentPage + " .scrollView");
-        scroll.length && scroll[ 0 ].scroller.refresh();
+        scroll.length && scroll[ 0 ].scroller && scroll[ 0 ].scroller.refresh();
     },
     bindScrollers: function(context){
-		context = context ? context + " " : "";
+        context = context ? context + " " : "";
         $(context + ".scrollView").each(function( item ){
             // Attach scroller object to the DOM element
             // TODO: better way to determine contents? (because firstChild is a text node)
@@ -971,7 +974,7 @@ Transition.prototype._performPushOrSlideTransition = function(isReverse)
         });
         
         // Register a callback for the end of the animation for clean up and/or resets
-        this._newView.addEventListener('webkitTransitionEnd', this, false);
+        //this._newView.addEventListener('webkitTransitionEnd', this, false);
     }
 }
 
@@ -1091,7 +1094,6 @@ Transition.prototype._performSwapTransition = function(isReverse)
         // Using Animation
         var newStyle = this._newView.style;
         var oldStyle = this._oldView.style;
-        
         var durationString = this._getDurationString();
         
         var direction = this.direction;
@@ -1108,7 +1110,7 @@ Transition.prototype._performSwapTransition = function(isReverse)
         Transition._addClassName(this._newView, newViewAnimationName);
 
         // Register a callback for the end of the animation for clean up and/or resets
-        this._newView.addEventListener('webkitAnimationEnd', this, false);
+        //this._newView.addEventListener('webkitAnimationEnd', this, false);
         this._newViewAnimationName = newViewAnimationName;
         this._oldViewAnimationName = oldViewAnimationName;
     }
