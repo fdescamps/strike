@@ -61,7 +61,7 @@ $ajax = function(method, url, callback){
         url = method.url
         callback = method.success
         error = method.error || error;
-        method = method.method
+        method = method.method || "GET";
     }
 
     var req = new XMLHttpRequest()
