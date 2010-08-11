@@ -272,7 +272,7 @@ Lucky = {
         // Rebind scrollers
         var _this = this;
 
-        this.RebindScroller();
+        this.rebindScroller();
     },
     
     show: function(page) {
