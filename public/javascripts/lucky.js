@@ -272,10 +272,7 @@ Lucky = {
         // Rebind scrollers
         var _this = this;
 
-        this._rebindScroller();
-        setTimeout(function(){
-            _this._rebindScroller();
-        }, 2000);
+        this.RebindScroller();
     },
     
     show: function(page) {
@@ -326,7 +323,7 @@ Lucky = {
             $removeClass(it, 'selected');
         });
     },
-    _rebindScroller: function(){
+    rebindScroller: function(){
         var scroll = $(Lucky.currentPage + " .scrollView");
         scroll.length && scroll[ 0 ].scroller && scroll[ 0 ].scroller.refresh();
     },
@@ -865,7 +862,7 @@ Transition.prototype._animationEndedHelper = function()
 {
     this._transitionEndedHelper();
 
-    Transition._removeClassName(this._oldView, this._oldViewAnimationName);
+    Transition._removeClassNamemoveClassName(this._oldView, this._oldViewAnimationName);
     Transition._removeClassName(this._newView, this._newViewAnimationName);
 }
 
