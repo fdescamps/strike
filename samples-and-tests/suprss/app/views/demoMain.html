@@ -9,46 +9,11 @@
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/iscroll.js'}"></script>
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/demo.js'}"></script>
         #{meta-iphone-webapp /}
-        
          <script type="text/javascript" charset="utf-8">
-         
-                var tmpWidgetData = {
-                    "actus":{
-                        name: "Actus",
-                        url: "/public/rss.xml"
-                    },
-                    "emploi":{
-                        name: "Emploi",
-                        url: "/public/rss.xml"
-                    },
-                    "transport":{
-                        name: "Transport",
-                        url: "/public/rss.xml"
-                    }
-                };
-                var tmpPageData = {
-                    "emploi": {
-                        jobsByDay : [{
-                            date: "Juliet 2010",
-                            items: [
-                                { url: "/public/rss.xml", title: "Un Contrôleur de travaux Responsable de Secteur h/f", location: "fountainbleu" },
-                                { url: "", title: "Un Contrôleur de travaux Responsable de Secteur h/f", location: "fountainbleu" },
-                                { url: "", title: "A job", location: "fountainbleu" }
-                            ]
-                        },{
-                            date: "March 2010",
-                            items: [ 
-                                { url: "", title: "A job", location: "paris" },
-                                { url: "", title: "Un Contrôleur de travaux Responsable de Secteur h/f", location: "fountainbleu" },
-                                { url: "", title: "Un Contrôleur de travaux Responsable de Secteur h/f", location: "fountainbleu" }
-                            ]
-                        }]
-                    }
-                }
-                
                 Lucky.onready(function(){
-                    bindListNavLinks('ul.listNavView li')
-                    widgetManager.init( tmpWidgetData );
+                    bindListNavLinks('ul.listNavView li');
+                    bindListNavLinks('.tabBarControls li');
+                    widgetManager.init();
                 });
                 
                 // TODO: this needs to go into the zen-mobile or lucky "control" library
@@ -58,13 +23,13 @@
                     }
                     selector.each(function(el){
                         var link = el.getElementsByTagName('a')
-                        if( !link || !link[0] || link[0].length === 0 ) return false
+                        if( !link || !link[0] || link[0].length === 0 ) return false;
                         var hash = link[0].hash;
-                        
                         if(link[0].href.split("#")[0] !== window.location.href.split("#")[0]){
                             link[0].addEventListener("click", function(e){
+                                alert('external link')
                                 var href = this.href;
-                                // HACK: can't stop the default event (for some reason!);
+                                // HACK: can't stop the default event (because of iscroll!);
                                 this.href = "#";
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -72,7 +37,7 @@
                         }
                         el.on("click", function(){
                             // Todo - split class name, look for types
-                            var anim = el.getElementsByTagName('a')[0].className
+                            var anim = el.getElementsByTagName('a')[0].className;
                             Lucky[ anim || 'next' ]( hash )
                         })
                     });

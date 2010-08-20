@@ -3,13 +3,8 @@
 <div class="tabBarView">
     <h1>Demo</h1>
     <div class="tabBarPages">
-        <div id="newsItem">
-             <div class="back" onclick="Lucky.back()">back</div>
-             <br/><br/><br/>News Item
-        </div>
         <div id="actus">
             <img src="@{'public/images/depayz.png'}" />
-            <p>Dernières brèves...</p>
             <ul class="listNavView">
                <li><a href="#newsItem">News item 1</a></li>
                <li><a href="#newsItem" class="next">News item 2</a></li>
@@ -17,32 +12,6 @@
             </ul>
         </div>
         <div id="practique">
-            <p>Contact details</p>
-        </div>
-        <div id="emploi">
-            <div class="scrollView">
-                <div>
-                    <h2>Offres d'emplois</h2>
-                    <div id="emploi_content"></div>
-                    <script type="text/html" id="emploi_tmpl">
-                        <% for (var i = 0; i< jobsByDay.length; i++){ var jobsDay = jobsByDay[ i ];%>
-                        <p><%=jobsDay.date%></p>
-                        <ul class="listNavView">
-                            <% for (var j = 0; j< jobsDay.items.length; j++){ var item = jobsDay.items[ j ];%>
-                            <li>
-                                <a href="<%=item.url%>#newsItem">
-                                    <span><%=item.title%></span><br/>
-                                    <span><%=item.location%></span>
-                                </a>
-                            </li>
-                            <%}%>
-                        </ul>
-                        <%}%>
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div id="transport">
             <ul>
                <li><a href="#newsItem">Transport</a></li>
                <li><a href="#newsItem" class="next">Slide left</a></li>
@@ -52,15 +21,19 @@
                <li><a href="#newsItem" class="prev">Slide right</a></li>
             </ul>
         </div>
+        <div id="other">
+            <p>Autre page</p>
+        </div>
+        <div id="newsItem">
+             <div class="back" onclick="Lucky.back()">back</div>
+        </div>
     </div>
     <div id="plus">
         <p>Do we need plus?</p>
     </div>
     <ul class="tabBarControls">
-        <li id="btnActus"><a href="#">actus</a></li>
-        <li id="btnPractique"><a href="#">pratique</a></li>
-        <li id="btnEmploi"><a href="#">emploi</a></li>
-        <li id="btnTransport"><a href="#">transport</a></li>
-        <li id="btnPlus"><a href="#">plus...</a></li>
+        <li id="btnActus"><a href="#actus" class="next">actus</a></li>
+        <li id="btnPractique"><a href="#practique" class="fade">pratique</a></li>
+        <li id="btnOther"><a href="#other" class="show">autre</a></li>
     </ul>
 </div>

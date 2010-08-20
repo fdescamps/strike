@@ -1,0 +1,172 @@
+.page{
+    position: absolute !important;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0) rotate(0) scale(1);
+}
+.current {
+    display: block !important;
+}
+.in, .out {
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 350ms;
+}
+.push.in { -webkit-animation-name: slideinfromright; }
+.push.out { opacity:0; -webkit-animation-name: slideouttoleft; }
+.push.in.reverse { -webkit-animation-name: slideinfromleft; }
+.push.out.reverse { opacity:0; -webkit-animation-name: slideouttoright; }
+
+.show.in {
+    z-index: 10;
+    -webkit-animation-name: fadein;
+	-webkit-animation-duration: 10ms;
+}
+.show.out {
+    z-index: 0;
+	-webkit-animation-duration: 10ms;
+}
+
+@-webkit-keyframes slideinfromright {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(0); }
+}
+@-webkit-keyframes slideinfromleft {
+    from { -webkit-transform: translateX(-100%); }
+    to { -webkit-transform: translateX(0); }
+}
+@-webkit-keyframes slideouttoleft {
+    from { -webkit-transform: translateX(0); opacity: 1; }
+    to { -webkit-transform: translateX(-100%); opacity: 1; }
+}
+@-webkit-keyframes slideouttoright {
+    from { -webkit-transform: translateX(0); opacity: 1; }
+    to { -webkit-transform: translateX(100%); opacity: 1; }
+}
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+.fade.in {
+    z-index: 10;
+    -webkit-animation-name: fadein;
+}
+.fade.out {
+    z-index: 0;
+}
+
+.flip { 
+    -webkit-animation-duration: .65s; 
+    -webkit-backface-visibility: hidden;
+}
+.flip.in { -webkit-animation-name: flipinfromleft;  }
+.flip.out { opacity:0; -webkit-animation-name: flipouttoleft; }
+.flip.in.reverse { -webkit-animation-name: flipinfromright; }
+.flip.out.reverse { opacity:0; -webkit-animation-name: flipouttoright; }
+@-webkit-keyframes flipinfromright {
+    from { -webkit-transform: rotateY(-180deg) scale(.8); }
+    to { -webkit-transform: rotateY(0) scale(1); }
+}
+@-webkit-keyframes flipinfromleft {
+    from { -webkit-transform: rotateY(180deg) scale(.8); }
+    to { -webkit-transform: rotateY(0) scale(1); }
+}
+@-webkit-keyframes flipouttoleft {
+    from { -webkit-transform: rotateY(0) scale(1); opacity: 1; }
+    to { -webkit-transform: rotateY(-180deg) scale(.8); opacity: 1; }
+}
+@-webkit-keyframes flipouttoright {
+    from { -webkit-transform: rotateY(0) scale(1); opacity: 1; }
+    to { -webkit-transform: rotateY(180deg) scale(.8); opacity: 1; }
+}
+.cube {
+    -webkit-animation-duration: .55s;
+}
+
+.cube.in {
+	-webkit-animation-name: cubeinfromright;
+    -webkit-transform-origin: 0% 50%;
+}
+.cube.out {
+	-webkit-animation-name: cubeouttoleft;
+    -webkit-transform-origin: 100% 50%;
+    opacity: 0;
+}
+.cube.in.reverse {
+	-webkit-animation-name: cubeinfromleft;	
+    -webkit-transform-origin: 100% 50%;
+}
+.cube.out.reverse {
+    opacity: 0;
+	-webkit-animation-name: cubeouttoright;
+    -webkit-transform-origin: 0% 50%;
+
+}
+
+@-webkit-keyframes cubeinfromleft {
+	from {
+        -webkit-transform: rotateY(-90deg) translateZ(320px);
+        opacity: .5;
+	}
+    to {
+        -webkit-transform: rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes cubeouttoright {
+    from {
+        -webkit-transform: rotateY(0deg) translateX(0);
+        opacity: 1;
+    }
+    to {
+        -webkit-transform: rotateY(90deg) translateZ(320px);
+        opacity: .5;
+    }
+}
+@-webkit-keyframes cubeinfromright {
+    from {
+        -webkit-transform: rotateY(90deg) translateZ(320px);
+        opacity: .5;
+    }
+    to {
+        -webkit-transform: rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes cubeouttoleft {
+    from {
+        -webkit-transform: rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+    to {
+        -webkit-transform: rotateY(-90deg) translateZ(320px);
+        opacity: .5;
+    }
+}
+.slideup.in {
+	-webkit-animation-name: slideup;
+	z-index: 10;
+}
+.slideup.out {
+	-webkit-animation-name: dontmove;
+	z-index: 0;
+}
+.slideup.out.reverse {
+	z-index: 10;
+	-webkit-animation-name: slidedown;
+}
+.slideup.in.reverse {
+	z-index: 0;
+	-webkit-animation-name: dontmove;
+}
+@-webkit-keyframes slideup {
+    from { -webkit-transform: translateY(100%); }
+    to { -webkit-transform: translateY(0); }
+}
+
+@-webkit-keyframes slidedown {
+    from { -webkit-transform: translateY(0); }
+    to { -webkit-transform: translateY(100%); }
+}

@@ -1,5 +1,6 @@
 @import compass/reset
 @import fancy_buttons
+@import transitions
 
 #should work in compass but currently not
 =ellipsis(!no_wrap = true)
@@ -129,7 +130,6 @@ body
     &.selected
         background: #194FDB url(/public/images/mobile/chevron-white.png) no-repeat 300px 14px
 
-
 #forfun
 =iphone-apple
     font-size: 64pt
@@ -145,10 +145,21 @@ body
     overflow: auto
     height: 100%
 
+.tabBarPages
+    position: relative
+    height: 100%
+
 .tabBarPages > div
+    position: absolute
+    height: 100%
+    width: 100%
     display: none
+    top: 0
 
 .tabBarControls
+    z-index: 10
+    position: absolute
+    bottom: 0
     display:block
     height: 49px
     width: 100%
