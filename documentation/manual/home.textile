@@ -1,6 +1,6 @@
 h1. Here is play! mobile
 
-Welcome to Play! Module. Ready to make stuf for your fingers ?
+Welcome to Play! Module. Ready to make stuff for your fingers ?
 
 h1. Some tricks
 
