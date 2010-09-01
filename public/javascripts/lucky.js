@@ -6,27 +6,23 @@
     var $ = function(selector, context){
         if (selector==null||typeof selector=="object") return selector
         var context = context || document,
-            results = context.querySelectorAll(selector),
-            isId = /^\#[0-9a-zA-Z_\-]*$/;
-
-        return isId.test(selector) && results ? results[0] : results
+            isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector),
+            results = isId ? context.querySelector(selector) : context.querySelectorAll(selector);
+        return results;
     };
 
-    // Export Lucky$ to global scope.
+    // Export Lucky$ and $ to global scope.
     root.$ = root.Lucky$ = $;
     $.VERSION = '0.1';
     $.noConflict = function(){
         root.$ = previous$;
         return this;
     };
-
     $.each = function(items, callback){
         for(var i=0; i<items.length; i++) {
             callback(items[i], i);
         }
     };
-
-    //TODO: $hasClass does not work with multiple classes
     $.hasClass = function(element, className) {
         element = !element ? null :  typeof element == "string" ? $(element) : element;
         if (element) {
@@ -128,7 +124,8 @@
 
         /*handlers : {}, TODO: used in native? */
         serverURL : document.location.protocol+'//'+document.location.host,
-        onMobile : navigator.userAgent.indexOf('Android') + navigator.userAgent.indexOf('iPhone') > 0,
+        onMobile : (/iphone|ipad|android/gi).test(navigator.userAgent),
+        storage: window.localStorage,
 
         init: function(){
             cacheLog();
@@ -164,6 +161,7 @@
             /*this.handlers['reverseGeoCode'] = handler; TODO: used in native? */
         },
         setMessages: function(messages, lang) {
+            // TODO: are these used? - move to Lucky.messages[]
             if(!messages[lang]) lang = 'en';
             window.lucky_messages = messages[lang];
             $('.i18n').each(function(el) {
@@ -174,8 +172,8 @@
                 }
             });
         },
-    
         getMessage: function(key) {
+            // TODO: are these used?
             return lucky_messages[key];
         },
         onready :function(handler){
@@ -436,6 +434,20 @@
     };    
 })();
 
+(function($){
+    // TODO: controls to become modules.
+    Lucky.controls = {
+        bindTabBarNav: function(selector){
+            $(selector||".tabBarControls li").each(function(item){
+                $.on(item, "click", function(){
+                    var link = this.querySelector("a");
+                    Lucky.show(link.hash);
+                })
+            })
+        }
+    }
+})(Lucky$);
+
 //~~~~~~~ Aliases and extensions
 (function($){
     // Aliases (TODO: should be deprecated)
@@ -446,7 +458,7 @@
     onMobile = Lucky.onMobile
     tmpl = Lucky.tmpl
     
-    // Prototype extensions 
+    // Prototype extensions - probably shouldn't touch objects we don't own.
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };
     Element.prototype.width = function(){ $.width(this) };
     Element.prototype.height = function(){ $.height(this) };

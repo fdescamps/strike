@@ -1,6 +1,7 @@
 @import compass/reset
 @import fancy_buttons
 @import transitions
+@import controls
 
 #should work in compass but currently not
 =ellipsis(!no_wrap = true)
@@ -137,41 +138,3 @@ body
     margin: auto auto
     text-align: center
 
-#For "controls": eg, scrollView, tabBarView
-.scrollView
-    position: relative
-    width: 100%
-    z-index: 1
-    overflow: auto
-    height: 100%
-
-.tabBarPages
-    position: relative
-    height: 100%
-
-.tabBarPages > div
-    position: absolute
-    height: 100%
-    width: 100%
-    display: none
-    top: 0
-
-.tabBarControls
-    z-index: 10
-    position: absolute
-    bottom: 0
-    display:block
-    height: 49px
-    width: 100%
-    overflow: hidden
-    li
-        display: block
-        width: 79px
-        height: 49px
-        text-align: center
-        line-height: 49px
-        float: left
-        color: #fff
-        font-size: 10pt
-        a
-            color: #fff

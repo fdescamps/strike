@@ -2,6 +2,9 @@ h1. Here is play! mobile
 
 Welcome to Play! Module. Ready to make stuff for your fingers ?
 
+Lucky$
+Lucky core
+
 h1. Some tricks
 
 * add iPhone/iPod meta for handling zoom, screen size.
@@ -47,4 +50,15 @@ This module will bring a production mode for managing
 
     * file size: compression of css/html/images in 1 file
     * application cache
+    
+h1. Lucky$ - DOM Helper
+
+Lucky$ is a small library for working with the DOM
+
+    * $('selector', context)
+    * $.each
+    * Class methods
+    * $.css
+    * $.ajax
+    * $.noConflict() - working with other libraries
     
