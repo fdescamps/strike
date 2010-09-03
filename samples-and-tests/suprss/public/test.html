@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <link rel="stylesheet" href="/public/stylesheets/transitions.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="/public/stylesheets/transitions.scss" type="text/css" media="screen" charset="utf-8">
         <style type="text/css" media="screen">
 
         body {
@@ -78,15 +78,15 @@
         </div>
         <script src="/public/javascripts/lucky.js" type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
-            var transition = "next";
+            //var transition = "next";
             Lucky.onready(function(){
-                $("#pages div").each(function(item){
+                /*$("#pages div").each(function(item){
                     item.on("click", function(){
                         Lucky[ transition ](this.id==="one"?"#two":"#one");
                     });
                 })
                 $("#container").style.display = "block";
-                Lucky.next("#one");
+                Lucky.next("#one");*/
             });
         </script>
     </body>

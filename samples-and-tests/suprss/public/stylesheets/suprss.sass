@@ -1,19 +1,27 @@
 !colortheme = #553A6D
 @import iphone.sass
-!orange = #FDAE35
-h1
-    +iphone-header(!orange)
+!coloraux = #FDAE35
 
-.back-button
+body, html
+    height: 100%
+    overflow: hidden
+
+body > div
+    +iphone-page
+    overflow: hidden
+
+.back
     +iphone-back-button
     +iphone-left-button
+    position: absolute
+    z-index: 10
+    left: auto
+    right: 10px
+    top: 15px
+
 .forward-button
-    +iphone-forward-button
+    +iphone-forward-button 
     +iphone-right-button
-.apple
-    +iphone-apple
-.page
-    +iphone-page
 
 a
     text-decoration: none
@@ -25,9 +33,55 @@ em
         
 h2
     +page-title
-    
+
+.tabBarView
+    -webkit-box-sizing: border-box
+    padding: 30px 0 40px
+    height: 100%
+
+.tabBarView h1
+    +iphone-header(!coloraux)
+    -webkit-box-shadow: 0 0 5px #000
+    position: absolute
+    width: 100%
+    top: 0
+    z-index: 1
+    span
+        background: transparent url(/public/images/sem.png) no-repeat
+        text-indent: -1000px
+        display: block
+        width: 163px
+        height: 30px
+        margin-left: 15px
+
+.tabBarPages
+    height: 100%
+    z-index: 0
+
+.tabBarPages > div
+    height: 100%
+
+.tabBarControls
+    +iphone-header(!coloraux)
+    height: 40px
+    position: absolute
+    bottom: 0
+    padding-left: 6px
+    -webkit-box-shadow: 0 0 5px #000
+    li
+        width: 20%
+        a
+            background: transparent
+            display: block
+            width: 53px
+            height: 32px
+            overflow: hidden
+            margin-top: 4px
+            &.selected
+                img
+                    margin-top: -32px
+
 #feedlist
-    height: 372px
     li
         border-bottom= 1px solid !colortheme
         a
@@ -37,24 +91,23 @@ h2
             display: block
             font-size: 18px
         &.active
-            background-color= !orange
+            background-color= !coloraux
             article
                 display: block
 
-.tabBarView
-    +iphone-header(!orange)
-    height: 49px
-    padding: 0
-    li
-        width: 20%
+#newsItem
+    background: -webkit-gradient(linear, 0 0, 0 100, from(#bbb), to(#fff))
+    height: 100%
+    article
+        height: 100%
+        padding: 10px
+        .date
+            text-shadow: rgba(255,255,255,0.5) 1px 1px 1px
+            text-align: center
+            color: #777
+        img
+            max-width: 290px
 
 article
     display: none
-    background: -webkit-gradient(linear, 0 0, 0 100, from(#bbb), to(#fff))
-    padding: 10px
-    .date
-        text-shadow: rgba(255,255,255,0.5) 1px 1px 1px
-        text-align: center
-        color: #777
-    img
-        max-width: 290px
+   

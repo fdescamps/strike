@@ -64,7 +64,7 @@ function iScroll (el, options) {
 	}
 	
 	if (!isTouch) {
-		//that.element.addEventListener('click', that, true);
+		that.element.addEventListener('click', that, true);
 	}
 }
 
