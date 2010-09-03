@@ -1,9 +1,89 @@
 h1. Here is play! mobile
 
-Welcome to Play! Module. Ready to make stuff for your fingers ?
+Welcome to the Play!Mobile Module. Ready to make stuff for your fingers? Play!Mobile is a toolbox and framework to help you develop mobile web applications fast.
 
+It's comprised of 2 main parts:
 Lucky$
 Lucky core
+
+h1. Starting a new project
+
+Once you have your killer idea, it's time to get to work.
+
+Sketch out your app in HTML - defining the pages as DIV elements
+
+Add Lucky.onready() - Lucky.show("#home");
+
+h1. Reference
+
+* Lucky core
+* Lucky $
+* Lucky controls
+* Developing Lucky
+
+h2. Lucky Core
+
+* GEO
+* Templating
+
+h3. Events
+
+* add init hook 
+
+bc. Lucky.onready(function(){
+  alert('toto')
+})
+
+* onorientationchange
+
+h3. The emulator
+
+h3. GEO
+
+* reverseGeoCode
+
+h3. Transitions
+
+* standard tansition
+* custom transitions
+
+h3. Templating
+
+Lucky makes use of John Resig's "Micro Templating" function.
+
+Specify a template in your page:
+<script type="text/html" id="theID">
+    <h1>Template <%=id%></h1>
+</script>
+
+
+
+h2. Lucky$
+
+h3. Methods
+
+Lucky$ is a small library for working with the DOM
+
+* $('selector', context)
+* $.each
+* Class methods
+* $.css
+* $.ajax
+
+h3. Working with another library
+
+* noconflict
+    
+h2. Lucky Controls
+
+
+h2. Developing Lucky
+
+h3. Unit tests
+
+* running unit test
+
+With qunit
 
 h1. Some tricks
 
@@ -17,11 +97,6 @@ bc.
 
 bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script> 
 
-* add init hook 
-
-bc. Lucky.onready(function(){
-  alert('toto')
-})
 
 h2. Road Map
 
@@ -50,15 +125,4 @@ This module will bring a production mode for managing
 
     * file size: compression of css/html/images in 1 file
     * application cache
-    
-h1. Lucky$ - DOM Helper
 
-Lucky$ is a small library for working with the DOM
-
-    * $('selector', context)
-    * $.each
-    * Class methods
-    * $.css
-    * $.ajax
-    * $.noConflict() - working with other libraries
-    

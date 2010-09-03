@@ -115,27 +115,35 @@
 // ~~~~~~~~~~~~~~~~~~~~ Lucky
 (function($){
     Lucky = {
-        /*commandQueue:[], TODO: used in native? */
+        commandQueue:[], /*TODO: used in native? */
         currentPage: null,
         previousPage: null,
     
         currentPanel: null,
         currentOverlay: null,
 
-        /*handlers : {}, TODO: used in native? */
         serverURL : document.location.protocol+'//'+document.location.host,
         onMobile : (/iphone|ipad|android/gi).test(navigator.userAgent),
         storage: window.localStorage,
+
+        handlers : {}, /*TODO: used in native? */        
+        messages : {},
+        
+        message: function(msg){ return msg; },
 
         init: function(){
             cacheLog();
             this.bindScrollers();
         },
+        template : function(id, templateId, renderData){
+          $('#' + id).innerHTML = tmpl(templateId, renderData)
+          fakeTouch($('#' + id))
+        },
         maps : function(query){
             window.open('http://maps.google.com?'+query)
         },
         locate: function(handler){
-            /*Lucky.handlers['locate'] = handler; TODO: used in native? */
+            Lucky.handlers['locate'] = handler; /* TODO: used in native? */
             if (navigator.geolocation) {
                 Lucky.stopLocate()
                 Lucky.watchPosition = navigator.geolocation.watchPosition(function(position){
@@ -148,33 +156,24 @@
         },
     
         lang: function(handler) {
-            handler()
-            /*this.handlers['lang'] = handler; TODO: used in native? */
-            if (this.onMobile){
-                this.pushCommand('lang://dummy');
-            } else {
-                this.commandResult('lang', 'en');
-            }
+            handler(navigator.language.substring(0,2))
         },
         reverseGeoCode : function(handler){
-            alert('Reversed Geo Code - called?');
-            /*this.handlers['reverseGeoCode'] = handler; TODO: used in native? */
+            this.handlers['reverseGeoCode'] = handler; /*TODO: used in native? */
         },
         setMessages: function(messages, lang) {
-            // TODO: are these used? - move to Lucky.messages[]
             if(!messages[lang]) lang = 'en';
-            window.lucky_messages = messages[lang];
+            Lucky.messages = messages[lang];
             $('.i18n').each(function(el) {
                 var id = el.id;
-                var message = lucky_messages[id];
+                var message = Lucky.message(id);
                 if(message) {
                     el.innerHTML = message;
                 }
             });
         },
-        getMessage: function(key) {
-            // TODO: are these used?
-            return lucky_messages[key];
+        message: function(key) {
+            return Lucky.messages[key];
         },
         onready :function(handler){
             onReadyHandlers.push(handler);
@@ -382,7 +381,6 @@
         fakeTouch(document);
         $.on(document.body, 'touchstart', _touchStart);
         $.on(document.body, 'touchend', _touchEnd);
-        $.on(document.body, 'touchmove', function(e) { /*e.preventDefault();*/ });
         $.on(document.body, 'blur', function() { window.scrollTo(0, 0); }, true);
         Lucky.ready();
     });
