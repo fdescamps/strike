@@ -131,7 +131,6 @@ test("DOM helpers", function(){
         
     // Tests if nested divs both get event handlers added
     $.on("#qunit-fixture div", "click", function(event){
-        console.log(event, event.eventPhase, event.target.getAttribute("id"))
         count++
         countAt += event.eventPhase === Event.AT_TARGET ? 1 : 0;
         countBubble += event.eventPhase === Event.BUBBLING_PHASE ? 1 : 0;
@@ -146,14 +145,14 @@ asyncTest("AJAX", function() {
     expect(2);
     
     stop()
-    $.ajax("GET", "resources/testJSON.js", function(items){
+    $.ajax("GET", "/public/unit/resources/testJSON.js", function(items){
         ok(items.length === 2 && items[0].id === 1, "$.ajax GET JSON request")
         start()
     })
 
     var ajaxOptions = {
         type: "HTML",
-        url: "resources/testHTML.html",
+        url: "/public/unit/resources/testHTML.html",
         method: "GET",
         success: function( content ){
             ok(content.indexOf("Lucky") > -1, "$.ajax GET HTML request - option bundle")

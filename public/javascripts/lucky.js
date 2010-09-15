@@ -4,7 +4,8 @@
     var previous$ = root.$;
     // ~~~~~~~~~~~~~~~~~~~~ Utils
     var $ = function(selector, context){
-        if (selector==null||typeof selector=="object") return selector
+        //TODO: why die in iPhone (returns function!) : if (selector==null||typeof selector=="object") return selector
+        if (selector==null||typeof selector!=="string") return selector
         var context = context || document,
             isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector),
             results = isId ? context.querySelector(selector) : context.querySelectorAll(selector);
