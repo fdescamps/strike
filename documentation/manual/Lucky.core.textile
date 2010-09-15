@@ -1,0 +1,257 @@
+h1. Lucky Core
+
+* Helpers
+* Events
+* Styles
+** iPhone style
+** Standard buttons
+* Scrollable pages
+* The manager
+* Transitions
+* Overlays and panels
+* GEO
+* Templating
+* Going offline
+* Internationalization
+* Extending Lucky
+
+h2. Helpers
+
+*Lucky.onMobile*
+
+The @Lucky.onMobile@ boolean flag will let you know if the code is running on a desktop, or a mobile device. This is useful for debugging - or letting desktop users know that the content is not for them!
+
+bc. if(!Lucky.onMobile){
+    alert('Best viewed on the train, on your phone.');
+}
+
+*Class inheritance*
+
+Lucky uses Dean Edward's tiny "Base.js":http://dean.edwards.name/weblog/2006/03/base/ library for implementing traditional style object inheritance. Used heavily in the MVC manager.
+
+bc. var Controller = Base.extend({});
+var UI = Controller.extend({});
+
+h2. Events
+
+Lucky provides a few useful hooks for handling common events
+
+*TODO* Will we add the event system to play!mobile?
+
+h3. The page @onready@ hook
+
+Functions that are added using this hook will fire when the page has fully loaded: so it's a great place to put your initialization code. You can add as many separate functions as you need - they will be called in order once the page has loaded.
+
+bc. Lucky.onready(function(){
+    // Do code init
+    alert('Ready to do some cool stuff');
+})
+var moreInitialization = function(){ /* Do some more initialization! */ }
+Lucky.onready(moreInitialization);
+
+h3. Detecting device rotation with @onorientationchange@
+
+If the user's mobile device fires orientation events, you can use the @onorientationchange@ method to add functions to be run when the user rotates their mobile device. The functions will be passed one parameter: the new orientation of the phone.
+
+bc. Lucky.onorientationchange(function(orientation){
+    // Device has been rotated to "orientation"
+    alert(orientation);
+});
+
+The values that are passed in are: 0 for portrait mode, 90 for landscape mode when the phone is turned to the left, and -90 for landscape mode when the phone is turned to the right.
+
+h2. Styles
+
+Lucky includes a handful of stylesheet definitions to help quickly style common UI controls. In general, these are designed to give the look and feel of a native application.
+
+The default styles make use of "SASS":http://en.wikipedia.org/wiki/Textile_(markup_language) for generating CSS
+
+Files: 
+iphone.sass 
+*TODO* where do the funky-buttons etc come from?
+
+h3. Page iPhone styles
+
+The "body" tag
+
+The "page" class
+
+h3. standard buttons
+
+back - add class
+
+h2. Scrollable pages
+
+Most mobile devices (at the time of writing this library!) do not provide an adequate way to scroll some parts of a page, while leaving other parts fixed. For example - a common UI layout involves a fixed header bar with a scrollable content area below. By default, for pages with more than one screen worth of content, most mobile devices will simply scroll the header bar up off the page with the rest of the text.
+
+To overcome this issue, play!mobile incorporates the iScroll toolkit which uses JavaScript to emulate a fixed-height scrollable content area - allowing you to create more complex layouts.
+
+To create a scrollable area, you need to follow some conventions. The containing element of the scrollable area must contain the class name @scrollView@. Any elements that have the @scrollView@ class will be considered by play!mobile to need scrollers. Also, the iScroll library requires that the containing element holds ANOTHER containing element - which will be the area that actually scrolls.
+
+bc. <div class="scrollView">
+    <div>
+        This content will be the scrollable area.
+    </div>
+</div>
+
+*TODO* - how to set the scroll height?
+
+h2. The manager
+
+Overview of the MVC manager *TODO* is this in Lucky?
+
+h3. The events/messaging system
+
+bc. Observing events: Manager.observe('favorites-updated', function(){
+  favoritesController.update()
+})
+Triggering events:  Manager.message({type : 'error', message : 'remplir.infos.compte'})
+
+h2. Navigating
+
+When you show a page using a page transition... stack of navigation *TODO* is the stack in lucky?
+
+back button.
+@Lucky.back()@
+
+h2. Transitions
+
+Transitions provide a way to introduce various screens of your application to your users. Correct use of transitions is important to provide a good user experience - For example, a screen that slides in from the left indicates a "workflow" to the user. But flipping every screen in your app will quickly drive your users made - so go easy!
+
+The transition system used for play!mobile is based soley on CSS3 transitions - no JavaScript fallbacks are provided. This helps keep the core framework size down. If you are targeting "less capable" devices, you'll have to implement the transitions yourself. *TODO* Should we provide hints on what to use?
+
+h3. Standard transition
+
+*Show*
+To simply display the new page on screen without applying any transition effect, you pass the container ID to the show method: @Lucky.show("#page-id")@
+
+*Flip and Unflip*
+A "flip" is a 180 degree horizontal rotation, centered on the middle of page. To flip the page from right to left you use the flip method:@Lucky.flip("#page-id")@. To flip in the opposite direction (from left to right) use the unflip method: @Lucky.unflip("#page-id")@.
+
+*Next and Prev*
+@Lucky.next("#page-id")@ will slide the new page in from the left side of the screen, and @Lucky.next("#page-id)@ will slide the new page from the right.
+
+*rotateLeft*
+A "rotate" transition gives the effect that the screens are a cube that is rotating, with a screen on each side. @Lucky.rotateLeft("#page-id")@ will rotate the cube from right to left, and @Lucky.rotateLeft("#page-id")@  from right to left.
+
+*fade*
+To fade the new screen over the current screen use @Lucky.fade("#page-id")@ 
+
+*swap* 
+*TODO* what is swap?!
+
+h3. Custom transitions
+
+*TODO* - no custom transistions yet! Need to write your own CSS3 classes.
+
+h2. Overlays and panels
+
+Using overlays/panels. *TODO* do any apps use this?
+
+h2. GEO Location
+
+Getting a user's location
+
+bc. Lucky.locate(function(location){
+        if (location.error){
+            alert(Lucky.message('no_geolocation'));
+            return;
+        }
+        var lat = location.latitude.toFixed(15);
+        var lon = location.longitude.toFixed(15);
+        var accuracy = location.accuracy;
+        
+        alert("lat:" + lat +  " lon:" + lon + " accuracy:" + accuracy);
+})
+
+Stop looking: Lucky.stopLocate()
+
+bc. setTimeout(function() {
+    Lucky.stopLocate()
+}, 5000)
+
+* reverseGeoCode
+
+h2. Templating
+
+When making dynamic applications it is common requirement to generate snippets of HTML that can be injected into the page. For small snippets, it is easy enough to concatenate strings together with your data (for example, @var heading="<h1>Welcome back, "+firstName+"!</h1>"@) - but this can quickly become complex and slow when there is a lot of markup, and a lot of data.
+
+Play!mobile uses John Resig's "Micro Templating" function which is a simple and effective way to specify a templates for use in your page. You include the template anywhere inside the HTML like so:
+
+bc. <script type="text/html" id="headerTemplate">
+    <h1>Welcome back, <%=firstName%></h1>
+</script>
+*TODO* NEW Tempate method...
+Then you can generate the static markup using the @Lucky.tmpl@ function in your JavaScript code. In the example below, the html is returned into the heading variable and then be put into the page:
+
+bc. var heading = Lucky.Template("headerTemplate" {firstName:"Bob"});
+$("#myContainer").innerHTML = heading;
+
+Notice that the script tag has type @text/html@ - not @text/javascript@. This is the trick that lets you add HTML templates without them appearing on screen.
+
+h3. Passing data
+
+bc. var data = {
+    title: 
+}
+<script type="text/html" id="item_tmpl">
+    <li class="item">
+        <a class="" href="#"><%=title%></a>
+        <article>
+            <p class="date"><%=date%></p>
+            <div class="text">
+                <%=description%>
+            </div>
+        </article>
+    </li>
+</script>
+
+h3. Looping and template coding
+
+Can add JS inside the template...
+
+bc. var people = [
+    { id: 1, name: "Bob", address },
+    { id: 2, name: "Alice" }
+]
+<script id="favorites_template" type="text/html">
+    <% for(var i=0;i< items.length; i++) { var person = people[i]; %>
+        <li id="person-<%=person.id%>">
+            <strong><%=person.name%></strong>
+            <p class="address"><%=person.address%></p>
+        </li>
+    <%}%>
+</script>
+
+h2. Going offline
+
+Unfortunately, we can't be connected to the internet at _all_ times (yet) - but we still want our users to be able to use our apps at all times. Generally, if an application on a mobile device does not have access to the internet (because there is no reception, or no data available) then the application will display an alert and close. This does not make for a very good user experience - especially if your application is perfectly able to run without needing new data.
+
+Thankfully there are a few ways we can create a great offline experience - the primary of which is through the offline storage mechanism of HTML5.
+
+swapcache.
+
+h3. Offline cache events
+
+On the desktop you get the events
+
+ var message = 'online: ' + (navigator.onLine) ? 'yes' : 'no';
+    message+= ', event: ' + e.type;
+    message+= ', status: ' + cacheStatusValues[cache.status];
+    if (e.type == 'error' && navigator.onLine) {
+
+h2. Internationalization
+
+Lucky.message('no_geolocation')
+
+h2. Extending Lucky
+
+How to extend lucky - like allbikesnow does
+
+h3. Unit tests
+
+The play!mobile framework uses qUint for unit testing.
+
+Tests are broken into core and Lucky$
+
+Needs to be running as a play module: /public/unit/

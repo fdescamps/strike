@@ -28,20 +28,20 @@
             <ul>
                 <li><a href="#newsItem">Contact</a></li>
                 <li><a href="#newsItem" class="next">Slide left</a></li>
-                <li><a href="#newsItem" class="prev">Slide right</a></li>
+                <li><a href="#newsItem" class="prev" onclick="Lucky.locate()">Slide right</a></li>
             </ul>
         </div>
        <div id="newsItem">
             <div class="scrollView">
-                           <div>
-                <div class="back" onclick="Lucky.back()">back</div>
-                <article></article>
-            </div>
+                <div>
+                    <div class="back" onclick="Lucky.back()">back</div>
+                    <article></article>
+                </div>
             </div>
        </div>
    </div>
    <ul class="tabBarControls">
        <li><a href="#feedlist"><img src="/public/images/buttons/home.png" alt="home" /></a></li>
-       <li><a href="#newsItem"><img src="/public/images/buttons/plus.png" alt="plus" /></a></li>
+       <li><a href="#plus"><img src="/public/images/buttons/plus.png" alt="plus" /></a></li>
    </ul>
 </div>

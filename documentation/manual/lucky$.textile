@@ -1,0 +1,100 @@
+h1. Lucky$
+
+Lucky$ (aliased to $) is a DOM helper for use inside the core Lucky - but you can use it too if you like! Lucky$ provides some simple but useful functions for DOM manipulation and AJAX. 
+
+If you have your favorite Ajax library that you just can't live without, then fret not - Lucky$ can live happily with which ever library you are most comfortable with.
+
+h2. Methods
+
+Lucky$ is a small library for working with the DOM
+
+* $('selector', context)
+* Iterators and helpers
+* Class Manipulation methods
+* CSS Manipulation methods
+* $.ajax
+* Prototype extensions
+
+h3. The $('selector', context) method
+
+This is the standard DOM element selector.
+
+$("#myDiv") 
+$(".warning")
+$("ul li .selected")
+
+The result returned will depend on the selector string. If the selector string is an ID (for example: #myDiv, ul#myElement) then a single DOM node will be returned (via the querySelector method). If the selector string is not an ID then an array will be returned containing 0 or more matching elements (via the querySelectorAll method)
+
+If you pass a DOM element, or a collection of DOM elements to the $ method it will simply be passed back.
+
+h3. Iterators and helpers
+
+$.each
+HTMLElement prototype extention
+
+h3. Class Manipulation methods
+
+Lucky$ provides a series of useful methods for dealing with DOM element class names
+the Lucky$ class methods accept an element or a selector string as the first argument.
+
+*hasClass*
+@$.hasClass(element, className)@ will test if the element you pass in contains the class name. It only accept a single class as value to test - if you pass in multiple classes, seperated by a space then it will work if the element's className matches. But be aware - the browser does not gaurante the order of class names, so you should stick to testing a single class at a time.
+
+bc. var div = $("#myDiv")
+div.className = "opened";
+$.hasClass(div, "opened"); <- true
+$.hasClass("#myDiv", "opened"); <- true
+
+*addClass*
+@$.addClass(element, className)@
+This method will add class names to the selected element, or elements if it does not already exist. To add multiple classes, separate them with a space. If a string is passed in for the @element@ parameter it will be first used as an element selector - the results of which will get the @className@ class (or classes) added.
+
+@$.addClass("#myDiv", "important movable")@ will add@important@ and @movable@ class to the #myDiv element.
+@$.addClass("span", "ImASpan")@ will add the @ImASpan@ class to every span element.
+
+*removeClass*
+To remove classes, use the @$.removeClass(element, className)@ method. This works in the same way as @addClass@ (accepts an element, multiple elements, or a string selector and one or more class names) but removes the class from the element if it exists.
+
+@$.removeClass("#myDiv", "movable important")@ will remove the @movable@ and @important@ classes from the @myDiv@ element.
+@$.removeClass("p.warning", "warning")@ will remove the @warning@ class from all paragraph elements that contain the @warning@ class.
+
+h3. CSS Manipulation methods
+
+Like the Class Manipulation methods, the CSS Manipulation methods also accept either an object or a string as the first argument.
+
+$.css
+
+h3. Ajax commands
+
+Lucky provides a helper for making AJAX requests. There are two ways to call the function:
+
+$.ajax(method, url, callback)
+    
+Providing a method, url, and callback to the $.ajax function will return the JSON data at the url location.
+method: HTTP method (eg: GET, POST)
+url: location of the data to fetch (must be on the current domain, due to cross-domain restrictions)
+callback: the code to run once the data has been fetched. The function accepts one parameter, which is the data that is returned.
+
+$.ajax( "GET", "data.js", function(items){
+    // Do something with "items"
+    alert(items.length);
+});
+
+$.ajax(ajaxOptions)
+
+The second let's you fully customize the request and to make calls for data other than JSON.
+
+
+h3. Protoype extensions
+
+Array.prototype.each
+Element.prototype.width
+Element.prototype.height
+HTMLElement.prototype.css
+HTMLElement.prototype.on
+
+h2. Working with another library
+
+* noconflict
+    
+h2. Lucky Controls

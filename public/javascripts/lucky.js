@@ -19,48 +19,84 @@
         return this;
     };
     $.each = function(items, callback){
+        items = $(items)
         for(var i=0; i<items.length; i++) {
             callback(items[i], i);
         }
     };
     $.hasClass = function(element, className) {
-        element = !element ? null :  typeof element == "string" ? $(element) : element;
+        element = $(element);
         if (element) {
             var elementClassName = element.className;
             return (elementClassName.length > 0 && (elementClassName == className ||
                 new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
         }
+        return null;
     };
     $.addClass = function(element, className) {
-        element = !element ? null :  typeof element == "string" ? $(element) : element;
-        if (element) {
-            if (!$hasClass(element, className)) element.className += (element.className ? ' ' : '') + className;
-            return element;
+        element = $(element);
+        if (!element) return null;
+        
+        if(element.length){
+            var els = []
+            $.each(element, function(item){
+                els.push( $.addClass(item, className) );
+            });
+            return els;
         }
-        return null;
+        else {
+            if (!$.hasClass(element, className)) element.className += (element.className ? ' ' : '') + className;
+            return element;    
+        }
     };
     $.removeClass = function(element, className) {
-        element = !element ? null :  typeof element == "string" ? $(element) : element;
-        if(element && element.className && className){
-           element.className = element.className.replace(new RegExp("\\b(" + className.replace(/\s+/g, "|") + ")\\b", "g"), " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
-           return element;
+        element = $(element);
+        if(!element) return null;
+        
+        if(element.length){
+            var els = [];
+            $.each(element, function(item){
+                els.push( $.removeClass( item, className ) );
+            });
+            return els;
+            
+        } else {
+            if(element.className && className){
+               element.className = element.className.replace(new RegExp("\\b(" + className.replace(/\s+/g, "|") + ")\\b", "g"), " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
+               return element;
+            }
         }
-        return null;
+
     };
 
     // Used in animation - TODO check validity
     $.css = function(element, prop, value){
+        element = $(element);
+        if(!element)return;
+        
         if (value){
-            element.style.setProperty(prop, value);
+            if(element.length){
+                $.each(element, function(item){
+                    $.css(item, prop, value);
+                });
+            } else {
+                element.style.setProperty(prop, value);    
+            }
         }
         else{
-            return window.getComputedStyle(element, null)[prop]
+            return window.getComputedStyle(element.length?element[0]:element, null)[prop]
         }
     };
     $.width = function(element){
+        element = $(element);
+        if(!element)return;
+        
         return window.getComputedStyle(element,"").getPropertyValue("width").replace('px','');
     }
     $.height = function(element){
+        element = $(element);
+        if(!element)return;
+        
         return window.getComputedStyle(element,"").getPropertyValue("height");
     }
 
@@ -70,7 +106,15 @@
             event = event == 'touchend' ? 'mouseup' : event;
             event = event == 'touchstart' ? 'mousedown' : event;
         }
-        (element||document).addEventListener(event, handler, bubble||false);
+        element = $(element);
+        if(element.length){
+            $.each(element, function(item){
+                $.on(item, event, handler, bubble);
+            });
+        } else {
+            element.addEventListener(event, handler, bubble);    
+        }
+        
     };
 
     // Ajax
@@ -136,7 +180,7 @@
             this.bindScrollers();
         },
         template : function(id, templateId, renderData){
-          $('#' + id).innerHTML = tmpl(templateId, renderData)
+          $('#' + id).innerHTML = Lucky.tmpl(templateId, renderData)
           fakeTouch($('#' + id))
         },
         maps : function(query){
@@ -234,7 +278,7 @@
         },
         bindScrollers: function(context){
             context = context ? context + " " : "";
-            $(context + ".scrollView").each(function( item ){
+            $.each(context + ".scrollView", function(item){
                 // Attach scroller object to the DOM element
                 // TODO: better way to determine contents? (because firstChild is a text node)
                 var contents = item.firstChild.nextSibling;
@@ -449,12 +493,12 @@
 //~~~~~~~ Aliases and extensions
 (function($){
     // Aliases (TODO: should be deprecated)
-    $hasClass = $.hasClass
+    /*$hasClass = $.hasClass
     $addClass = $.addClass
     $removeClass = $.removeClass
     $ajax = $.ajax
     onMobile = Lucky.onMobile
-    tmpl = Lucky.tmpl
+    tmpl = Lucky.tmpl*/
 
     // Prototype extensions - probably shouldn't touch objects we don't own.
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };

@@ -23,7 +23,7 @@ suprss = {
                     data.title = items.item(i).querySelectorAll('title')[0].firstChild.nodeValue
                     data.link = items.item(i).querySelectorAll('link')[0].firstChild.nodeValue
                     data.description = items.item(i).querySelectorAll('description')[0].firstChild.nodeValue
-                    html += tmpl("item_tmpl",data)
+                    html += Lucky.tmpl("item_tmpl",data)
                 }
                 $("li")[0].innerHTML = html
                 $('.item').each(function(item){
