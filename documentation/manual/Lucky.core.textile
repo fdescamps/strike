@@ -25,12 +25,17 @@ bc. if(!Lucky.onMobile){
     alert('Best viewed on the train, on your phone.');
 }
 
+*Lucky.browserLanguage*
+The 2 char language code
+
 *Class inheritance*
 
 Lucky uses Dean Edward's tiny "Base.js":http://dean.edwards.name/weblog/2006/03/base/ library for implementing traditional style object inheritance. Used heavily in the MVC manager.
 
 bc. var Controller = Base.extend({});
 var UI = Controller.extend({});
+
+*TODO* add _fakeTouch??
 
 h2. Events
 
@@ -192,7 +197,7 @@ Notice that the script tag has type @text/html@ - not @text/javascript@. This is
 h3. Passing data
 
 bc. var data = {
-    title: 
+    title: "test"
 }
 <script type="text/html" id="item_tmpl">
     <li class="item">
@@ -241,6 +246,53 @@ On the desktop you get the events
     if (e.type == 'error' && navigator.onLine) {
 
 h2. Internationalization
+
+Intro to int.
+
+h3. Defining text 
+
+Can be in a seperate file.
+
+bc. var messages = {
+    'en': {
+        profile.heading: 'User Profile',
+        profile.age: 'Age',
+        profile.name: 'Name'
+    },
+    'fr': {
+        profile.heading: "Profile d'User",
+        profile.age: 'Âge',
+        profile.name: 'Nom'
+    }
+};
+
+h3. Set up
+
+Pass your messages and teh lang you want to use:
+
+Lucky.setMessages(message,'fr');
+Lucky.setMessages(message,'en');
+
+If you select a lang that's not in your list, it will default to 'en'.
+Lucky.setMessages(message,'jp'); 
+
+setMessages: function(messages, lang) {
+	if(!messages[lang]) lang = 'en';
+	window.lucky_messages = messages[lang];
+	$('.i18n').each(function(el) {
+		var id = el.id;
+		var message = lucky_messages[id];
+		if(message) {
+			el.innerHTML = message;
+		}
+	});
+},
+
+h3. Using
+
+<h1 id="profile.heading" class='i18n'>User Profile</h1>
+<label id="profile.age" class='i18n'>Age</label>:<input type="text" id="age" />
+
 
 Lucky.message('no_geolocation')
 

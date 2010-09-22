@@ -1,16 +1,31 @@
 // Lucky$ - DOM helper
 (function(){
-    var root = this;
-    var previous$ = root.$;
-    // ~~~~~~~~~~~~~~~~~~~~ Utils
-    var $ = function(selector, context){
-        //TODO: why die in iPhone (returns function!) : if (selector==null||typeof selector=="object") return selector
-        if (selector==null||typeof selector!=="string") return selector
-        var context = context || document,
-            isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector),
-            results = isId ? context.querySelector(selector) : context.querySelectorAll(selector);
-        return results;
-    };
+    var root = this,
+        previous$ = root.$,
+        // ~~~~~~~~~~~~~~~~~~~~ Utils
+        $ = function(selector, context){
+            if (typeof selector!=="string") return selector;
+            var context = context || document,
+                isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector),
+                results = isId ? context.querySelector(selector) : context.querySelectorAll(selector);
+            return results;
+        },
+        // Runs a function over a selector - to encapsulate element selection rules.
+        // First param in args array should be the selector (string or DOM node/s), 
+        // followed by required arguments.
+        mapElements = function(func, args){
+            var element = $(args[0]),
+                restOfArgs = Array().slice.call(args,1);
+            if(!element) return null;        
+            if(!element.length){
+                return func.apply(this, [element].concat(restOfArgs));
+            }
+            else {
+                $.each( element, function( item ){
+                    mapElements(func, [item].concat(restOfArgs));
+                });
+            }
+        };
 
     // Export Lucky$ and $ to global scope.
     root.$ = root.Lucky$ = $;
@@ -20,86 +35,60 @@
         return this;
     };
     $.each = function(items, callback){
-        items = $(items)
-        for(var i=0; i<items.length; i++) {
+        items = $(items);
+        for(var i=0; i<items.length; i++){
             callback(items[i], i);
         }
     };
-    $.hasClass = function(element, className) {
-        element = $(element);
-        if (element) {
-            var elementClassName = element.className;
-            return (elementClassName.length > 0 && (elementClassName == className ||
-                new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
-        }
-        return null;
-    };
-    $.addClass = function(element, className) {
-        element = $(element);
-        if (!element) return null;
-        
-        if(element.length){
-            var els = []
-            $.each(element, function(item){
-                els.push( $.addClass(item, className) );
-            });
-            return els;
-        }
-        else {
-            if (!$.hasClass(element, className)) element.className += (element.className ? ' ' : '') + className;
-            return element;    
-        }
-    };
-    $.removeClass = function(element, className) {
+    
+    // Class and styles
+    $.hasClass = function(element, className){
         element = $(element);
         if(!element) return null;
-        
-        if(element.length){
-            var els = [];
-            $.each(element, function(item){
-                els.push( $.removeClass( item, className ) );
-            });
-            return els;
-            
-        } else {
+        if(element.length) element = element[0];
+        var elementClassName = element.className;
+        return (elementClassName.length > 0 && (elementClassName == className ||
+            new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
+    };
+    $.addClass = function(element, className) {
+        var addClass = function(element, className){
+            if (!$.hasClass(element, className)) element.className += (element.className ? ' ' : '') + className;
+            return element;
+        }
+        return mapElements(addClass, arguments);
+    };
+    $.removeClass = function(element, className) {
+        var removeClass = function(element, className){
             if(element.className && className){
                element.className = element.className.replace(new RegExp("\\b(" + className.replace(/\s+/g, "|") + ")\\b", "g"), " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
                return element;
             }
         }
-
+        return mapElements(removeClass, arguments);
     };
-
-    // Used in animation - TODO check validity
     $.css = function(element, prop, value){
-        element = $(element);
-        if(!element)return;
-        
-        if (value){
-            if(element.length){
-                $.each(element, function(item){
-                    $.css(item, prop, value);
-                });
-            } else {
-                element.style.setProperty(prop, value);    
+        var css = function(element, prop, value){
+            if(value)
+                element.style.setProperty(prop, value);
+            else{
+                return window.getComputedStyle(element, null)[prop];
             }
         }
-        else{
-            return window.getComputedStyle(element.length?element[0]:element, null)[prop]
-        }
+        return mapElements(css, arguments);
     };
-    $.width = function(element){
-        element = $(element);
-        if(!element)return;
-        
-        return window.getComputedStyle(element,"").getPropertyValue("width").replace('px','');
+    $.show = function(element){
+        return mapElements(function(element){
+            element.style.display = "block";
+        }, arguments);
     }
-    $.height = function(element){
-        element = $(element);
-        if(!element)return;
-        
-        return window.getComputedStyle(element,"").getPropertyValue("height");
+    $.hide = function(element){
+        return mapElements(function(element){
+            element.style.display = "none";
+        }, arguments);        
     }
+    // TODO: are these used, and why does width replace px but height does not?
+    $.width = function(element){ return $.css(element,"width").replace('px',''); }
+    $.height = function(element){ return $.css(element,"height"); }
 
     // Events
     $.on = function(element, event, handler, bubble) {
@@ -107,15 +96,10 @@
             event = event == 'touchend' ? 'mouseup' : event;
             event = event == 'touchstart' ? 'mousedown' : event;
         }
-        element = $(element);
-        if(element.length){
-            $.each(element, function(item){
-                $.on(item, event, handler, bubble);
-            });
-        } else {
-            element.addEventListener(event, handler, bubble);    
+        var eventAdd = function(element, event, handler, bubble){
+            element.addEventListener(event, handler, bubble);
         }
-        
+        mapElements(eventAdd, arguments);
     };
 
     // Ajax
@@ -161,7 +145,7 @@
 (function($){
     Lucky = {
         commandQueue:[], /*TODO: used in native? */
-        currentPage: null,
+        currentPage: null, /*TODO: how does this work in relation to the MVC breadcrumbs*/
         previousPage: null,
 
         currentPanel: null,
@@ -172,17 +156,29 @@
         storage: window.localStorage,
 
         handlers : {}, /*TODO: used in native? */
-        messages : {},
 
-        message: function(msg){ return msg; },
+        // Internationalisation 
+        fallbackLanguage : 'en',
+        browserLanguage : navigator.language.substring(0,2),
+        
+        messages : {},
 
         init: function(){
             cacheLog();
             this.bindScrollers();
         },
         template : function(id, templateId, renderData){
-          $('#' + id).innerHTML = Lucky.tmpl(templateId, renderData)
-          fakeTouch($('#' + id))
+            var container,
+                htmlContent;
+            // Get container
+            container = $(id.charAt(0) == "#" ? id : "#"+id);
+            if(!container) return null;
+
+            htmlContent = Lucky.tmpl(templateId, renderData);
+            container.innerHTML = htmlContent;
+            fakeTouch(container);
+
+            return htmlContent;
         },
         maps : function(query){
             window.open('http://maps.google.com?'+query)
@@ -199,15 +195,15 @@
         stopLocate: function(){
             if (Lucky.watchPosition) navigator.geolocation.clearWatch(Lucky.watchPosition)
         },
-
-        lang: function(handler) {
-            handler(navigator.language.substring(0,2))
-        },
         reverseGeoCode : function(handler){
             this.handlers['reverseGeoCode'] = handler; /*TODO: used in native? */
         },
+        lang: function(handler){
+            // TODO: deprecate? - it just calls a funciton with a static string.
+            handler(Lucky.browserLanguage);
+        },
         setMessages: function(messages, lang) {
-            if(!messages[lang]) lang = 'en';
+            if(!messages[lang]) lang = Lucky.fallbackLanguage;
             Lucky.messages = messages[lang];
             $('.i18n').each(function(el) {
                 var id = el.id;
@@ -268,6 +264,7 @@
         rotateLeft: function(page){ transition( 'cube', 0.55, 'ease', true, page ); },
         fade: function(page){ transition( 'fade', 0.35, 'linear', false, page ); },
         swap: function(page){ transition( 'swap', 0.55, 'linear', false, page ); },
+        // TODO: slideUp, slideDown
         back: function(){
             if(Lucky.previousPage){
                 Lucky.prev(Lucky.previousPage);
@@ -355,7 +352,7 @@
         },
         // Standard transitions
         transition = function( type, duration, easing, isReverse, toPage, fromPage ){
-            _cleanPage(toPage);
+            cleanPage(toPage);
             fromPage = fromPage || Lucky.currentPage;
             Lucky.previousPage = fromPage;
             var $toPage = $(toPage);
@@ -365,15 +362,16 @@
             // Rebind scrollers
             Lucky.rebindScroller();
         },
-        _cleanPage = function(page) {
+        cleanPage = function(page) {
             // Clean lists
-            $(page).querySelectorAll('.list li').each(function(it) {
+            $.each( $(page).querySelectorAll('.list li'), function(it) {
                 $.removeClass(it, 'selected');
             });
         },
-        _touchStart = function(e) {
+        touchStart = function(e) {
             var node = e.target;
             var it = 0;
+            // TODO: what?! it < 10??
             while(node != null && it < 10) {
                 if(node.tagName) {
                     if($.hasClass(node, 'button') || $.hasClass(node, 'submit-button')) {
@@ -393,9 +391,10 @@
                 node = node.parentNode;
             }
         },
-        _touchEnd = function(e) {
+        touchEnd = function(e) {
             var node = e.target;
             var it = 0;
+            // TODO: what?! it < 10??
             while(node != null && it < 10) {
                 if(node.className) {
                     if($.hasClass(node, 'button') || $.hasClass(node, 'submit-button')) {
@@ -424,8 +423,8 @@
     // Page event setup
     $.on(window, "load", function(){
         fakeTouch(document);
-        $.on(document.body, 'touchstart', _touchStart);
-        $.on(document.body, 'touchend', _touchEnd);
+        $.on(document.body, 'touchstart', touchStart);
+        $.on(document.body, 'touchend', touchEnd);
         $.on(document.body, 'blur', function() { window.scrollTo(0, 0); }, true);
         Lucky.ready();
     });
@@ -442,6 +441,8 @@
 (function(){
     // Simple JavaScript Templating
     // John Resig - http://ejohn.org/ - MIT Licensed
+    
+    // BUG: template name can not contain "-"s
     var cache = {};
     Lucky.tmpl = function tmpl(str, data) {
         // Figure out if we're getting a template, or if we need to
@@ -476,20 +477,6 @@
         return data ? fn(data) : fn;
     };
 })();
-
-(function($){
-    // TODO: controls to become modules.
-    Lucky.controls = {
-        bindTabBarNav: function(selector){
-            $(selector||".tabBarControls li").each(function(item){
-                $.on(item, "click", function(){
-                    var link = this.querySelector("a");
-                    Lucky.show(link.hash);
-                })
-            })
-        }
-    }
-})(Lucky$);
 
 //~~~~~~~ Aliases and extensions
 (function($){

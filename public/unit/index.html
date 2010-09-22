@@ -20,6 +20,7 @@
     <h2 id="qunit-userAgent"></h2>
     <ol id="qunit-tests"></ol>
     <div id="qunit-fixture">
+        <!-- Basic test elements -->
         <div id="div2">
             <div id="div1"></div>
         </div>
@@ -28,6 +29,30 @@
             <span class="class1">span 2</span>
         </p>
         <span>span 3</span>
+        
+        <!-- Template test elements -->
+        <div id="template-container">
+        </div>
+        <script type="text/html" id="simple_template">
+            <article>
+                <span><%=title%></span>
+                <p><%=date%></p>
+                <div>
+                    <%=description%>
+                </div>
+            </article>
+        </script>
+        <script type="text/html" id="looping_template">
+            <% for ( var i = 0; i < posts.length; i++ ) { var post = posts[ i ]; %>
+                <article>
+                    <span><%=post.title%></span>
+                    <p><%=post.date%></p>
+                    <div>
+                        <%=post.description%>
+                    </div>
+                </article>
+            <% } %>
+        </script>
     </div>
 </body>
 </html>

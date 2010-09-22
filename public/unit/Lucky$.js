@@ -7,18 +7,21 @@ test("Lucky$ Basic requirements", function() {
 });
 
 test("Lucky$()", function() {
-    expect(5);
+    expect(7);
     
     var div = $("#div1");
-    equals( div.id, "div1", "#id Selector" );
+    equals( div.id, "div1", "#id Selector" )
     
-    var div2 = $("body div#div1");
-    equals( div2, div, "body el#id Selector" );
+    var div2 = $("body div#div1")
+    equals( div2, div, "body el#id Selector" )
 
     var els = $(".class1");
-    equals( els.length, 3, ".class Selector" );
+    equals( els.length, 3, ".class Selector" )
     
     equals( div, $("#div1"), "object selector")
+    
+    equals( $("#div2 div").length, 1, "#id div: id with element child");
+    equals( $("#div2 #div1").length, 1, "#id #id2: id with id child");
     
     var p = $("p.class1")[0];
     var spans = $("span", p);
@@ -38,8 +41,9 @@ test("Class manipulation", function(){
     /*div.className = "class1 class1b"
     ok( $.hasClass( "#div1", "class1b class1" ), "$.hasClass multiple classes")*/
     
+    var hadClass = $.hasClass( div, "class2" );
     $.addClass( div, "class2" )
-    ok( $.hasClass( div, "class2" ), "$.addClass single class" )
+    ok( $.hasClass( div, "class2" ) && !hadClass, "$.addClass single class" )
     
     $.addClass( div, "class2")
     ok( !$.hasClass( div, "class2 class2" ), "$.addClass doesn't add same class twice")
@@ -65,8 +69,9 @@ test("Class manipulation", function(){
     $.removeClass( div, "class3 class1" )
     ok( !$.hasClass( div, "class1" ) && !$.hasClass( div, "class3" ), "$.removeClass multiple classes" )
     
+    var hadClass = $.hasClass( div, "class5" );
     $.removeClass( "#div1", "class5" )
-    ok( !$.hasClass( div, "class5" ), "$.removeClass single class - string selector (one DOM element)" )
+    ok( hadClass && !$.hasClass( div, "class5" ), "$.removeClass single class - string selector (one DOM element)" )
     
     var prevCount = $(".class1").length
     $.removeClass( ".class1", "class1" )
