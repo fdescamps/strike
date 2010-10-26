@@ -1,12 +1,12 @@
-h1. Lucky$
+h1. Strike$
 
-Lucky$ (aliased to $) is a DOM helper for use inside the core Lucky - but you can use it too if you like! Lucky$ provides some simple but useful functions for DOM manipulation and AJAX. 
+Strike$ (aliased to $) is a DOM helper for use inside the core Strike - but you can use it too if you like! Strike$ provides some simple but useful functions for DOM manipulation and AJAX. 
 
-If you have your favorite Ajax library that you just can't live without, then fret not - Lucky$ can live happily with which ever library you are most comfortable with.
+If you have your favorite Ajax library that you just can't live without, then fret not - Strike$ can live happily with which ever library you are most comfortable with.
 
 h2. Methods
 
-Lucky$ is a small library for working with the DOM
+Strike$ is a small library for working with the DOM
 
 * $('selector', context)
 * Iterators and helpers
@@ -15,7 +15,13 @@ Lucky$ is a small library for working with the DOM
 * $.ajax
 * Prototype extensions
 
-h3. The $('selector', context) method
+Most of the DOM manipulation methods accept and "element" argument to work on. The element argument can be either:
+* A DOM element:  usually as a result of using the $ selector.
+* A selector string: that will be passed to the $ selector first, and the method run on the results
+or
+* A collection of DOM elements: where the method will be run against each element in the collection.
+
+h3. The $(selector, context) method
 
 This is the standard DOM element selector.
 
@@ -23,7 +29,7 @@ $("#myDiv")
 $(".warning")
 $("ul li .selected")
 
-The result returned will depend on the selector string. If the selector string is an ID (for example: #myDiv, ul#myElement) then a single DOM node will be returned (via the querySelector method). If the selector string is not an ID then an array will be returned containing 0 or more matching elements (via the querySelectorAll method)
+The result returned will depend on the selector. If the selector is a string containing a DOM ID (for example: #myDiv, ul#myElement) then a single DOM node will be returned (via the querySelector method). If the selector string is not an ID then an array will be returned containing 0 or more matching elements (via the querySelectorAll method)
 
 If you pass a DOM element, or a collection of DOM elements to the $ method it will simply be passed back.
 
@@ -34,11 +40,11 @@ HTMLElement prototype extention
 
 h3. Class Manipulation methods
 
-Lucky$ provides a series of useful methods for dealing with DOM element class names
-the Lucky$ class methods accept an element or a selector string as the first argument.
+Strike$ provides a series of useful methods for dealing with DOM element class names
+the Strike$ class methods accept an element or a selector string as the first argument.
 
 *hasClass*
-@$.hasClass(element, className)@ will test if the element you pass in contains the class name. It only accept a single class as value to test - if you pass in multiple classes, seperated by a space then it will work if the element's className matches. But be aware - the browser does not gaurante the order of class names, so you should stick to testing a single class at a time.
+@$.hasClass(element, className)@ will test if the element you pass in contains the class name. It only accept a single class as value to test - if you pass in multiple classes, seperated by a space then it will work if the element's className matches. But be aware - the browser does not guarantee the order of class names, so you should stick to testing a single class at a time.
 
 bc. var div = $("#myDiv")
 div.className = "opened";
@@ -62,11 +68,20 @@ h3. CSS Manipulation methods
 
 Like the Class Manipulation methods, the CSS Manipulation methods also accept either an object or a string as the first argument.
 
-$.css
+*css*
+@$.css(element, name, value)@
+
+*show*
+@$.show(element)@
+The show method will reveal a hidden element by setting it's display property to block.
+
+*hide*
+@$.hide(element)@
+The hide method will hide a visible element by setting it's display property to none.
 
 h3. Ajax commands
 
-Lucky provides a helper for making AJAX requests. There are two ways to call the function:
+Strike provides a helper for making AJAX requests. There are two ways to call the function:
 
 $.ajax(method, url, callback)
     
@@ -97,4 +112,4 @@ h2. Working with another library
 
 * noconflict
     
-h2. Lucky Controls
+h2. Strike Controls

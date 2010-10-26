@@ -1,4 +1,4 @@
-// Lucky$ - DOM helper
+// Strike$ - DOM helper
 (function(){
     var root = this,
         previous$ = root.$,
@@ -27,8 +27,8 @@
             }
         };
 
-    // Export Lucky$ and $ to global scope.
-    root.$ = root.Lucky$ = $;
+    // Export Strike$ and $ to global scope.
+    root.$ = root.Strike$ = $;
     $.VERSION = '0.1';
     $.noConflict = function(){
         root.$ = previous$;
@@ -92,7 +92,7 @@
 
     // Events
     $.on = function(element, event, handler, bubble) {
-        if( !Lucky.onMobile ){
+        if( !Strike.onMobile ){
             event = event == 'touchend' ? 'mouseup' : event;
             event = event == 'touchstart' ? 'mousedown' : event;
         }
@@ -101,6 +101,19 @@
         }
         mapElements(eventAdd, arguments);
     };
+    $.once = function(element, event, handler, bubble){
+        if( !Strike.onMobile ){
+            event = event == 'touchend' ? 'mouseup' : event;
+            event = event == 'touchstart' ? 'mousedown' : event;
+        }
+        var eventAdd = function(element, event, handler, bubble){
+            element.addEventListener(event, function runOnceFunc(){
+                this.removeEventListener(event, runOnceFunc, bubble)
+                handler();
+            }, bubble);
+        }
+        mapElements(eventAdd, arguments);
+    }
 
     // Ajax
     $.ajax = function(method, url, callback){
@@ -141,9 +154,9 @@
     };
 })();
 
-// ~~~~~~~~~~~~~~~~~~~~ Lucky
+// ~~~~~~~~~~~~~~~~~~~~ Strike
 (function($){
-    Lucky = {
+    Strike = {
         commandQueue:[], /*TODO: used in native? */
         currentPage: null, /*TODO: how does this work in relation to the MVC breadcrumbs*/
         previousPage: null,
@@ -174,7 +187,7 @@
             container = $(id.charAt(0) == "#" ? id : "#"+id);
             if(!container) return null;
 
-            htmlContent = Lucky.tmpl(templateId, renderData);
+            htmlContent = Strike.tmpl(templateId, renderData);
             container.innerHTML = htmlContent;
             fakeTouch(container);
 
@@ -184,37 +197,37 @@
             window.open('http://maps.google.com?'+query)
         },
         locate: function(handler){
-            Lucky.handlers['locate'] = handler; /* TODO: used in native? */
+            Strike.handlers['locate'] = handler; /* TODO: used in native? */
             if (navigator.geolocation) {
-                Lucky.stopLocate()
-                Lucky.watchPosition = navigator.geolocation.watchPosition(function(position){
+                Strike.stopLocate()
+                Strike.watchPosition = navigator.geolocation.watchPosition(function(position){
                     handler(position.coords)
                 })
             }
         },
         stopLocate: function(){
-            if (Lucky.watchPosition) navigator.geolocation.clearWatch(Lucky.watchPosition)
+            if (Strike.watchPosition) navigator.geolocation.clearWatch(Strike.watchPosition)
         },
         reverseGeoCode : function(handler){
             this.handlers['reverseGeoCode'] = handler; /*TODO: used in native? */
         },
         lang: function(handler){
             // TODO: deprecate? - it just calls a funciton with a static string.
-            handler(Lucky.browserLanguage);
+            handler(Strike.browserLanguage);
         },
         setMessages: function(messages, lang) {
-            if(!messages[lang]) lang = Lucky.fallbackLanguage;
-            Lucky.messages = messages[lang];
+            if(!messages[lang]) lang = Strike.fallbackLanguage;
+            Strike.messages = messages[lang];
             $('.i18n').each(function(el) {
                 var id = el.id;
-                var message = Lucky.message(id);
+                var message = Strike.message(id);
                 if(message) {
                     el.innerHTML = message;
                 }
             });
         },
         message: function(key) {
-            return Lucky.messages[key];
+            return Strike.messages[key];
         },
         onready :function(handler){
             onReadyHandlers.push(handler);
@@ -266,12 +279,12 @@
         swap: function(page){ transition( 'swap', 0.55, 'linear', false, page ); },
         // TODO: slideUp, slideDown
         back: function(){
-            if(Lucky.previousPage){
-                Lucky.prev(Lucky.previousPage);
+            if(Strike.previousPage){
+                Strike.prev(Strike.previousPage);
             }
         },
         rebindScroller: function(){
-            var scroll = $(Lucky.currentPage + " .scrollView");
+            var scroll = $(Strike.currentPage + " .scrollView");
             scroll.length && scroll[ 0 ].scroller && scroll[ 0 ].scroller.refresh();
         },
         bindScrollers: function(context){
@@ -286,16 +299,16 @@
         openPanel: function(page) {
             var transition = new Transition('slide', 0.35, 'ease');
             transition.direction = 'bottom-top';
-            transition.perform($(page), $(Lucky.currentPage), false);
-            Lucky.currentPanel = page;
+            transition.perform($(page), $(Strike.currentPage), false);
+            Strike.currentPanel = page;
         },
         closePanel: function() {
             var transition = new Transition('slide', 0.35, 'ease');
             transition.direction = 'bottom-top';
-            transition.perform($(Lucky.currentPage), $(Lucky.currentPanel), true);
+            transition.perform($(Strike.currentPage), $(Strike.currentPanel), true);
             setTimeout(function() {
-                $(Lucky.currentPanel).style.display = '';
-                Lucky.currentPanel = null;
+                $(Strike.currentPanel).style.display = '';
+                Strike.currentPanel = null;
             }, 500);
         },
         showOverlay: function(page, opacity) {
@@ -310,10 +323,10 @@
                 el.style.webkitTransition = 'opacity .25s linear';
                 el.style.opacity = opacity ? opacity : '1';
             }, 0);
-            Lucky.currentOverlay = page;
+            Strike.currentOverlay = page;
         },
         hideOverlay: function(now) {
-            var el = $(Lucky.currentOverlay);
+            var el = $(Strike.currentOverlay);
             var onend = function() {
                 el.style.webkitTransition = '';
                 el.style.display = 'none';
@@ -333,7 +346,7 @@
         onReadyHandlers = [],
         onOrientationChangeHandlers = [],
         cacheLog = function(){
-            if (!Lucky.onMobile){
+            if (!Strike.onMobile){
                 var cacheStatusValues = ['uncached','idle','checking', 'downloading', 'updateready', 'obsolete'],
                     cacheEvents = ['cached','checking','downloading','error','noupdate','obsolete','progress','updateready'];
 
@@ -353,14 +366,14 @@
         // Standard transitions
         transition = function( type, duration, easing, isReverse, toPage, fromPage ){
             cleanPage(toPage);
-            fromPage = fromPage || Lucky.currentPage;
-            Lucky.previousPage = fromPage;
+            fromPage = fromPage || Strike.currentPage;
+            Strike.previousPage = fromPage;
             var $toPage = $(toPage);
-            Lucky.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse } );
-            Lucky.currentPage = toPage;
+            Strike.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse } );
+            Strike.currentPage = toPage;
 
             // Rebind scrollers
-            Lucky.rebindScroller();
+            Strike.rebindScroller();
         },
         cleanPage = function(page) {
             // Clean lists
@@ -407,7 +420,7 @@
             }
         },
         fakeTouch = function(nodeElement){
-            if ( Lucky.onMobile || !nodeElement.hasChildNodes )return;
+            if ( Strike.onMobile || !nodeElement.hasChildNodes )return;
             nodeElement.childNodes.each(function(node){
                 if (node.hasChildNodes()) fakeTouch(node)
                 if (node.getAttribute){
@@ -426,7 +439,7 @@
         $.on(document.body, 'touchstart', touchStart);
         $.on(document.body, 'touchend', touchEnd);
         $.on(document.body, 'blur', function() { window.scrollTo(0, 0); }, true);
-        Lucky.ready();
+        Strike.ready();
     });
 
     $.on(window.applicationCache, 'updateready', function(){
@@ -434,9 +447,9 @@
         console.log('swap cache has been called');
     });
 
-    // Export Lucky to global scope.
-    root.Lucky = Lucky;
-})(Lucky$);
+    // Export Strike to global scope.
+    root.Strike = Strike;
+})(Strike$);
 
 (function(){
     // Simple JavaScript Templating
@@ -444,7 +457,7 @@
     
     // BUG: template name can not contain "-"s
     var cache = {};
-    Lucky.tmpl = function tmpl(str, data) {
+    Strike.tmpl = function tmpl(str, data) {
         // Figure out if we're getting a template, or if we need to
         // load the template - and be sure to cache the result.
         var fn
@@ -485,8 +498,8 @@
     $addClass = $.addClass
     $removeClass = $.removeClass
     $ajax = $.ajax
-    onMobile = Lucky.onMobile
-    tmpl = Lucky.tmpl*/
+    onMobile = Strike.onMobile
+    tmpl = Strike.tmpl*/
 
     // Prototype extensions - probably shouldn't touch objects we don't own.
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };
@@ -494,4 +507,4 @@
     Element.prototype.height = function(){ $.height(this) };
     HTMLElement.prototype.css = function( prop, value ){ $.css(this, prop, value) };
     HTMLElement.prototype.on = function(e,handler){ $.on(this, e, handler) };
-})(Lucky$);
+})(Strike$);

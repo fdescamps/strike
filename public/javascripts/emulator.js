@@ -13,7 +13,7 @@ emulator = {
         application = $('#emulatorContent')[0].contentWindow
         //override Lucky.locate for using the emulator geopicker
         $(application).load(function(){
-          Lucky = this.Lucky
+          Lucky = this.Strike
           Lucky.locate = function(handler){
             Lucky.handlers['locate'] = handler;
             parent.window.emulator.geoPicker( handler );

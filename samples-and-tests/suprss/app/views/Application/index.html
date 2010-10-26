@@ -1,16 +1,30 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 <div class="tabBarView" id="suprss">
-    <h1>SUP<em id="rss">rss</em></h1>
+    <h1>
+        <img id="pinLeft" src="/public/images/strike.png" />
+        <span id="barTitle">
+            Strike Mobile
+        </span>
+        <img id="pinRight" src="/public/images/strike.png"/>
+    </h1>
     <div class="tabBarPages">
-        <div id="feedlist" class="scrollView">
+        <div id="home">
+            <img src="/public/images/strike-logo.png" />
+            <div id="bar"></div>
+            <ul style="margin-top:34px">
+                <li><a class="next" href="#feedlist">RSS Reader</a></li>
+                <li><a href="http://www.zenexity.fr">Strike website</a></li>
+                <li><a href="http://www.w3c.com">W3C specs</a></li>
+            </ul>
+        </div>
+        <div id="feedlist">
+            <div class="scrollView">
             <ul>
-                <li>
-                    <article>
-                        <p class="date"></p>
-                        <div class="text"></div>
-                    </article>
-                </li>
+                <article>
+                    <p class="date"></p>
+                    <div class="text"></div>
+                </article>
                 <script type="text/html" id="item_tmpl">
                     <li class="item">
                         <a class="" href="#"><%=title%></a>
@@ -23,25 +37,33 @@
                     </li>
                 </script>
             </ul>
+            </div>
         </div>
         <div id="plus">
+            <h3>About Strike</h3>
             <ul>
                 <li><a href="#newsItem">Contact</a></li>
-                <li><a href="#newsItem" class="next">Slide left</a></li>
-                <li><a href="#newsItem" class="prev" onclick="Lucky.locate()">Slide right</a></li>
+                <li><a href="#newsItem" class="prev" onclick="Strike.locate()">On the Web</a></li>
+                <li><a href="#newsItem" class="next">Follow on Twitter</a></li>
             </ul>
         </div>
        <div id="newsItem">
             <div class="scrollView">
+            <ul>
+                <li>
                 <div>
-                    <div class="back" onclick="Lucky.back()">back</div>
+                    <div class="back" onclick="Strike.back()">back</div>
                     <article></article>
                 </div>
+                </li>
+            </ul>
             </div>
+            
        </div>
    </div>
    <ul class="tabBarControls">
-       <li><a href="#feedlist"><img src="/public/images/buttons/home.png" alt="home" /></a></li>
-       <li><a href="#plus"><img src="/public/images/buttons/plus.png" alt="plus" /></a></li>
+       <li><a href="#home"><img src="/public/images/buttons/home.png" alt="home" /></a></li>
+       <li><a href="#feedlist"><img src="/public/images/buttons/delib.png" alt="home" /></a></li>
+       <li><a href="#plus"><img src="/public/images/buttons/aides.png" alt="plus" /></a></li>
    </ul>
 </div>

@@ -1,4 +1,4 @@
-h1. Lucky Core
+h1. Strike Core
 
 * Helpers
 * Events
@@ -13,24 +13,24 @@ h1. Lucky Core
 * Templating
 * Going offline
 * Internationalization
-* Extending Lucky
+* Extending Strike
 
 h2. Helpers
 
-*Lucky.onMobile*
+*Strike.onMobile*
 
-The @Lucky.onMobile@ boolean flag will let you know if the code is running on a desktop, or a mobile device. This is useful for debugging - or letting desktop users know that the content is not for them!
+The @Strike.onMobile@ boolean flag will let you know if the code is running on a desktop, or a mobile device. This is useful for debugging - or letting desktop users know that the content is not for them!
 
-bc. if(!Lucky.onMobile){
+bc. if(!Strike.onMobile){
     alert('Best viewed on the train, on your phone.');
 }
 
-*Lucky.browserLanguage*
+*Strike.browserLanguage*
 The 2 char language code
 
 *Class inheritance*
 
-Lucky uses Dean Edward's tiny "Base.js":http://dean.edwards.name/weblog/2006/03/base/ library for implementing traditional style object inheritance. Used heavily in the MVC manager.
+Strike uses Dean Edward's tiny "Base.js":http://dean.edwards.name/weblog/2006/03/base/ library for implementing traditional style object inheritance. Used heavily in the MVC manager.
 
 bc. var Controller = Base.extend({});
 var UI = Controller.extend({});
@@ -39,7 +39,7 @@ var UI = Controller.extend({});
 
 h2. Events
 
-Lucky provides a few useful hooks for handling common events
+Strike provides a few useful hooks for handling common events
 
 *TODO* Will we add the event system to play!mobile?
 
@@ -47,18 +47,18 @@ h3. The page @onready@ hook
 
 Functions that are added using this hook will fire when the page has fully loaded: so it's a great place to put your initialization code. You can add as many separate functions as you need - they will be called in order once the page has loaded.
 
-bc. Lucky.onready(function(){
+bc. Strike.onready(function(){
     // Do code init
     alert('Ready to do some cool stuff');
 })
 var moreInitialization = function(){ /* Do some more initialization! */ }
-Lucky.onready(moreInitialization);
+Strike.onready(moreInitialization);
 
 h3. Detecting device rotation with @onorientationchange@
 
 If the user's mobile device fires orientation events, you can use the @onorientationchange@ method to add functions to be run when the user rotates their mobile device. The functions will be passed one parameter: the new orientation of the phone.
 
-bc. Lucky.onorientationchange(function(orientation){
+bc. Strike.onorientationchange(function(orientation){
     // Device has been rotated to "orientation"
     alert(orientation);
 });
@@ -67,7 +67,7 @@ The values that are passed in are: 0 for portrait mode, 90 for landscape mode wh
 
 h2. Styles
 
-Lucky includes a handful of stylesheet definitions to help quickly style common UI controls. In general, these are designed to give the look and feel of a native application.
+Strike includes a handful of stylesheet definitions to help quickly style common UI controls. In general, these are designed to give the look and feel of a native application.
 
 The default styles make use of "SASS":http://en.wikipedia.org/wiki/Textile_(markup_language) for generating CSS
 
@@ -103,7 +103,7 @@ bc. <div class="scrollView">
 
 h2. The manager
 
-Overview of the MVC manager *TODO* is this in Lucky?
+Overview of the MVC manager *TODO* is this in Strike?
 
 h3. The events/messaging system
 
@@ -117,7 +117,7 @@ h2. Navigating
 When you show a page using a page transition... stack of navigation *TODO* is the stack in lucky?
 
 back button.
-@Lucky.back()@
+@Strike.back()@
 
 h2. Transitions
 
@@ -128,19 +128,19 @@ The transition system used for play!mobile is based soley on CSS3 transitions - 
 h3. Standard transition
 
 *Show*
-To simply display the new page on screen without applying any transition effect, you pass the container ID to the show method: @Lucky.show("#page-id")@
+To simply display the new page on screen without applying any transition effect, you pass the container ID to the show method: @Strike.show("#page-id")@
 
 *Flip and Unflip*
-A "flip" is a 180 degree horizontal rotation, centered on the middle of page. To flip the page from right to left you use the flip method:@Lucky.flip("#page-id")@. To flip in the opposite direction (from left to right) use the unflip method: @Lucky.unflip("#page-id")@.
+A "flip" is a 180 degree horizontal rotation, centered on the middle of page. To flip the page from right to left you use the flip method:@Strike.flip("#page-id")@. To flip in the opposite direction (from left to right) use the unflip method: @Strike.unflip("#page-id")@.
 
 *Next and Prev*
-@Lucky.next("#page-id")@ will slide the new page in from the left side of the screen, and @Lucky.next("#page-id)@ will slide the new page from the right.
+@Strike.next("#page-id")@ will slide the new page in from the left side of the screen, and @Strike.next("#page-id)@ will slide the new page from the right.
 
 *rotateLeft*
-A "rotate" transition gives the effect that the screens are a cube that is rotating, with a screen on each side. @Lucky.rotateLeft("#page-id")@ will rotate the cube from right to left, and @Lucky.rotateLeft("#page-id")@  from right to left.
+A "rotate" transition gives the effect that the screens are a cube that is rotating, with a screen on each side. @Strike.rotateLeft("#page-id")@ will rotate the cube from right to left, and @Strike.rotateLeft("#page-id")@  from right to left.
 
 *fade*
-To fade the new screen over the current screen use @Lucky.fade("#page-id")@ 
+To fade the new screen over the current screen use @Strike.fade("#page-id")@ 
 
 *swap* 
 *TODO* what is swap?!
@@ -157,9 +157,9 @@ h2. GEO Location
 
 Getting a user's location
 
-bc. Lucky.locate(function(location){
+bc. Strike.locate(function(location){
         if (location.error){
-            alert(Lucky.message('no_geolocation'));
+            alert(Strike.message('no_geolocation'));
             return;
         }
         var lat = location.latitude.toFixed(15);
@@ -169,10 +169,10 @@ bc. Lucky.locate(function(location){
         alert("lat:" + lat +  " lon:" + lon + " accuracy:" + accuracy);
 })
 
-Stop looking: Lucky.stopLocate()
+Stop looking: Strike.stopLocate()
 
 bc. setTimeout(function() {
-    Lucky.stopLocate()
+    Strike.stopLocate()
 }, 5000)
 
 * reverseGeoCode
@@ -181,15 +181,15 @@ h2. Templating
 
 When making dynamic applications it is common requirement to generate snippets of HTML that can be injected into the page. For small snippets, it is easy enough to concatenate strings together with your data (for example, @var heading="<h1>Welcome back, "+firstName+"!</h1>"@) - but this can quickly become complex and slow when there is a lot of markup, and a lot of data.
 
-Play!mobile uses John Resig's "Micro Templating" function which is a simple and effective way to specify a templates for use in your page. You include the template anywhere inside the HTML like so:
+Strike uses John Resig's "Micro Templating" function which is a simple and effective way to specify a templates for use in your page. You include the template anywhere inside the HTML like so:
 
 bc. <script type="text/html" id="headerTemplate">
     <h1>Welcome back, <%=firstName%></h1>
 </script>
 *TODO* NEW Tempate method...
-Then you can generate the static markup using the @Lucky.tmpl@ function in your JavaScript code. In the example below, the html is returned into the heading variable and then be put into the page:
+Then you can generate the static markup using the @Strike.tmpl@ function in your JavaScript code. In the example below, the html is returned into the heading variable and then be put into the page:
 
-bc. var heading = Lucky.Template("headerTemplate" {firstName:"Bob"});
+bc. var heading = Strike.Template("headerTemplate" {firstName:"Bob"});
 $("#myContainer").innerHTML = heading;
 
 Notice that the script tag has type @text/html@ - not @text/javascript@. This is the trick that lets you add HTML templates without them appearing on screen.
@@ -270,11 +270,11 @@ h3. Set up
 
 Pass your messages and teh lang you want to use:
 
-Lucky.setMessages(message,'fr');
-Lucky.setMessages(message,'en');
+Strike.setMessages(message,'fr');
+Strike.setMessages(message,'en');
 
 If you select a lang that's not in your list, it will default to 'en'.
-Lucky.setMessages(message,'jp'); 
+Strike.setMessages(message,'jp'); 
 
 setMessages: function(messages, lang) {
 	if(!messages[lang]) lang = 'en';
@@ -294,9 +294,9 @@ h3. Using
 <label id="profile.age" class='i18n'>Age</label>:<input type="text" id="age" />
 
 
-Lucky.message('no_geolocation')
+Strike.message('no_geolocation')
 
-h2. Extending Lucky
+h2. Extending Strike
 
 How to extend lucky - like allbikesnow does
 
@@ -304,6 +304,6 @@ h3. Unit tests
 
 The play!mobile framework uses qUint for unit testing.
 
-Tests are broken into core and Lucky$
+Tests are broken into core and Strike$
 
 Needs to be running as a play module: /public/unit/

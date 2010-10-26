@@ -1,14 +1,14 @@
-h1. Here is play! mobile
+h1. Here is Strike mobile
 
-Welcome to the Play!Mobile Module. Ready to make stuff for your fingers? Play!Mobile is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!
+Welcome to the Strike Module. Ready to make stuff for your fingers? Strike is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!
 
 You can use as little or as much as you need - you can combine it with your favorite DOM library, or use ours.
 
 h2. Overview
 
-Lucky is comprised of a few parts:
-* Lucky$ DOM helper
-* The Lucky core library
+Strike is comprised of a few parts:
+* Strike$ DOM helper
+* The Strike core library
 * Web-based iPhone emulator
 
 Features:
@@ -34,11 +34,11 @@ Sketch out your app in HTML - defining the pages as DIV elements
 
 bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
 
-Add Lucky.onready() - Lucky.show("#home");
+Add Strike.onready() - Strike.show("#home");
 
 h2. Testing with emulator
 
-The Play!Mobile framework includes a handy web-based iPhone emulator for doing quick tests on your app as you develop. It requires a webkit-based browser.
+The Strike framework includes a handy web-based iPhone emulator for doing quick tests on your app as you develop. It requires a webkit-based browser.
 
 http://localhost:9000/@emulator
 
@@ -48,17 +48,17 @@ The emulator can be rotated by using the shift key, with the left and right arro
 h3.GEO simulation
 
 The play!mobile emulator includes a handy "map picker" for faking your geolocation - 
-Lucky.locate() will popup a map. Can search, or drag to a point. Single click to select.
+Strike.locate() will popup a map. Can search, or drag to a point. Single click to select.
 
 h1. Reference
 
-* Lucky core
+* Strike core
 See core docs
-* Lucky $
+* Strike $
 See $ docs
-* Lucky controls
+* Strike controls
 included?
-* Developing and extending Lucky
+* Developing and extending Strike
 See core docs
 
 h1. Some tricks
@@ -99,16 +99,16 @@ This module will bring a production mode for managing
     * file size: compression of css/html/images in 1 file
     * application cache
     
-h2. Lucky reserved words & classes
+h2. Strike reserved words & classes
 
 * Global scoped variables:
-Lucky
-Lucky$
-$ (can be changed with Lucky$.noConflict)
+Strike
+Strike$
+$ (can be changed with Strike$.noConflict)
 
-* Prototype additions (See Lucky$ docs)
+* Prototype additions (See Strike$ docs)
 
-* Classes and IDs that are meaningful to Lucky
+* Classes and IDs that are meaningful to Strike
 .back
 .button
 .page

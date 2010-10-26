@@ -44,7 +44,6 @@ this.Manager = {
                 break;
             case 'load':
                 var controller = this.controllers[message.id]
-                console.log(controller,message.id)
                 this.current = {
                     transition: message.transition ? message.transition: 'next',
                     id: message.id,
@@ -64,12 +63,12 @@ this.Manager = {
                 break;
             case 'loaded':
                 this.add(this.current)
-                Lucky[this.current.transition]('#' + this.current.id)
+                Strike[this.current.transition]('#' + this.current.id)
                 this.current == null
                 this.stopLoading()
                 break;
             case 'error':
-                alert(Lucky.message(message.message))
+                alert(Strike.message(message.message))
                 this.stopLoading()
                 break;
             case 'back':
@@ -88,16 +87,16 @@ this.Manager = {
     startLoading: function(message) {
         this.loadingText(message)
         return;
-        Lucky.showOverlay('#loading');
+        Strike.showOverlay('#loading');
     },
     stopLoading: function(message) {
         return;
-        Lucky.hideOverlay(true);
+        Strike.hideOverlay(true);
     },
     loadingText: function(text) {
         var loadingText = $('#loadingText');
         if(!loadingText)return
-        loadingText.innerHTML = Lucky.message(text) ? Lucky.message(text) : '';
+        loadingText.innerHTML = Strike.message(text) ? Strike.message(text) : '';
     },
     add: function(state) {
         this.breadcrumb.push(state)
@@ -105,14 +104,14 @@ this.Manager = {
     precedent: function() {
         var current = this.breadcrumb.pop()
         var reverseTransition = this.rtransitions[current.transition]
-        Lucky[reverseTransition]('#' + this.breadcrumb[this.breadcrumb.length - 1].id)
+        Strike[reverseTransition]('#' + this.breadcrumb[this.breadcrumb.length - 1].id)
     },
     precedentLabel: function() {
         // TODO: try/catch for this is excessive!
         try {
             var label;
-            if (this.current) label = Lucky.message(this.breadcrumb[this.breadcrumb.length - 1].label)
-            else label = Lucky.message(this.breadcrumb[this.breadcrumb.length - 2].label)
+            if (this.current) label = Strike.message(this.breadcrumb[this.breadcrumb.length - 1].label)
+            else label = Strike.message(this.breadcrumb[this.breadcrumb.length - 2].label)
         } catch(error) {}
         return label ? label: '';
     }
@@ -125,7 +124,7 @@ Manager.Controller = Base.extend({
             this.label = label;
         }
     },
-    load : function(){
+    load : function(data){
         Manager.message('loaded')
     }
 });
@@ -138,4 +137,5 @@ Manager.controller = function(id, defn){
     };
     return new (Manager.Controller.extend(defn))(id);
 };
+
 })();

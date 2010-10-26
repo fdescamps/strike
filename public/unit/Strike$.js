@@ -1,12 +1,12 @@
-module("Lucky$");
+module("Strike$");
 
-test("Lucky$ Basic requirements", function() {
+test("Strike$ Basic requirements", function() {
     expect(2)
-    ok( Lucky$, "Lucky$" );
+    ok( Strike$, "Strike$" );
     ok( $, "$" );
 });
 
-test("Lucky$()", function() {
+test("Strike$()", function() {
     expect(7);
     
     var div = $("#div1");
@@ -160,7 +160,7 @@ asyncTest("AJAX", function() {
         url: "/public/unit/resources/testHTML.html",
         method: "GET",
         success: function( content ){
-            ok(content.indexOf("Lucky") > -1, "$.ajax GET HTML request - option bundle")
+            ok(content.indexOf("Strike") > -1, "$.ajax GET HTML request - option bundle")
             start()
         }
     };

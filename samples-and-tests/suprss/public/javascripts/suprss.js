@@ -1,34 +1,67 @@
-Lucky.onready(function(){
+Strike.onready(function(){
     suprss.init()
 });
 
 var suprss = {
     init : function(){
+        
+        this.initViews();
+        
          // Show the tabBarView
         $.show( $(".tabBarView")[0] );
              
         //Bind the tab bar();
-        $(".tabBarControls li").each(function(item){
+        this.bindLinkList(".tabBarControls li");
+                
+        // Load the data
+        Manager.message({ type:'load', id:'home', transition:'fade' });
+    },
+    updateTitle: function(title){
+        $("#barTitle").innerText = title;
+    },
+    bindLinkList: function(selector){
+        $(selector).each(function(item){
             $.on(item, "click", function(){
+                var link = this.querySelector("a")
                 Manager.message({
                     type: 'load', 
-                    id: this.querySelector("a").hash.slice(1), 
-                    transition: 'show'
-                });
+                    id: link.hash.slice(1), 
+                    transition: link.className || 'show'
+                })
             })
         })
-        
-        // Load the data
-        Manager.message({type:'load', id:'feedlist', transition:'fade'});
     }
 };
 
-Manager.controller('feedlist',{
-    label: 'feed list',
+suprss.initViews = function(){
+Manager.controller('home', {
+    label: 'Strike Mobile',
     init: function(){
         var home = this
         Manager.observe('preferences-changed', function(){
             home.updateView()
+        })
+        suprss.bindLinkList('.tabBarPages #home')
+        
+    },
+    load : function(){
+        suprss.updateTitle(this.label);
+        Manager.message('loaded')
+    },
+    reload : function(){
+        this.updateView()
+    },
+    updateView : function(){
+
+    }
+});
+
+Manager.controller('feedlist',{
+    label: 'Latest News',
+    init: function(){
+        var feedlist = this
+        Manager.observe('preferences-changed', function(){
+            feedlist.updateView()
         })
     },
     load : function(){
@@ -42,19 +75,23 @@ Manager.controller('feedlist',{
                 data.title = items.item(i).querySelectorAll('title')[0].firstChild.nodeValue
                 data.link = items.item(i).querySelectorAll('link')[0].firstChild.nodeValue
                 data.description = items.item(i).querySelectorAll('description')[0].firstChild.nodeValue
-                html += Lucky.tmpl("item_tmpl",data)
+                html += Strike.tmpl("item_tmpl",data)
             }
-            $("li")[0].innerHTML = html
+            $("#feedlist ul")[0].innerHTML = html
             $('.item').each(function(item){
                 item.on('click',function(e){
                     //Manager.message({type : 'load', id: 'feedlist', label:'accueil', transition: 'next'})
                     $("#newsItem article")[0].innerHTML = this.querySelector("article").innerHTML
                     $.show($("#newsItem article")[0])
-                    Lucky.next("#newsItem");
+                    Strike.next("#newsItem");
                 })
             });
             Manager.message('loaded');
         })
+    },
+    loaded: function(){
+        alert('here');
+         suprss.updateTitle(this.label);
     },
     reload : function(){
         this.updateView()
@@ -64,8 +101,8 @@ Manager.controller('feedlist',{
     }
 });
 
-var Plus = Manager.controller('plus',{
-    label: 'plus label',
+Manager.controller('plus', {
+    label: 'Help',
     init: function(){
         var home = this
         Manager.observe('preferences-changed', function(){
@@ -74,39 +111,13 @@ var Plus = Manager.controller('plus',{
     },
     load : function(){
         Manager.message('loaded')
+        suprss.updateTitle(this.label);
     },
     reload : function(){
         this.updateView()
     },
     updateView : function(){
-
+       
     }
 });
-
-/*
-var home = new (Lucky.Controller.extend({
-        constructor : function(id, label){
-            var home = this
-            Manager.observe('preferences-changed', function(){
-                home.updateView()
-            })
-            this.base(id, label)
-        },
-        load : function(){
-            suprss.loadItems();
-        },
-        reload : function(){
-            this.updateView()
-        },
-        updateView : function(){
-
-        },
-        /* 3 steps synchron * /
-        firstStart : function(){
-            Manager.message({type : 'startLoading', loadingMessage : 'Recherche.velopartage'})
-            $('#help').style.display = 'block'
-            // geoloc citie near
-            Manager.message('loaded')
-        }
-    }))('feedlist','feedlist');
-*/
+};
