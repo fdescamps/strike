@@ -120,6 +120,7 @@ this.Manager = {
 Manager.Controller = Base.extend({
     constructor : function(id, label){
         Manager.register(id, this)
+        this.id = id;
         if(label){
             this.label = label;
         }
