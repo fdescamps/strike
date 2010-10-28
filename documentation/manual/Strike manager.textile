@@ -1,1 +1,7 @@
 h1. The Strike Manager
+
+
+h2. Setting titles
+
+Manager.autotitles = true/false
+On "loaded" will set the view/.strike-title to the label of the controller

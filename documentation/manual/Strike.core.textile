@@ -15,6 +15,14 @@ h1. Strike Core
 * Internationalization
 * Extending Strike
 
+h2. General layout
+
+The "page" class
+define a page: block level element (typically a div) "strike-page"
+
+strike-title
+
+
 h2. Helpers
 
 *Strike.onMobile*
@@ -75,11 +83,11 @@ Files:
 iphone.sass 
 *TODO* where do the funky-buttons etc come from?
 
+
 h3. Page iPhone styles
 
 The "body" tag
 
-The "page" class
 
 h3. standard buttons
 

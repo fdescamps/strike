@@ -1,6 +1,7 @@
 (function(){
 
 this.Manager = {
+    autotitles: true,
     breadcrumb: [],
     observers: {},
     controllers: {},
@@ -43,7 +44,8 @@ this.Manager = {
                 }
                 break;
             case 'load':
-                var controller = this.controllers[message.id]
+                var controller = this.controllers[message.id];
+                // TODO: allow for controller-less views.
                 this.current = {
                     transition: message.transition ? message.transition: 'next',
                     id: message.id,
@@ -63,6 +65,9 @@ this.Manager = {
                 break;
             case 'loaded':
                 this.add(this.current)
+                if(this.autotitles){
+                    this.setPageTitle(this.current.id, this.current.label);
+                }
                 Strike[this.current.transition]('#' + this.current.id)
                 this.current == null
                 this.stopLoading()
@@ -83,6 +88,12 @@ this.Manager = {
                 console.log("no handler for message : " + message)
         }
 
+    },
+    setPageTitle: function(view, label){
+        var titleBar = $("#" +  view + " .strike-title");
+        if(titleBar.length && label){
+            titleBar[0].innerHTML = label;
+        }
     },
     startLoading: function(message) {
         this.loadingText(message)
@@ -133,7 +144,7 @@ Manager.Controller = Base.extend({
 // Router helper
 Manager.controller = function(id, defn){
     defn.constructor = function(id){
-        if(this.init)this.init();
+        //if(this.init)this.init();
         this.base(id);
     };
     return new (Manager.Controller.extend(defn))(id);
