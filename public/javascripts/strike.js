@@ -252,7 +252,7 @@
             if( $.hasClass( toPage, "current" ) ){ return; }
 
             options = options || {};
-            options.type = options.type || "push;";
+            options.type = options.type || "push";
             options.reverse = options.reverse || false;
 
             $.addClass( toPage, options.type + " in current" + ( options.reverse ? " reverse" : "" ) );
