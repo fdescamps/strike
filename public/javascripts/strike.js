@@ -208,6 +208,10 @@
         stopLocate: function(){
             if (Strike.watchPosition) navigator.geolocation.clearWatch(Strike.watchPosition)
         },
+        open : function(url){
+            window.open(url);
+        },
+
         reverseGeoCode : function(handler){
             this.handlers['reverseGeoCode'] = handler; /*TODO: used in native? */
         },
@@ -494,17 +498,18 @@
 //~~~~~~~ Aliases and extensions
 (function($){
     // Aliases (TODO: should be deprecated)
-    /*$hasClass = $.hasClass
+    Lucky=Strike
+    $hasClass = $.hasClass
     $addClass = $.addClass
     $removeClass = $.removeClass
     $ajax = $.ajax
     onMobile = Strike.onMobile
-    tmpl = Strike.tmpl*/
-
+    tmpl = Strike.tmpl
     // Prototype extensions - probably shouldn't touch objects we don't own.
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };
     Element.prototype.width = function(){ $.width(this) };
     Element.prototype.height = function(){ $.height(this) };
     HTMLElement.prototype.css = function( prop, value ){ $.css(this, prop, value) };
     HTMLElement.prototype.on = function(e,handler){ $.on(this, e, handler) };
+    HTMLElement.prototype.$ = $;
 })(Strike$);
