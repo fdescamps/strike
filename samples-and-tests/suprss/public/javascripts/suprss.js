@@ -1,67 +1,35 @@
 Strike.onready(function(){
-    suprss.init()
+    Strike.Controls.titleClass = ".strike-title";
+    suprss.init();
 });
 
 var suprss = {
     init : function(){
-        
-        this.initViews();
-        
+        // TODO: Should the tabbarview be more "control"y?
          // Show the tabBarView
         $.show( $(".tabBarView")[0] );
-             
+        
         //Bind the tab bar();
-        this.bindLinkList(".tabBarControls li");
-                
+        Strike.Controls.bindLinkNavList(".tabBarControls li");
+
         // Load the data
-        Manager.message({ type:'load', id:'home', transition:'fade' });
+        Manager.show("home");
     },
     updateTitle: function(title){
         $("#barTitle").innerText = title;
-    },
-    bindLinkList: function(selector){
-        $(selector).each(function(item){
-            $.on(item, "click", function(){
-                var link = this.querySelector("a")
-                Manager.message({
-                    type: 'load', 
-                    id: link.hash.slice(1), 
-                    transition: link.className || 'show'
-                })
-            })
-        })
     }
 };
 
-suprss.initViews = function(){
-Manager.controller('home', {
-    label: 'Strike Mobile',
-    init: function(){
-        var home = this
-        Manager.observe('preferences-changed', function(){
-            home.updateView()
-        })
-        suprss.bindLinkList('.tabBarPages #home')
-        
-    },
-    load : function(){
-        suprss.updateTitle(this.label);
-        Manager.message('loaded')
-    },
-    reload : function(){
-        this.updateView()
-    },
-    updateView : function(){
-
-    }
+Manager.addController('home', 'List', {
+    label: 'Strike Mobile'
 });
 
-Manager.controller('feedlist',{
+Manager.addController('feedlist',{
     label: 'Latest News',
     init: function(){
         var feedlist = this
         Manager.observe('preferences-changed', function(){
-            feedlist.updateView()
+            feedlist.updateView();
         })
     },
     load : function(){
@@ -90,34 +58,8 @@ Manager.controller('feedlist',{
         })
     },
     loaded: function(){
-        alert('here');
-         suprss.updateTitle(this.label);
-    },
-    reload : function(){
-        this.updateView()
-    },
-    updateView : function(){
 
     }
 });
 
-Manager.controller('plus', {
-    label: 'Help',
-    init: function(){
-        var home = this
-        Manager.observe('preferences-changed', function(){
-            home.updateView()
-        })
-    },
-    load : function(){
-        Manager.message('loaded')
-        suprss.updateTitle(this.label);
-    },
-    reload : function(){
-        this.updateView()
-    },
-    updateView : function(){
-       
-    }
-});
-};
+Manager.addController('plus', { label: 'Help' });

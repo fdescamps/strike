@@ -1,6 +1,7 @@
 !colortheme = #666
-@import iphone.sass
-!coloraux = #999
+!coloraux = #909
+@import sass/strike-iphone.sass
+
 
 body, html
     height: 100%
@@ -13,16 +14,11 @@ body > div
 
 .back
     +iphone-back-button
-    +iphone-left-button
     position: absolute
     z-index: 10
     left: auto
     right: 10px
     top: 15px
-
-.forward-button
-    +iphone-forward-button 
-    +iphone-right-button
 
 a
     text-decoration: none
@@ -43,12 +39,13 @@ h2
     height: 100%
 
 .tabBarView h1
-    +iphone-header(!coloraux)
+    +iphone-header()
     background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#727272), to(#a6a6a6))
     color: #000
     text-shadow: #ddd 1px 1px 1px
     font-size: 18pt
     -webkit-box-shadow: 0 0 5px #000
+
     position: absolute
     width: 100%
     top: 0

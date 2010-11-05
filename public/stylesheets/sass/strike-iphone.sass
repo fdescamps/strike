@@ -1,21 +1,26 @@
-@import compass/reset
-@import fancy_buttons
-@import transitions
-@import controls
+@import lib/compass/reset
+@import lib/compass/css3
+@import lib/css3-transitions
+@import lib/fancy-gradient
+@import lib/fancy-buttons
+@import strike-controls
 
-#should work in compass but currently not
-=ellipsis(!no_wrap = true)
-    @if !no_wrap
+// Reset the page
+@include global-reset
+
+$colortheme: #BBB0A6 !default
+$colordark: darken_percent($colortheme, 30%)
+$colorlight: lighten_percent($colortheme, 50%)
+$images: /public/images/mobile
+
+// Should work in compass but currently not
+=ellipsis($no_wrap: true)
+    @if $no_wrap
         white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
     -o-text-overflow: ellipsis
     -ms-text-overflow: ellipsis
-
-!images = /public/images/mobile
-!colortheme ||= #BBB0A6
-!colordark = darken_percent(!colortheme, 30%)
-!colorlight = lighten_percent(!colortheme, 50%)
 
 *
     margin: 0
@@ -41,26 +46,26 @@ body
 .landscape > *
     min-height: 320px
 
-=iphone-header(!colorheader = !colortheme, !fontsize = "15pt")
-    !colorheaderdark = darken_percent(!colorheader, 30%)
-    +fancy-gradient(!colorheader, !colorheaderdark)
-    !height = 37px
+=iphone-header($colorheader: $colortheme, $fontsize: "15pt")
+    $colorheaderdark: darken_percent($colorheader, 30%)
+    +fancy-gradient($colorheader, $colorheaderdark)
+    $height: 37px
     text-align: center
     font-family: Helvetica
     font-weight: bold
     color: white
-    font-size= !fontsize
-    line-height= !height
-    height= !height
+    font-size: $fontsize
+    line-height: $height
+    height: $height
     padding: 0 85px
     border-bottom: 1px solid #2d3642
     +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
     +ellipsis
 
 =page-title
-    color= !colordark
+    color: $colordark
     font-size: 24pt
-    +text-shadow(lighten_percent(!colortheme, 60%), 1px, 1px, 0px)
+    +text-shadow(lighten_percent($colortheme, 60%), 1px, 1px, 0px)
 
 =iphone-page
     width: 100%
@@ -68,7 +73,7 @@ body
     background: #fff
     position: relative
     display: none
-    +v-gradient(!colorlight, !colortheme)
+    +v-gradient($colorlight, $colortheme)
 
 =iphone-top-button
     position: absolute
@@ -87,14 +92,13 @@ body
     left: 5px
     right: auto
 
-=iphone-button(!color = !colortheme)
-    +fancy-button(!color)
+=iphone-button($color: $colortheme)
+    +fancy-button($color)
 
 
-=iphone-back-button(!imagebase=!images+ /back_button, !pixels="0 4 0 11")
-    -webkit-mask-box-image= url(!imagebase+"_mask.png") !pixels repeat stretch
-    -webkit-border-image= url(!imagebase+".png") !pixels repeat stretch
-    +v-gradient(!colortheme, !colordark)
+=iphone-back-button($imagebase: $images+ /back_button, $pixels: 0 4 0 11)
+    -webkit-mask-box-image: url($imagebase+"_mask.png") $pixels repeat stretch
+    -webkit-border-image: url($imagebase+".png") $pixels repeat stretch
     font-family: Helvetica
     font-weight: bold
     font-size: 11px
@@ -109,13 +113,13 @@ body
     line-height: 30px
     border-width: 0 4px 0 11px
     &.selected
-        -webkit-border-image= url(!imagebase+"_active.png") !pixels repeat stretch
+        -webkit-border-image: url($imagebase+"_active.png") $pixels repeat stretch
     &:active
-        -webkit-border-image= url(!imagebase+"_active.png") !pixels repeat stretch
+        -webkit-border-image: url($imagebase+"_active.png") $pixels repeat stretch
     -webkit-user-select: none
 
 =iphone-forward-button
-    +iphone-back-button(!images + /forward_button, "0 11 0 4")
+    +iphone-back-button($images + /forward_button, 0 11 0 4)
     border-width: 0 11px 0 4px
 =iphone-list
     list-style: none
@@ -131,10 +135,15 @@ body
     &.selected
         background: #194FDB url(/public/images/mobile/chevron-white.png) no-repeat 300px 14px
 
-#forfun
+// forfun
 =iphone-apple
     font-size: 64pt
     text-shadow: rgba(255, 255, 255, 0.5) 0 1px 1px, rgba(0,0,0, 0.5) 0 -1px 1px
     margin: auto auto
     text-align: center
 
+
+// Hide the pages by default
+.strike-page
+    display: none
+    position: absolute !important

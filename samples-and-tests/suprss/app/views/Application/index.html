@@ -3,7 +3,7 @@
 <div class="tabBarView" id="suprss">
     <h1>
         <img id="pinLeft" src="/public/images/strike.png" />
-        <span id="barTitle">
+        <span class="strike-title">
             Strike Mobile
         </span>
         <img id="pinRight" src="/public/images/strike.png"/>
@@ -43,7 +43,7 @@
             <h3>About Strike</h3>
             <ul>
                 <li><a href="#newsItem">Contact</a></li>
-                <li><a href="#newsItem" class="prev" onclick="Strike.locate()">On the Web</a></li>
+                <li><a href="#newsItem" class="prev" onclick="Strike.locate(function(here){alert(here);})">On the Web</a></li>
                 <li><a href="#newsItem" class="next">Follow on Twitter</a></li>
             </ul>
         </div>

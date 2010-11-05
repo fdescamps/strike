@@ -1,0 +1,77 @@
+/* incase an inverted custom gradient isn't specified */
+body {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#2a3440), to(#6e89aa)); }
+
+.emulator iframe {
+  font-family: helvetica; }
+
+div.emulator {
+  -moz-box-shadow: #333333 10px 10px 100px 0;
+  -webkit-box-shadow: #333333 10px 10px 100px 0;
+  -o-box-shadow: #333333 10px 10px 100px 0;
+  box-shadow: #333333 10px 10px 100px 0;
+  -moz-border-radius: 68px;
+  -webkit-border-radius: 68px;
+  -o-border-radius: 68px;
+  -ms-border-radius: 68px;
+  -khtml-border-radius: 68px;
+  border-radius: 68px; }
+
+div.emulator.up, div.emulator.down {
+  width: 383px;
+  height: 725px;
+  background: url(/public/images/mobile/iphone.png) no-repeat;
+  margin: 25px auto; }
+
+div.emulator.left, div.emulator.right {
+  width: 725px;
+  height: 383px;
+  margin: 200px auto; }
+
+div.emulator.left {
+  background: url(/public/images/mobile/iphone-left.png) no-repeat top left; }
+
+div.emulator.right {
+  background: url(/public/images/mobile/iphone-right.png) no-repeat top right; }
+
+div.emulator.down {
+  background: url(/public/images/mobile/iphone-down.png) no-repeat bottom left; }
+
+#emulatorContent.up, #emulatorContent.down {
+  width: 320px;
+  height: 460px;
+  margin: 151px 0 0 33px; }
+
+#emulatorContent.down {
+  -webkit-transform: rotate(180deg);
+  -webkit-perspective: 801;
+  margin: 111px 0 0 33px; }
+
+#emulatorContent.left, #emulatorContent.right {
+  width: 480px;
+  height: 300px;
+  margin: 53px 0px 0 114px; }
+
+#emulatorContent.left {
+  margin: 53px 0px 0 131px; }
+
+#geopicker {
+  width: 320px;
+  height: 460px;
+  -webkit-perspective: 801;
+  -webkit-transform: rotate(0deg);
+  position: relative;
+  top: -550px;
+  left: -150px;
+  display: none;
+  margin: 0;
+  -moz-box-shadow: #333333 10px 10px 100px 0;
+  -webkit-box-shadow: #333333 10px 10px 100px 0;
+  -o-box-shadow: #333333 10px 10px 100px 0;
+  box-shadow: #333333 10px 10px 100px 0;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px; }

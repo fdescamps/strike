@@ -178,6 +178,7 @@
 
         init: function(){
             cacheLog();
+            // TODO: need to encapsulate as control
             this.bindScrollers();
         },
         template : function(id, templateId, renderData){
@@ -234,7 +235,7 @@
         },
         ready : function(){
             this.init();
-            onReadyHandlers.each(function(handler){
+            $.each(onReadyHandlers, function(handler){
                 handler();
             });
         },
@@ -277,6 +278,14 @@
         rotateLeft: function(page){ transition( 'cube', 0.55, 'ease', true, page ); },
         fade: function(page){ transition( 'fade', 0.35, 'linear', false, page ); },
         swap: function(page){ transition( 'swap', 0.55, 'linear', false, page ); },
+        reverseTransitions : {
+            'rotateRight': 'rotateLeft',
+            'rotateLeft': 'rotateRight',
+            'prev': 'next',
+            'next': 'prev',
+            'show': 'show',
+            'fade': 'fade'
+        },
         // TODO: slideUp, slideDown
         back: function(){
             if(Strike.previousPage){
@@ -459,7 +468,7 @@
     var cache = {};
     Strike.tmpl = function tmpl(str, data) {
         // Figure out if we're getting a template, or if we need to
-        // load the template - and be sure to cache the result.
+        // _controllerDefs the template - and be sure to cache the result.
         var fn
         if (!/\W/.test(str)){
           try{
