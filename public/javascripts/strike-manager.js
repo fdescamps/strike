@@ -8,12 +8,12 @@
     var Manager = {
         controllers: {},
         register: function(id, controller) {
-            this.controllers[id] = controller;
+            this.controllers[id] = controller
         },
         observe: function(type, handler) {
             if (observers[type] == null) {
                 observers[type] = [];
-            }
+            };
             observers[type].push(handler);
         },
         message: function(message) {
@@ -35,6 +35,7 @@
                     break;
 
                 case 'load':
+                    console.log("message id: %s", message.id)
                     controller = this.controllers[message.id];
                     currentState = {
                         transition: message.transition ? message.transition: 'show',
@@ -97,9 +98,9 @@
         },
         /* Some event helper methods */
         trigger: function(eventType, data){ Manager.message({ type: 'event', eventType: eventType, data: data }); },
-        show: function(id){ Manager.message({ type:'load', id:'home', transition:'show' }); },
-        fade: function(id){ Manager.message({ type:'load', id:'home', transition:'fade' }); },
-        next: function(id){ Manager.message({ type:'load', id:'home', transition:'next' }); },
+        show: function(id){ Manager.message({ type:'load', id: id, transition:'show' }); },
+        fade: function(id){ Manager.message({ type:'load', id: id, transition:'fade' }); },
+        next: function(id){ Manager.message({ type:'load', id: id, transition:'next' }); },
     };
     
     // Expose to global object

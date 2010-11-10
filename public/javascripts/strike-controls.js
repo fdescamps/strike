@@ -11,6 +11,8 @@
             }
         },
         
+        // TODO: should be replaced with a call to the manager - not
+        // a direct transition. Manager.goto('here')
         /* 
             Add "auto" transitions to a list of elements containing links 
             The links should have a hash of the id to transition to
