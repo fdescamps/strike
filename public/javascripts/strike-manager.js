@@ -35,7 +35,6 @@
                     break;
 
                 case 'load':
-                    console.log("message id: %s", message.id)
                     controller = this.controllers[message.id];
                     currentState = {
                         transition: message.transition ? message.transition: 'show',
@@ -71,11 +70,12 @@
                     
                 case 'back':
                     Manager.trigger('strike-page-back', {});
+                    // Fire reload method on previous controller
                     if (this.controllers[breadcrumbs[breadcrumbs.length - 2].id]) {
-                        var precController = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
-                        if (precController && precController.reload) precController.reload()
+                        var prevController = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
+                        if (prevController && prevController.reload) prevController.reload()
                     }
-                    this.precedent()
+                    this.precedent();
                     break;
 
                 default:
