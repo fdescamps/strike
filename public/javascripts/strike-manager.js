@@ -43,7 +43,7 @@
                     }
                     
                     Manager.trigger('strike-page-loading', message.data);
-                    if(controller){
+                    if(controller && controller.load){
                         controller.load(message.data);
                     }
                     else{
@@ -101,6 +101,7 @@
         show: function(id){ Manager.message({ type:'load', id: id, transition:'show' }); },
         fade: function(id){ Manager.message({ type:'load', id: id, transition:'fade' }); },
         next: function(id){ Manager.message({ type:'load', id: id, transition:'next' }); },
+        flip: function(id){ Manager.message({ type:'load', id: id, transition:'flip' }); },
     };
     
     // Expose to global object
@@ -134,7 +135,7 @@
     });
 
     // Router helper
-    Manager.addController = function(id, extend, defn){
+    Manager.addController = Manager.add = function(id, extend, defn){
         if(typeof extend !== "string"){
             defn = extend;
             extend = "Base";

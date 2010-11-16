@@ -8,6 +8,7 @@ h1. Strike Core
 * Scrollable pages
 * The manager
 * Transitions
+* Sub pages
 * Overlays and panels
 * GEO
 * Templating
@@ -157,9 +158,30 @@ h3. Custom transitions
 
 *TODO* - no custom transistions yet! Need to write your own CSS3 classes.
 
+h2. Sub pages
+
+Inside your strike-page you can nest strike pages...
+Call them strike-page and the default display page should have "current" class.
+Use Strike.Transition
+
+<!-- parent page -->
+<div id="parent-page" class="strike-page">
+    <!-- sub pages -->
+    <div id="page-one" class="strike-page current">
+        <h3>Sub Page 1</h3>
+        <a href="#page2" onclick="Strike.Transition('#page2','#page1')">Page Two</a>
+    </div>
+    <div id="page-two" class="strike-page">
+        <h3>Sub Page 2</h3>
+        <a href="#page1" onclick="Strike.Transition('#page1','#page2', {reverse: true})">Page One</a>
+    </div>
+</div>
+
 h2. Overlays and panels
 
-Using overlays/panels. *TODO* do any apps use this?
+Using overlays
+
+Using panels. *TODO* do any apps use this?
 
 h2. GEO Location
 

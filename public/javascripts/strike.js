@@ -253,6 +253,9 @@
         },
         //~~~~~~~ UI ~~~~~~~//
         Transition : function( toPage, fromPage, options ){
+            toPage = $(toPage);
+            fromPage = $(fromPage);
+
             // Don't do a new transition if it's in progress
             if( $.hasClass( toPage, "current" ) ){ return; }
 
@@ -288,7 +291,8 @@
             'prev': 'next',
             'next': 'prev',
             'show': 'show',
-            'fade': 'fade'
+            'fade': 'fade',
+            'flip': 'unflip'
         },
         // TODO: slideUp, slideDown
         back: function(){
@@ -434,7 +438,7 @@
         },
         fakeTouch = function(nodeElement){
             if ( Strike.onMobile || !nodeElement.hasChildNodes )return;
-            nodeElement.childNodes.each(function(node){
+            $.each(nodeElement.childNodes, function(node){
                 if (node.hasChildNodes()) fakeTouch(node)
                 if (node.getAttribute){
                     var executable = node.getAttribute('ontouchstart');
@@ -506,14 +510,15 @@
 
 //~~~~~~~ Aliases and extensions
 (function($){
-    // Aliases (TODO: should be deprecated)
-    Lucky=Strike
-    $hasClass = $.hasClass
-    $addClass = $.addClass
-    $removeClass = $.removeClass
-    $ajax = $.ajax
-    onMobile = Strike.onMobile
-    tmpl = Strike.tmpl
+    // Aliases (deprecated: will be deleted)
+    var Lucky = Strike,
+        $hasClass = $.hasClass
+        $addClass = $.addClass
+        $removeClass = $.removeClass
+        $ajax = $.ajax
+        onMobile = Strike.onMobile
+        tmpl = Strike.tmpl;
+
     // Prototype extensions - probably shouldn't touch objects we don't own.
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };
     Element.prototype.width = function(){ $.width(this) };
