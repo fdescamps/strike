@@ -99,6 +99,7 @@ $.ajax(ajaxOptions)
 
 The second let's you fully customize the request and to make calls for data other than JSON.
 
+success, error, complete
 
 h3. Protoype extensions
 

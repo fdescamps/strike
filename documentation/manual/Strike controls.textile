@@ -1,0 +1,25 @@
+h1. Setting titles
+
+Manager.autoTitles = true/false
+On "loaded" will set the view/.strike-title to the label of the controller
+
+override on controller : autoTitles: false
+
+h2. Nav lists
+
+Common component - list of links to other screens
+
+<ul>
+    <li><a href="#page2">Go to page 2</a></li>
+    <li><a href="#page3" class="fade">Go to page 3</a></li>
+    <li><a href="#page4" class="flip">Go to page 4</a></li>
+</ul>
+// Pass selector string to ul
+Strike.Controls.bindLinkNavList('#home ul');
+
+By default will use the href as id, class as transition and do a back change.
+
+Override with callback:
+Strike.Controls.bindLinkNavList('#home ul', function(clickedItem){
+    // receives the clicked LI item
+});

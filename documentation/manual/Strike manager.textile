@@ -1,7 +1,22 @@
 h1. The Strike Manager
 
+h2. Setup
 
-h2. Setting titles
+Can have a page with no controller, or a controller with no page - if you want.
 
-Manager.autotitles = true/false
-On "loaded" will set the view/.strike-title to the label of the controller
+h2. Kicking things off.
+
+Start with
+Manager.show('#page'); (or fade,flip,next) - short for ...
+
+h1. Events
+
+h2. Load event
+
+You must call Manager.message('loaded') when done.
+
+h2. Loaded event
+
+If there was a load event on the controller, it needs to call the 
+Manager.message('loaded');
+when compleete.

@@ -1,3 +1,16 @@
+/* 
+TODO:
+* fix generalised buttons
+* document autotitle standards
+
+QUESTIONS:
+* bindscrollers / rebind scrollers in core... hmmm
+* bindNavLinks - what should be the default behaviour
+* autotitles - deafult/override behaviour?
+* do window.scrollTo(0,1) automatically?
+* message system in core, or in manager? - can't use messaging in core if seperate.
+*/
+
 h1. Here is Strike mobile
 
 Welcome to the Strike Module. Ready to make stuff for your fingers? Strike is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!

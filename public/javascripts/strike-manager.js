@@ -39,7 +39,8 @@
                     currentState = {
                         transition: message.transition ? message.transition: 'show',
                         id: message.id,
-                        label: controller ? controller.label : message.id
+                        label: controller ? controller.label : message.id,
+                        data: message.data
                     }
                     
                     Manager.trigger('strike-page-loading', message.data);
@@ -112,9 +113,10 @@
 // Controller set up and helpers
 (function(){
     // Private variables and methods
-    var controllerDefs = [];
-    
-    var Controllers = {};
+    var controllerDefs = [],
+        Controllers = {};
+
+    // Base controller
     Controllers.Base = Base.extend({
         constructor : function(id){
             this.id = id;
@@ -125,16 +127,18 @@
             Manager.message('loaded');
         }
     });
+    
+    // List controller 
     Controllers.List = Controllers.Base.extend({
         constructor: function(id){
             this.base(id);
         },
         loaded: function(){
-            Strike.Controls.bindLinkNavList("#" + this.id + " ul li");
+            Strike.Controls.bindLinkNavList("#" + this.id + " ul");
         }
     });
 
-    // Router helper
+    // Router helper TODO: remove addController (just leave add)
     Manager.addController = Manager.add = function(id, extend, defn){
         if(typeof extend !== "string"){
             defn = extend;
@@ -150,7 +154,7 @@
     // Set up controllers on load
     Strike.onready(function(){
         $.each(controllerDefs, function(controller){
-            controller = new (Controllers[controller.extend].extend(controller.defn))(controller.id);
+            controller = new (Controllers[controller.extend].extend(controller.defn))(controller.id);            
             controller.init && controller.init();
         });
     });

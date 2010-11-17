@@ -21,7 +21,7 @@
                 return func.apply(this, [element].concat(restOfArgs));
             }
             else {
-                $.each( element, function( item ){
+                $.each(element, function(item){
                     mapElements(func, [item].concat(restOfArgs));
                 });
             }
@@ -39,6 +39,14 @@
         for(var i=0; i<items.length; i++){
             callback(items[i], i);
         }
+    };
+    $.is = function(o, type){
+        type = String(type).toLowerCase();
+        return  (type == "null" && o === null) ||
+                (type == typeof o) ||
+                (type == "object" && o === Object(o)) ||
+                (type == "array" && Array.isArray && Array.isArray(o)) ||
+                Object.prototype.toString.call(o).slice(8, -1).toLowerCase() == type;
     };
     
     // Class and styles
@@ -118,15 +126,17 @@
     // Ajax
     $.ajax = function(method, url, callback){
         var type = "json",
-            error = method.error || function(e){ throw e },
+            error = function(e){ throw e },
+            complete = function(){},
             params = method.params
             async = method.async === undefined ? true : method.async
 
         if (method.constructor != String){
             type = (method.type || type).toLowerCase();
             url = method.url
-            callback = method.success
+            callback = method.success || callback;
             error = method.error || error;
+            complete = method.complete || complete
             method = method.method || "GET";
         }
 
@@ -139,15 +149,18 @@
                     if (this.responseXML) callback(this.responseXML)
                     else {
                         var responseContent = type == "html" ? this.responseText : eval('('+this.responseText+')');
-                        callback(responseContent)
+                        callback(responseContent);
+                        complete();
                     }
                 } catch (e){
                     console.log('cannot parse json because of '+e)
                     error(e)
+                    complete();
                 }
             }
             if (this.readyState == 4 && this.status != 200){
-                error(this.status)
+                error(this.status);
+                complete();
             }
         }
         req.send(params)
@@ -508,7 +521,8 @@
     };
 })();
 
-//~~~~~~~ Aliases and extensions
+// Aliases and extensions - DEPRECATED - TODO: DELETE!!!
+/*
 (function($){
     // Aliases (deprecated: will be deleted)
     var Lucky = Strike,
@@ -519,7 +533,7 @@
         onMobile = Strike.onMobile
         tmpl = Strike.tmpl;
 
-    // Prototype extensions - probably shouldn't touch objects we don't own.
+    // Prototype extensions - probably shouldn't touch objects we don't own: will be deleted
     Array.prototype.each = NodeList.prototype.each = function(c) { $.each(this,c); };
     Element.prototype.width = function(){ $.width(this) };
     Element.prototype.height = function(){ $.height(this) };
@@ -527,3 +541,4 @@
     HTMLElement.prototype.on = function(e,handler){ $.on(this, e, handler) };
     HTMLElement.prototype.$ = $;
 })(Strike$);
+*/

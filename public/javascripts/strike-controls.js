@@ -1,6 +1,6 @@
 (function(Strike, Manager){
     Strike.Controls = {
-        autoTitles: true,    
+        autoTitles: true,
         titleClass: '#{view} .strike-title',
         
         setPageTitle: function(view, label){
@@ -18,15 +18,31 @@
             The links should have a hash of the id to transition to
             and optionally, a class name of a transition.
         */
-        bindLinkNavList: function(selector){
-            $(selector).each(function(item){
+        bindLinkNavList: function(selector, callback){
+            // If no callback, do default linking...
+            callback = callback || function(link){
+                // TODO: check link is legit.
+                var link = link.querySelector("a");
+                Manager.message({
+                    type: 'load',
+                    id: link.hash.slice(1),
+                    data: {
+                        link: link,
+                        autoLabel: link.innerHTML
+                    },
+                    transition: link.className || 'show' /* TODO: search for transition type in class */
+                });
+            };
+
+            // Add callback to each link item
+            $.each(selector + ' li', function(item){
                 $.on(item, "click", function(){
-                    var link = this.querySelector("a");
-                    Manager.message({
-                        type: 'load', 
-                        id: link.hash.slice(1), 
-                        transition: link.className || 'show'
-                    });
+                    callback(this);
+                });
+
+                // Find child link and prevent default action
+                $.on(item.querySelector("a"), "click", function(e){ 
+                    e.preventDefault();
                 });
             });
         }
@@ -34,8 +50,11 @@
     
     // Event bindings
     if(Strike.Controls.autoTitles){
-        Manager.observe('strike-page-loaded', function(data){
-            Strike.Controls.setPageTitle(data.id, data.label);
+        Manager.observe('strike-page-loaded', function(state){
+            var page = Manager.controllers[state.id];
+            if(page && (page.autoTitles === undefined || page.autoTitles)){
+                Strike.Controls.setPageTitle(state.id, (state.data && state.data.autoLabel) || state.label);
+            }
         });
     }
     
