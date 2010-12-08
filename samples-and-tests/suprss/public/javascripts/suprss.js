@@ -1,65 +1,84 @@
-Strike.onready(function(){
-    Strike.Controls.titleClass = ".strike-title";
-    suprss.init();
+Strike.onready( function() {
+    Demo.init();
+    $$("div span")
 });
 
-var suprss = {
-    init : function(){
-        // TODO: Should the tabbarview be more "control"y?
-         // Show the tabBarView
-        $.show( $(".tabBarView")[0] );
-        
-        //Bind the tab bar();
-        Strike.Controls.bindLinkNavList(".tabBarControls li");
-
-        // Load the data
-        Manager.show("home");
+var Demo = {
+    articles: [],
+    init: function(){
+        StrikeMan.show( 'suprss' );
     },
-    updateTitle: function(title){
-        $("#barTitle").innerText = title;
+    setArticles: function( list ){
+        var getNode = function( nodeName, nodeObj ){
+            return $( nodeName, nodeObj )[ 0 ].firstChild.nodeValue;
+        };
+        
+        return this.articles = $.map( list, function( item, index ) {
+            return {
+                id: 'article_' + index,
+                date: ( new Date( getNode( 'pubDate', item ) ) ).toLocaleDateString(),
+                title: getNode( 'title', item ),
+                link: getNode( 'link', item ),
+                description: getNode( 'description', item )
+            };
+        });
     }
 };
 
-Manager.addController('home', 'List', {
-    label: 'Strike Mobile'
-});
-
-Manager.addController('feedlist',{
-    label: 'Latest News',
-    init: function(){
-        var feedlist = this
-        Manager.observe('preferences-changed', function(){
-            feedlist.updateView();
-        })
+// === Main tab bar view ===
+StrikeMan.add( 'suprss', {
+    ready: function() {
+        StrikeCon.titleClass = '.strike-title';
+        StrikeCon.bindLinkNavList( '.tabBarControls', false );
     },
-    load : function(){
-        $.ajax('get','/public/rss.xml', function(list){
-           var data, html = "", items = list.getElementsByTagName('item')
-           for ( var i = 0; i < items.length; i++ ){
-                data = {}
-                var date = new Date(items.item(i).querySelectorAll('pubDate')[0].firstChild.nodeValue)
-                data.id = 'art'+i
-                data.date = date.toLocaleDateString()
-                data.title = items.item(i).querySelectorAll('title')[0].firstChild.nodeValue
-                data.link = items.item(i).querySelectorAll('link')[0].firstChild.nodeValue
-                data.description = items.item(i).querySelectorAll('description')[0].firstChild.nodeValue
-                html += Strike.tmpl("item_tmpl",data)
-            }
-            $("#feedlist ul")[0].innerHTML = html
-            $('.item').each(function(item){
-                item.on('click',function(e){
-                    //Manager.message({type : 'load', id: 'feedlist', label:'accueil', transition: 'next'})
-                    $("#newsItem article")[0].innerHTML = this.querySelector("article").innerHTML
-                    $.show($("#newsItem article")[0])
-                    Strike.next("#newsItem");
-                })
-            });
-            Manager.message('loaded');
-        })
-    },
-    loaded: function(){
-
+    loaded: function() {
+        StrikeMan.show( 'home' );
     }
 });
 
-Manager.addController('plus', { label: 'Help' });
+// === Home page : extends List ===
+StrikeMan.add( 'home', 'List', { label: 'Strike Mobile' });
+
+// === Feed list ===
+StrikeMan.add( 'feedlist', {
+    label: 'Latest News',
+    load : function() {
+        var feedlist = this;
+        $.ajax( 'get', '/public/rss.xml', function( list ) {
+            var items = list.getElementsByTagName( 'item' );
+            feedlist.renderList( Demo.setArticles( items ) );
+        });
+    },
+
+    renderList: function( list ) {
+        var container = Strike.template( '#feedlist ul', "item_tmpl", { items: list } );
+        this.bindClick( container[0] );
+        StrikeMan.message( 'loaded' );
+    },
+
+    bindClick: function( list ) {
+        var items = $( '.item', list );
+        $.each( items, function( item ) {
+            $.on( item, 'click', function( e ) {
+                StrikeMan.message({ 
+                    type: 'load', 
+                    id: 'newsItem', 
+                    transition: 'next',
+                    data: { id: this.id }
+                });
+            });
+        });
+    }
+});
+
+// === News Item ===
+StrikeMan.add( 'newsItem', {
+    load: function( data ){
+        var article = Demo.articles[ data.id.split( "_" )[ 1 ] ];
+        Strike.template( '#' + this.id + ' article', "article_tmpl", article );
+        StrikeMan.message( 'loaded' );
+    }
+});
+
+// === Plus page ==
+StrikeMan.add('plus', { label: 'Help' });

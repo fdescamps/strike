@@ -2,15 +2,11 @@
 !coloraux = #909
 @import sass/strike-iphone.sass
 
-
 body, html
     height: 100%
-    overflow: hidden
 
 body > div
-    //+iphone-page
-    background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#615c60), to(#3c3c3c))
-    overflow: hidden
+    +v-gradient(#3c3c3c, #615c60)
 
 .back
     +iphone-back-button
@@ -19,19 +15,19 @@ body > div
     left: auto
     right: 10px
     top: 15px
-
 a
     text-decoration: none
     color: #000
 
-em  
-    color: #3C194F
-    font-size: 10pt
-    &#rss
-        text-transform: uppercase
-        
 h2
     +page-title
+
+h3
+    margin-top: 20px
+    font-size: 16pt
+    text-shadow: #222 1px 1px 1px
+    color: #fff
+    padding-left: 20px
 
 .tabBarView
     -webkit-box-sizing: border-box
@@ -40,10 +36,10 @@ h2
 
 .tabBarView h1
     +iphone-header()
-    background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#727272), to(#a6a6a6))
+    +v-gradient(#a6a6a6, #727272)
+    font-size: 18pt
     color: #000
     text-shadow: #ddd 1px 1px 1px
-    font-size: 18pt
     -webkit-box-shadow: 0 0 5px #000
 
     position: absolute
@@ -56,10 +52,10 @@ h2
         margin-top: -3px
         height: 35px 
         width: 16px
-    img#pinLeft
-        margin-right: 5px
-    img#pinRight
-        margin-left: 5px
+        #pinLeft
+            margin-right: 5px
+        #pinRight
+            margin-left: 5px
 
 .tabBarPages
     height: 100%
@@ -69,9 +65,31 @@ h2
     height: 100%
     margin-top: 8px
 
+.tabBarPages ul
+    background-color: #eee
+    background-image: -webkit-gradient(linear, 0 0, 0 100, from(#fff), to(#e5e5e5))
+    -webkit-border-radius: 5px
+    padding: 10px
+    margin: 10px
+    -webkit-box-shadow: 1px 1px 3px #222
+    li
+        font-size: 14pt
+        padding: 10px
+        border-bottom: 1px solid #ccc
+        border-top: 1px solid #fff
+        a
+            display: block
+            background: transparent url(/public/images/mobile/arrow.png) no-repeat 0px right
+            padding-right: 20px
+            min-height: 25px
+            :first-child
+                border-top: 0
+            :last-child
+                border-bottom: 0
+
 .tabBarControls
     +iphone-header(!coloraux)
-    background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#727272), to(#a6a6a6))
+    +v-gradient(#a6a6a6, #727272)
     height: 40px
     position: absolute
     bottom: 0
@@ -90,79 +108,40 @@ h2
                 img
                     margin-top: -32px
 
-
-#newsItem
-    article
-        .date
-            text-shadow: rgba(255,255,255,0.5) 1px 1px 1px
-            color: #777
-    img
-        display: block
-        margin: auto
-        max-width: 90%
-        width: 90%
-        padding: 20px 0 20px 0
-    a
-        color: #800
-
-article
-    display: none
-
-.tabBarPages ul
-    background-color: #eee
-    background-image: -webkit-gradient(linear, 0 0, 0 100, from(#fff), to(#e5e5e5))
-    -webkit-border-radius: 5px
-    padding: 10px
-    margin: 10px
-    -webkit-box-shadow: 1px 1px 3px #222
-
-h3
-    margin-top: 20px
-    font-size: 16pt
-    text-shadow: #222 1px 1px 1px
-    color: #fff
-    padding-left: 20px
-
-.tabBarPages ul li
-    font-size: 14pt
-    padding: 10px
-    border-bottom: 1px solid #ccc
-    border-top: 1px solid #fff
-    a
-        display: block
-        background: transparent url(/public/images/mobile/arrow.png) no-repeat 0px right
-        padding-right: 20px
-        min-height: 25px
-        
-#newsItem
-    a
-        display: inline
-        padding: 0
-        min-height: auto
-
-#feedlist ul
-    margin: 0
-    -webkit-border-radius: 0
-
-#feedlist ul li
-    
-#feedlist ul li a
-    font-size: 10pt
-    color: #000
-
-
-#newsItem li
-    font-size: 10pt
-    line-height: 16pt
-    background-image: none
-
-.tabBarPages ul li:first-child
-    border-top: 0
-.tabBarPages ul li:last-child
-    border-bottom: 0
 #bar
     margin-top: -5px
     height: 5px
     background: #666 url(/public/images/bar-gradient.png) repeat-x -40px 0
     border-top: 1px solid #fff
     -webkit-box-shadow: 0 0 5px #000
+
+.item article
+    display: none
+
+#feedlist ul
+    margin: 0
+    -webkit-border-radius: 0
+    li a
+        font-size: 10pt
+        color: #000
+
+#newsItem
+    li
+        font-size: 10pt
+        line-height: 16pt
+        background-image: none
+    article
+        .date
+            text-shadow: rgba(255,255,255,0.5) 1px 1px 1px
+            color: #777
+        img
+            display: block
+            margin: auto
+            max-width: 90%
+            width: 90%
+            padding: 20px 0 20px 0
+        a
+            display: inline
+            padding: 0
+            min-height: auto
+            color: #800

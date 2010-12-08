@@ -1,14 +1,20 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
+
+<!-- Main tab bar view -->
 <div class="tabBarView" id="suprss">
+    
+    <!-- Header title bar -->
     <h1>
         <img id="pinLeft" src="/public/images/strike.png" />
-        <span class="strike-title">
-            Strike Mobile
-        </span>
-        <img id="pinRight" src="/public/images/strike.png"/>
+        <span class="strike-title">Strike Mobile</span>
+        <img id="pinRight" src="/public/images/strike.png" />
     </h1>
+    
+    <!-- Tab bar pages -->
     <div class="tabBarPages">
+        
+        <!-- Home page -->
         <div id="home">
             <img src="/public/images/strike-logo.png" />
             <div id="bar"></div>
@@ -18,49 +24,54 @@
                 <li><a href="http://www.w3c.com">W3C specs</a></li>
             </ul>
         </div>
+        
+        <!-- RSS list page -->
         <div id="feedlist">
             <div class="scrollView">
-            <ul>
-                <article>
-                    <p class="date"></p>
-                    <div class="text"></div>
-                </article>
+                <ul></ul>
                 <script type="text/html" id="item_tmpl">
-                    <li class="item">
-                        <a class="" href="#"><%=title%></a>
-                        <article>
-                            <p class="date"><%=date%></p>
-                            <div class="text">
-                                <%=description%>
-                            </div>
-                        </article>
-                    </li>
+                    <% $.each(items, function( item ){ %>
+                        <li class="item" id="<%= item.id %>">
+                            <a href="#"><%= item.title %></a>
+                        </li>
+                    <% }); %>
                 </script>
-            </ul>
             </div>
         </div>
+        
+         <!-- RSS article  page -->
+        <div id="newsItem">
+             <div class="scrollView">
+                 <ul>
+                     <li>
+                         <div class="back" onclick="Strike.back()">back</div>
+                         <article></article>
+                         <script type="text/html" id="article_tmpl">
+                             <p class="date"><%= date %></p>
+                             <div class="text">
+                                 <%= description %>
+                             </div>
+                         </script>
+                     </li>
+                 </ul>
+             </div>
+        </div>
+        
+        <!-- Plus/Help page -->
         <div id="plus">
-            <h3>About Strike</h3>
+            <h3>
+                <span class="strike-title">About Strike</span>
+            </h3>
             <ul>
                 <li><a href="#newsItem">Contact</a></li>
-                <li><a href="#newsItem" class="prev" onclick="Strike.locate(function(here){alert(here);})">On the Web</a></li>
+                <li><a href="#newsItem" class="prev" onclick="Strike.locate(function( loc ){ alert( loc.latitude + ':' + loc.longitude ); })">Test GEO Location</a></li>
                 <li><a href="#newsItem" class="next">Follow on Twitter</a></li>
             </ul>
         </div>
-       <div id="newsItem">
-            <div class="scrollView">
-            <ul>
-                <li>
-                <div>
-                    <div class="back" onclick="Strike.back()">back</div>
-                    <article></article>
-                </div>
-                </li>
-            </ul>
-            </div>
-            
-       </div>
+
    </div>
+   
+   <!-- Tab bar controls -->
    <ul class="tabBarControls">
        <li><a href="#home"><img src="/public/images/buttons/home.png" alt="home" /></a></li>
        <li><a href="#feedlist"><img src="/public/images/buttons/delib.png" alt="home" /></a></li>

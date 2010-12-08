@@ -11,8 +11,13 @@ Manager.show('#page'); (or fade,flip,next) - short for ...
 
 h1. Events
 
+h2. ready event
+
+Fires after Strike.onready
+
 h2. Load event
 
+Fires when someone calles Manager.message('load') on the controller (or the shortcut Manager.show('id') )
 You must call Manager.message('loaded') when done.
 
 h2. Loaded event

@@ -1,61 +1,67 @@
-(function(Strike, Manager){
-    Strike.Controls = {
+(function( $, StrikeMan ) {
+    var StrikeCon = {
         autoTitles: true,
         titleClass: '#{view} .strike-title',
         
-        setPageTitle: function(view, label){
-            var titleSelector = this.titleClass.replace("{view}", view);
-            var titleBar = $(titleSelector);
-            if(titleBar.length && label){
+        setPageTitle: function( view, label ) {
+            var titleSelector = this.titleClass.replace( "{view}", view );
+            var titleBar = $( titleSelector );
+            if( titleBar.length && label ){
                 titleBar[0].innerHTML = label;
             }
         },
-        
-        // TODO: should be replaced with a call to the manager - not
-        // a direct transition. Manager.goto('here')
-        /* 
-            Add "auto" transitions to a list of elements containing links 
-            The links should have a hash of the id to transition to
-            and optionally, a class name of a transition.
-        */
-        bindLinkNavList: function(selector, callback){
+
+        // Auto transition UL->LI->A based on A.className for effect, and A.hash for controller
+        bindLinkNavList: function( selector, autoLabel, callback ) {
+            // Shuffle args if no autolabel supplied
+            if( $.is( autoLabel, "function" ) ) {
+                callback = autoLabel;
+                autoLabel = true;
+            }
+            if( ! $.is( autoLabel, "boolean" ) ){
+                autoLabel = true;
+            }
+            
             // If no callback, do default linking...
-            callback = callback || function(link){
+            callback = callback || function( el ) {
                 // TODO: check link is legit.
-                var link = link.querySelector("a");
-                Manager.message({
+                var link = el.querySelector( "a" );
+                StrikeMan.message({
                     type: 'load',
                     id: link.hash.slice(1),
                     data: {
                         link: link,
-                        autoLabel: link.innerHTML
+                        autoLabel: autoLabel ? link.innerHTML : null
                     },
                     transition: link.className || 'show' /* TODO: search for transition type in class */
                 });
             };
 
             // Add callback to each link item
-            $.each(selector + ' li', function(item){
-                $.on(item, "click", function(){
-                    callback(this);
+            $.each( selector + ' li', function( el ) {
+                $.on( el, "click", function() {
+                    callback( this );
                 });
 
                 // Find child link and prevent default action
-                $.on(item.querySelector("a"), "click", function(e){ 
+                $.on( el.querySelector( "a" ), "click", function( e ) { 
                     e.preventDefault();
                 });
             });
         }
     };
     
-    // Event bindings
-    if(Strike.Controls.autoTitles){
-        Manager.observe('strike-page-loaded', function(state){
-            var page = Manager.controllers[state.id];
-            if(page && (page.autoTitles === undefined || page.autoTitles)){
-                Strike.Controls.setPageTitle(state.id, (state.data && state.data.autoLabel) || state.label);
+    // Event bindings for auto titles
+    if( StrikeCon.autoTitles ){
+        StrikeMan.observe( 'strike-page-loaded', function( state ) {
+            var page = StrikeMan.controllers[ state.id ];
+            if( page && ( page.autoTitles === undefined || page.autoTitles ) ) {
+                StrikeCon.setPageTitle( state.id, ( state.data && state.data.autoLabel ) || state.label );
             }
         });
     }
     
-})(Strike, Manager);
+    // Expose to global object
+    this.StrikeCon = StrikeCon;
+
+})( Strike$, StrikeMan );

@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>#{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" media="screen" href="@{'public/stylesheets/suprss.sass'}">
+        #{meta-iphone-webapp /}
+    </head>
+    <body>
+        #{doLayout /}
+        
+        <!-- Page Scripts -->
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lib/Base.js'}"></script>
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lib/iscroll.js'}"></script>        
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/strike.js'}"></script>
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/strike-manager.js'}"></script>
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/strike-controls.js'}"></script>
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/suprss.js'}"></script>
-        
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        #{meta-iphone-webapp /}
-    </head>
-    <body>
-        #{doLayout /}
     </body>
 </html>

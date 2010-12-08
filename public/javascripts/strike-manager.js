@@ -4,8 +4,8 @@
         breadcrumbs = [],
         currentState = {};
     
-    // Manager object
-    var Manager = {
+    // StrikeMan object
+    var StrikeMan = {
         controllers: {},
         register: function(id, controller) {
             this.controllers[id] = controller
@@ -43,18 +43,18 @@
                         data: message.data
                     }
                     
-                    Manager.trigger('strike-page-loading', message.data);
+                    StrikeMan.trigger('strike-page-loading', message.data);
                     if(controller && controller.load){
                         controller.load(message.data);
                     }
                     else{
-                        Manager.message({type:'loaded', data:{}});
+                        StrikeMan.message({type:'loaded', data:{}});
                     }
                     break;
 
                 case 'loaded':
                     breadcrumbs.push(currentState);
-                    Manager.trigger('strike-page-loaded', currentState);
+                    StrikeMan.trigger('strike-page-loaded', currentState);
                     
                     // Do transition.
                     Strike[currentState.transition]('#' + currentState.id);
@@ -65,12 +65,12 @@
                     break;
                     
                 case 'error':
-                    Manager.trigger('strike-page-error', message);
+                    StrikeMan.trigger('strike-page-error', message);
                     alert(message.message);
                     break;
                     
                 case 'back':
-                    Manager.trigger('strike-page-back', {});
+                    StrikeMan.trigger('strike-page-back', {});
                     // Fire reload method on previous controller
                     if (this.controllers[breadcrumbs[breadcrumbs.length - 2].id]) {
                         var prevController = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
@@ -98,20 +98,20 @@
             return label ? label: '';
         },
         /* Some event helper methods */
-        trigger: function(eventType, data){ Manager.message({ type: 'event', eventType: eventType, data: data }); },
-        show: function(id){ Manager.message({ type:'load', id: id, transition:'show' }); },
-        fade: function(id){ Manager.message({ type:'load', id: id, transition:'fade' }); },
-        next: function(id){ Manager.message({ type:'load', id: id, transition:'next' }); },
-        flip: function(id){ Manager.message({ type:'load', id: id, transition:'flip' }); },
+        trigger: function(eventType, data){ StrikeMan.message({ type: 'event', eventType: eventType, data: data }); },
+        show: function(id){ StrikeMan.message({ type:'load', id: id, transition:'show' }); },
+        fade: function(id){ StrikeMan.message({ type:'load', id: id, transition:'fade' }); },
+        next: function(id){ StrikeMan.message({ type:'load', id: id, transition:'next' }); },
+        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); },
     };
     
     // Expose to global object
-    this.Manager = Manager;
+    this.StrikeMan = StrikeMan;
 })();
 
 
 // Controller set up and helpers
-(function(){
+(function($){
     // Private variables and methods
     var controllerDefs = [],
         Controllers = {};
@@ -120,11 +120,11 @@
     Controllers.Base = Base.extend({
         constructor : function(id){
             this.id = id;
-            Manager.register(id, this);
+            StrikeMan.register(id, this);
         },
-        init: function(){},
+        ready: function(){},
         load : function(data){
-            Manager.message('loaded');
+            StrikeMan.message('loaded');
         }
     });
     
@@ -134,12 +134,12 @@
             this.base(id);
         },
         loaded: function(){
-            Strike.Controls.bindLinkNavList("#" + this.id + " ul");
+            StrikeCon.bindLinkNavList("#" + this.id + " ul");
         }
     });
 
-    // Router helper TODO: remove addController (just leave add)
-    Manager.addController = Manager.add = function(id, extend, defn){
+    // Router helper
+    StrikeMan.add = function(id, extend, defn){
         if(typeof extend !== "string"){
             defn = extend;
             extend = "Base";
@@ -155,10 +155,10 @@
     Strike.onready(function(){
         $.each(controllerDefs, function(controller){
             controller = new (Controllers[controller.extend].extend(controller.defn))(controller.id);            
-            controller.init && controller.init();
+            controller.ready && controller.ready();
         });
     });
     
     // Expose to global object
-    this.Manager.Controllers = Controllers;
-})();
+    this.StrikeMan.Controllers = Controllers;
+})(Strike$);

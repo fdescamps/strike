@@ -2,14 +2,18 @@
 (function(){
     var root = this,
         previous$ = root.$,
+
         // ~~~~~~~~~~~~~~~~~~~~ Utils
         $ = function(selector, context){
-            if (typeof selector!=="string") return selector;
+            if (! $.is(selector, "string")){
+                return selector;
+            }
             var context = context || document,
-                isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector),
-                results = isId ? context.querySelector(selector) : context.querySelectorAll(selector);
-            return results;
+                isId = /^[0-9a-zA-Z_\-\s]*\#[0-9a-zA-Z_\-]*$/.test(selector);
+
+            return isId ? context.querySelector(selector) : context.querySelectorAll(selector);
         },
+
         // Runs a function over a selector - to encapsulate element selection rules.
         // First param in args array should be the selector (string or DOM node/s), 
         // followed by required arguments.
@@ -29,17 +33,24 @@
 
     // Export Strike$ and $ to global scope.
     root.$ = root.Strike$ = $;
-    $.VERSION = '0.1';
+    $.VERSION = '0.2';
     $.noConflict = function(){
         root.$ = previous$;
         return this;
     };
     $.each = function(items, callback){
         items = $(items);
-        for(var i=0; i<items.length; i++){
+        for( var i = 0; i < items.length; i++){
             callback(items[i], i);
         }
     };
+    $.map = function(items, func){
+        var mapped = [];
+        $.each( items, function(item, i){
+            mapped.push(func(item,i));
+        });
+        return mapped;
+    }
     $.is = function(o, type){
         type = String(type).toLowerCase();
         return  (type == "null" && o === null) ||
@@ -110,14 +121,10 @@
         mapElements(eventAdd, arguments);
     };
     $.once = function(element, event, handler, bubble){
-        if( !Strike.onMobile ){
-            event = event == 'touchend' ? 'mouseup' : event;
-            event = event == 'touchstart' ? 'mousedown' : event;
-        }
         var eventAdd = function(element, event, handler, bubble){
-            element.addEventListener(event, function runOnceFunc(){
+            $.on(element, event, function runOnceFunc(){
                 this.removeEventListener(event, runOnceFunc, bubble)
-                handler();
+                handler();                
             }, bubble);
         }
         mapElements(eventAdd, arguments);
@@ -128,7 +135,7 @@
         var type = "json",
             error = function(e){ throw e },
             complete = function(){},
-            params = method.params
+            params = method.params,
             async = method.async === undefined ? true : method.async
 
         if (method.constructor != String){
@@ -194,18 +201,15 @@
             // TODO: need to encapsulate as control
             this.bindScrollers();
         },
-        template : function(id, templateId, renderData){
-            var container,
-                htmlContent;
-            // Get container
-            container = $(id.charAt(0) == "#" ? id : "#"+id);
-            if(!container) return null;
+        template : function(selector, templateId, renderData){
+            var elements = $(selector),
+                htmlContent = Strike.tmpl(templateId, renderData);
 
-            htmlContent = Strike.tmpl(templateId, renderData);
-            container.innerHTML = htmlContent;
-            fakeTouch(container);
-
-            return htmlContent;
+            $.each( elements.length ? elements : [elements], function(item){
+                item.innerHTML = htmlContent;
+                fakeTouch(item);
+            });
+            return elements;
         },
         maps : function(query){
             window.open('http://maps.google.com?'+query)
@@ -230,13 +234,13 @@
             this.handlers['reverseGeoCode'] = handler; /*TODO: used in native? */
         },
         lang: function(handler){
-            // TODO: deprecate? - it just calls a funciton with a static string.
+            // TODO: deprecate? - it just calls a function with a static string.
             handler(Strike.browserLanguage);
         },
         setMessages: function(messages, lang) {
             if(!messages[lang]) lang = Strike.fallbackLanguage;
             Strike.messages = messages[lang];
-            $('.i18n').each(function(el) {
+            $each('.i18n', function(el) {
                 var id = el.id;
                 var message = Strike.message(id);
                 if(message) {
@@ -260,7 +264,7 @@
             onOrientationChangeHandlers.push(handler);
         },
         orientationChange : function( orientation ){
-            onOrientationChangeHandlers.each(function(handler){
+            $.each(onOrientationChangeHandlers, function(handler){
                 handler( orientation );
             });
         },
@@ -422,7 +426,7 @@
                         break;
                     }
                     if(node.tagName == 'LI' && $.hasClass(node.parentNode, 'list')) {
-                        node.parentNode.querySelectorAll('li').each(function(it) {
+                        $.each(node.parentNode.querySelectorAll('li'), function(it) {
                             $.removeClass(it, 'selected');
                         });
                         $.addClass(node, 'selected')
@@ -479,7 +483,8 @@
 
     // Export Strike to global scope.
     root.Strike = Strike;
-})(Strike$);
+
+})( Strike$ );
 
 (function(){
     // Simple JavaScript Templating

@@ -29,7 +29,7 @@ $("#myDiv")
 $(".warning")
 $("ul li .selected")
 
-The result returned will depend on the selector. If the selector is a string containing a DOM ID (for example: #myDiv, ul#myElement) then a single DOM node will be returned (via the querySelector method). If the selector string is not an ID then an array will be returned containing 0 or more matching elements (via the querySelectorAll method)
+WARNING: INCONSITANT behaviour from the selector... The result returned will depend on the selector. If the selector is a string containing a DOM ID (for example: #myDiv, ul#myElement) then a single DOM node will be returned (via the querySelector method). If the selector string is not an ID then an array will be returned containing 0 or more matching elements (via the querySelectorAll method)
 
 If you pass a DOM element, or a collection of DOM elements to the $ method it will simply be passed back.
 
@@ -37,6 +37,10 @@ h3. Iterators and helpers
 
 $.each
 HTMLElement prototype extention
+
+$.is
+
+$.map
 
 h3. Class Manipulation methods
 

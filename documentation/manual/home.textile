@@ -1,7 +1,9 @@
 /* 
 TODO:
-* fix generalised buttons
+* fix generalised buttons (or enforce ontouchend="code()")
 * document autotitle standards
+* figure out tabBaView for real.
+* fix back button in header and tabBar
 
 QUESTIONS:
 * bindscrollers / rebind scrollers in core... hmmm
@@ -115,11 +117,15 @@ This module will bring a production mode for managing
 h2. Strike reserved words & classes
 
 * Global scoped variables:
-Strike
+iScroll
+Base
 Strike$
 $ (can be changed with Strike$.noConflict)
+Strike
+StrikeMan
+StrikeCon
 
-* Prototype additions (See Strike$ docs)
+DEPRECATED: Prototype additions (See Strike$ docs)
 
 * Classes and IDs that are meaningful to Strike
 .back

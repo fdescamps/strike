@@ -15,11 +15,11 @@ Common component - list of links to other screens
     <li><a href="#page4" class="flip">Go to page 4</a></li>
 </ul>
 // Pass selector string to ul
-Strike.Controls.bindLinkNavList('#home ul');
+StrikeCon.bindLinkNavList('#home ul');
 
 By default will use the href as id, class as transition and do a back change.
 
 Override with callback:
-Strike.Controls.bindLinkNavList('#home ul', function(clickedItem){
+StrikeCon.bindLinkNavList('#home ul', function(clickedItem){
     // receives the clicked LI item
 });

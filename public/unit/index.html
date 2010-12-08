@@ -6,8 +6,17 @@
     <script type="text/javascript" src="/public/unit/lib/qunit.js"></script>
     
     <script src="/public/javascripts/strike.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/public/unit/Strike$.js" type="text/javascript" charset="utf-8"></script>
+    
+    <!-- Strike$ unit tests -->
+    <script src="/public/unit/StrikeDom/Strike$-selectors.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/unit/StrikeDom/Strike$-class.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/unit/StrikeDom/Strike$-DOM.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/unit/StrikeDom/Strike$-events.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/unit/StrikeDom/Strike$-ajax.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Strike Core unit tests -->    
     <script src="/public/unit/Strike.js" type="text/javascript" charset="utf-8"></script>
+    
     <script type="text/javascript">
         //var $jq = jQuery; // jQuery.noConflict();
         //Strike$.noConflict();
@@ -31,8 +40,9 @@
         <span>span 3</span>
         
         <!-- Template test elements -->
-        <div id="template-container">
-        </div>
+        <div id="template-container" class="container"></div>
+        <div id="template-container2" class="container"></div>
+        <div id="template-container3" class="container"></div>
         <script type="text/html" id="simple_template">
             <article>
                 <span><%=title%></span>
