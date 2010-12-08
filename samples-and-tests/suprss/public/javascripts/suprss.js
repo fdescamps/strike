@@ -1,6 +1,5 @@
 Strike.onready( function() {
     Demo.init();
-    $$("div span")
 });
 
 var Demo = {
