@@ -279,7 +279,8 @@
             options = options || {};
             options.type = options.type || "push";
             options.reverse = options.reverse || false;
-
+            
+            
             $.addClass( toPage, options.type + " in current" + ( options.reverse ? " reverse" : "" ) );
             $.addClass( fromPage, options.type + " out" + ( options.reverse ? " reverse" : "" ) );
 
@@ -291,17 +292,18 @@
                     $.removeClass(fromPage, "reverse");
                 }
                 this.removeEventListener("webkitAnimationEnd", webAnimEnd, false);
+                if (options.afterTransition) options.afterTransition()
             }, false);
         },
-        show: function(page){ transition( 'show', 0.35, 'linear', false, page ); },
-        flip: function(page){ transition( 'flip', 0.65, 'linear', false, page ); },
-        unflip: function(page){ transition( 'flip', 0.65, 'linear', true, page ); },
-        next: function(page){ transition( 'push', 0.35, 'ease', false, page ); },
-        prev: function(page){ transition( 'push', 0.35, 'ease', true, page ); },
-        rotateRight: function(page){ transition( 'cube', 0.55, 'ease', false, page ); },
-        rotateLeft: function(page){ transition( 'cube', 0.55, 'ease', true, page ); },
-        fade: function(page){ transition( 'fade', 0.35, 'linear', false, page ); },
-        swap: function(page){ transition( 'swap', 0.55, 'linear', false, page ); },
+        show: function(page, afterTransition){ transition( 'show', 0.35, 'linear', false, page, null, afterTransition); },
+        flip: function(page, afterTransition){ transition( 'flip', 0.65, 'linear', false, page, null,afterTransition ); },
+        unflip: function(page, afterTransition){ transition( 'flip', 0.65, 'linear', true, page, null,afterTransition ); },
+        next: function(page, afterTransition){ transition( 'push', 0.35, 'ease', false, page, null,afterTransition ); },
+        prev: function(page, afterTransition){ transition( 'push', 0.35, 'ease', true, page, null,afterTransition ); },
+        rotateRight: function(page, afterTransition){ transition( 'cube', 0.55, 'ease', false, page, null,afterTransition ); },
+        rotateLeft: function(page, afterTransition){ transition( 'cube', 0.55, 'ease', true, page, null,afterTransition ); },
+        fade: function(page, afterTransition){ transition( 'fade', 0.35, 'linear', false, page, null,afterTransition ); },
+        swap: function(page, afterTransition){ transition( 'swap', 0.55, 'linear', false, page, null,afterTransition ); },
         reverseTransitions : {
             'rotateRight': 'rotateLeft',
             'rotateLeft': 'rotateRight',
@@ -398,12 +400,13 @@
             }
         },
         // Standard transitions
-        transition = function( type, duration, easing, isReverse, toPage, fromPage ){
+        transition = function( type, duration, easing, isReverse, toPage, fromPage, afterTransition ){
             cleanPage(toPage);
+            
             fromPage = fromPage || Strike.currentPage;
             Strike.previousPage = fromPage;
             var $toPage = $(toPage);
-            Strike.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse } );
+            Strike.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse, afterTransition : afterTransition } );
             Strike.currentPage = toPage;
 
             // Rebind scrollers

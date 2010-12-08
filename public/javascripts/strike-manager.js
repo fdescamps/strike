@@ -57,11 +57,13 @@
                     StrikeMan.trigger('strike-page-loaded', currentState);
                     
                     // Do transition.
-                    Strike[currentState.transition]('#' + currentState.id);
+                    Strike[currentState.transition]('#' + currentState.id, function(){
+                        // Fire loaded method on controller
+                        controller = StrikeMan.controllers[currentState.id];
+                        controller && controller.loaded && controller.loaded(message.data);
+                    });
                     
-                    // Fire loaded method on controller
-                    controller = this.controllers[currentState.id];
-                    controller && controller.loaded && controller.loaded(message.data);
+                    
                     break;
                     
                 case 'error':
