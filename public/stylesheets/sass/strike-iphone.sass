@@ -9,8 +9,8 @@
 @include global-reset
 
 $colortheme: #BBB0A6 !default
-$colordark: darken_percent($colortheme, 30%)
-$colorlight: lighten_percent($colortheme, 50%)
+$colordark: darken($colortheme, 30)
+$colorlight: lighten($colortheme, 50)
 $images: /public/images/mobile
 
 // Should work in compass but currently not
@@ -47,7 +47,7 @@ body
     min-height: 320px
 
 =iphone-header($colorheader: $colortheme, $fontsize: "15pt")
-    $colorheaderdark: darken_percent($colorheader, 30%)
+    $colorheaderdark: darken($colorheader, 30)
     +fancy-gradient($colorheader, $colorheaderdark)
     $height: 37px
     text-align: center
@@ -65,7 +65,7 @@ body
 =page-title
     color: $colordark
     font-size: 24pt
-    +text-shadow(lighten_percent($colortheme, 60%), 1px, 1px, 0px)
+    +text-shadow(lighten($colortheme, 60), 1px, 1px, 0px)
 
 =iphone-page
     width: 100%
