@@ -62,8 +62,6 @@
                         controller = StrikeMan.controllers[currentState.id];
                         controller && controller.loaded && controller.loaded(message.data);
                     });
-                    
-                    
                     break;
                     
                 case 'error':

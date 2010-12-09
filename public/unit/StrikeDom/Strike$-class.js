@@ -29,7 +29,6 @@ test("Class manipulation", function(){
     $.addClass( "#qunit-fixture span", "addToMultiple");
     var hasClassCount = 0;
     $.each( "#qunit-fixture span", function(item){
-        console.log(item)
         if( $.hasClass( item, "addToMultiple" )){
             hasClassCount++;
         }

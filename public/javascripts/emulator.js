@@ -1,26 +1,32 @@
-//added in emulator
-
-Lucky = application = null
+(function(){
+    var application,
+        Strike,
+        emulator;
+        
 emulator = {
     orientationIndex: 3,
     init: function(){
         var _this = this;
+
+        // Handle the shift-arrow keys for orientation
         $('body').keyup(function(e){
             if((e.keyCode == 37 || e.keyCode == 39) && e.shiftKey === true){
                 _this.changeOrientation( e.keyCode == 37 ? -1 : 1 );
             }
         });
-        application = $('#emulatorContent')[0].contentWindow
-        //override Lucky.locate for using the emulator geopicker
-        $(application).load(function(){
-          Lucky = this.Strike
-          Lucky.locate = function(handler){
-            Lucky.handlers['locate'] = handler;
-            parent.window.emulator.geoPicker( handler );
-          }
-        })
+
+        application = $("#emulatorContent")[0].contentWindow;
         
+        //override Strike.locate for using the emulator geopicker
+        $( application ).load( function(){
+            Strike = this.Strike;
+            Strike.locate = function( handler ){
+                Strike.handlers['locate'] = handler;
+                parent.window.emulator.geoPicker( handler );
+            }
+        })        
     },
+
     changeOrientation: function( direction ){
         var degrees = [ 90, 180, -90, 0 ];
         this.orientationIndex = ( this.orientationIndex + direction ) % degrees.length;
@@ -44,8 +50,9 @@ emulator = {
                 break;
         }
         
-        $("#emulatorContent")[0].contentWindow.Lucky.orientationChange( orientation );
+        Strike.orientationChange( orientation );
     },
+    
     geoPicker: function( handler ){
           var _this = this;
           // Open the Google Map window... 
@@ -55,11 +62,9 @@ emulator = {
               var $this = jQuery( this );
               $this.fadeIn();
               this.contentWindow.geopicker.setCallback( function( pos ){
-                  if( pos == null ){
-                      $this.fadeOut();
-                      return;
+                  if( pos && handler ){
+                      handler( { latitude: pos.wa, longitude: pos.xa } );
                   }
-                  Lucky.commandResult('locate', { latitude:pos.b, longitude:pos.c, accuracy:200 });
                   // Hide the map
                   setTimeout(function(){
                       $this.fadeOut();
@@ -69,6 +74,10 @@ emulator = {
 
       },
       clearStorage : function(){
-          application.localStorage.clear()
+          application.localStorage.clear();
       }
 };
+
+    // Expose to global scope
+    window.emulator = emulator;
+})();
