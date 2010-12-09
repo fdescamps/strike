@@ -16,7 +16,7 @@ test("Class manipulation", function(){
     var hadClass = $.hasClass( div, "class2" );
     $.addClass( div, "class2" )
     ok( $.hasClass( div, "class2" ) && !hadClass, "$.addClass single class" )
-    
+
     $.addClass( div, "class2")
     ok( !$.hasClass( div, "class2 class2" ), "$.addClass doesn't add same class twice")
     
@@ -29,6 +29,7 @@ test("Class manipulation", function(){
     $.addClass( "#qunit-fixture span", "addToMultiple");
     var hasClassCount = 0;
     $.each( "#qunit-fixture span", function(item){
+        console.log(item)
         if( $.hasClass( item, "addToMultiple" )){
             hasClassCount++;
         }

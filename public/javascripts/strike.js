@@ -20,8 +20,9 @@
         mapElements = function(func, args){
             var element = $(args[0]),
                 restOfArgs = Array().slice.call(args,1);
-            if(!element) return null;        
-            if(!element.length){
+            if(!element) return null;
+            // Grumble... window has a "length" property = # of iframes. Have to check for window
+            if(!element.length || element === window ){
                 return func.apply(this, [element].concat(restOfArgs));
             }
             else {
