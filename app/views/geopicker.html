@@ -15,97 +15,13 @@
 		
 		<script src="@{'/public/javascripts/lib/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script src="@{'/public/javascripts/tools/geopicker.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			
 			$(document).ready(function(){
 				geopicker.init();
 			});
-			
-			var geopicker = {
-				map: null,
-				clickTimer: null,
-				onSelect: null,
-				defaultZoom : window.localStorage.getItem('emulator.geopicker.zoom.preference')-0,
-				defaultLocation : window.localStorage.getItem('emulator.geopicker.default.latlng'),
-				setCallback: function( callback ){
-					this.onSelect = callback;
-				},
-				init: function(){
-				    if (!this.defaultZoom) window.localStorage.setItem('emulator.geopicker.zoom.preference', 16)
-				    if (!this.defaultLocation) {
-				        window.localStorage.setItem('emulator.geopicker.default.latlng', '(48.856667,2.350833)')
-			        }
-				    var latlng = /\(([\-0-9.]*)\s*,\s*([\-0-9.]*)\)/.exec(window.localStorage.getItem('emulator.geopicker.default.latlng'))
-				    this.defaultLocation = new google.maps.LatLng(latlng[1]-0, latlng[2]-0)
-                    
-					var _this = this;
-					// Attach event handlers
-					$( "#mapSearch" ).click( function(){ _this.geocodeAddress(); });
-					$( "#mapCancel" ).click( function(){
-						if(_this.onSelect)
-							_this.onSelect( null );
-					});
-					
-					// Set up map
-				
-					var mapOptions = {
-					  zoom: this.defaultZoom,
-					  center: this.defaultLocation,
-					  mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
 
-					map = new google.maps.Map( $("#mapCanvas")[0], mapOptions);
-					google.maps.event.addListener(map, "click", function(obj) {
-						if( _this.clickTimer ){
-							// Double click
-							clearTimeout( _this.clickTimer );
-							_this.clickTimer = null;
-							return;
-						}
-						else {
-							// Single click
-							_this.clickTimer = setTimeout( function(){
-								var latlng = obj.latLng;
-					          	if (latlng) {
-					          	    window.localStorage.setItem('emulator.geopicker.default.latlng', latlng)
-									var marker = new google.maps.Marker({
-									      position: latlng,
-									      map: map
-									});
-									if(_this.onSelect)
-										_this.onSelect( latlng );	
-					          	}
-							}, 400);
-						}					
-			        });
-			        google.maps.event.addListener(map, 'zoom_changed', function() {
-                        geopicker.defaultZoom = this.zoom
-                        window.localStorage.setItem('emulator.geopicker.zoom.preference', this.zoom);
-                    });
-                    
-				},
-				
-				geocodeAddress: function(){
-					var address = $("#mapSearchLocation").val();
-					var geocoder = new google.maps.Geocoder();
-					if (geocoder) {
-						geocoder.geocode( { 'address': address}, function(results, status) {
-							if (status == google.maps.GeocoderStatus.OK) {
-								map.setCenter(results[0].geometry.location);
-								window.localStorage.setItem('emulator.geopicker.default.latlng', results[0].geometry.locationlng);
-							} 
-							else {
-								if( status === google.maps.GeocoderStatus.ZERO_RESULTS ){
-									alert( 'No results found.')
-								} 
-								else {
-									alert( 'Geocode was not successful: ' + status);
-								}
-							}
-						});
-					}
-				}
-			}
 		</script>
 	</body>
 </html>
