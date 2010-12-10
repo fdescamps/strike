@@ -1,11 +1,12 @@
 (function() {
-    var application /* a reference to the app inside the iframe */,
-        Strike /* a reference to the Strike instance that is inside the app */,
-        emulator,
-        keyCodes = {
-            LEFT: 37,
-            RIGHT: 39
-        };
+
+var application /* a reference to the app inside the iframe */,
+    Strike /* a reference to the Strike instance that is inside the app */,
+    emulator,
+    keyCodes = {
+        LEFT: 37,
+        RIGHT: 39
+    };
 
 emulator = {
     orientationIndex: 3 /* default to portrait */,
@@ -74,6 +75,7 @@ emulator = {
     }
 };
 
-    // Expose to global scope
-    window.emulator = emulator;
+// Expose to global scope
+window.emulator = emulator;
+
 })();
