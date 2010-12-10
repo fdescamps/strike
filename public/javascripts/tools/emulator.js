@@ -23,7 +23,7 @@ emulator = {
 
             //override Strike.locate for using the emulator geopicker
             Strike.locate = function( handler ) {
-                Strike.handlers["locate"] = handler;
+                Strike.handlers[ "locate" ] = handler;
                 parent.window.emulator.geoPicker( handler );
             };
         });

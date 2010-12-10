@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
         <title>Emulator</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
         <link rel="stylesheet" href="@{'/public/stylesheets/strike-emulator.css'}" type="text/css" media="screen" charset="utf-8">
-        <script src="@{'/public/javascripts/lib/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
-        <script src="@{'/public/javascripts/tools/emulator.js'}" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript" charset="utf-8">
-            $( document ).ready(function(){
-                emulator.init();
-            });
-        </script>
     </head>
     <body>
         <div class="emulator up">
             <iframe id= "emulatorContent" class="up" src="/">
-                
+
             </iframe>
             <iframe id="geopicker">
-                
+
             </iframe>
         </div>
+        <script src="@{'/public/javascripts/lib/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/tools/emulator.js'}" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+
+            $( document ).ready( function() {
+                emulator.init();
+            });
+
+        </script>
     </body>
 </html>
