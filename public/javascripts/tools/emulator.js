@@ -12,14 +12,14 @@ emulator = {
 
     init: function() {
         var _this = this;
-        
+
         // Grab a handle to the application inside the iframe
         application = $( "#emulatorContent" )[ 0 ].contentWindow;
 
         $( application ).load( function() {
             // Grab a handle to Strike inside the app
             Strike = this.Strike;
-            
+
             //override Strike.locate for using the emulator geopicker
             Strike.locate = function( handler ) {
                 Strike.handlers["locate"] = handler;
@@ -43,7 +43,7 @@ emulator = {
         if( this.orientationIndex < 0 ) {
             this.orientationIndex = degrees.length - 1;
         }
-        
+
         // Set the correct class
         $( "div.emulator,#emulatorContent" )
             .removeClass( "up down left right" )
@@ -52,8 +52,8 @@ emulator = {
         // Fire the orientation change event
         Strike && Strike.orientationChange( rotation[ this.orientationIndex ] );
     },
-    
-    // Open the Google Map window... 
+
+    // Open the Google Map window...
     geoPicker: function( handler ) {
         jQuery( "#geopicker" )
             .attr( "src", "@geopicker" )
