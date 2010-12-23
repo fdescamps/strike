@@ -293,18 +293,19 @@
                     $.removeClass(fromPage, "reverse");
                 }
                 this.removeEventListener("webkitAnimationEnd", webAnimEnd, false);
-                if (options.afterTransition) options.afterTransition()
+                if (options.callback) options.callback();
             }, false);
         },
-        show: function(page, afterTransition){ transition( 'show', 0.35, 'linear', false, page, null, afterTransition); },
-        flip: function(page, afterTransition){ transition( 'flip', 0.65, 'linear', false, page, null,afterTransition ); },
-        unflip: function(page, afterTransition){ transition( 'flip', 0.65, 'linear', true, page, null,afterTransition ); },
-        next: function(page, afterTransition){ transition( 'push', 0.35, 'ease', false, page, null,afterTransition ); },
-        prev: function(page, afterTransition){ transition( 'push', 0.35, 'ease', true, page, null,afterTransition ); },
-        rotateRight: function(page, afterTransition){ transition( 'cube', 0.55, 'ease', false, page, null,afterTransition ); },
-        rotateLeft: function(page, afterTransition){ transition( 'cube', 0.55, 'ease', true, page, null,afterTransition ); },
-        fade: function(page, afterTransition){ transition( 'fade', 0.35, 'linear', false, page, null,afterTransition ); },
-        swap: function(page, afterTransition){ transition( 'swap', 0.55, 'linear', false, page, null,afterTransition ); },
+        show: function(page, callback){ transition( 'show', 0.35, 'linear', false, page, null, callback ); },
+        flip: function(page, callback){ transition( 'flip', 0.65, 'linear', false, page, null, callback ); },
+        unflip: function(page, callback){ transition( 'flip', 0.65, 'linear', true, page, null, callback ); },
+        next: function(page, callback){ transition( 'push', 0.35, 'ease', false, page, null, callback ); },
+        prev: function(page, callback){ transition( 'push', 0.35, 'ease', true, page, null, callback ); },
+        rotateRight: function(page, callback){ transition( 'cube', 0.55, 'ease', false, page, null, callback ); },
+        rotateLeft: function(page, callback){ transition( 'cube', 0.55, 'ease', true, page, null, callback ); },
+        fade: function(page, callback){ transition( 'fade', 0.35, 'linear', false, page, null, callback ); },
+        swap: function(page, callback){ transition( 'swap', 0.55, 'linear', false, page, null, callback ); },
+
         reverseTransitions : {
             'rotateRight': 'rotateLeft',
             'rotateLeft': 'rotateRight',
@@ -401,13 +402,13 @@
             }
         },
         // Standard transitions
-        transition = function( type, duration, easing, isReverse, toPage, fromPage, afterTransition ){
+        transition = function( type, duration, easing, isReverse, toPage, fromPage, callback ){
             cleanPage(toPage);
             
             fromPage = fromPage || Strike.currentPage;
             Strike.previousPage = fromPage;
             var $toPage = $(toPage);
-            Strike.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse, afterTransition : afterTransition } );
+            Strike.Transition( $toPage, $(fromPage), { type: type, reverse: isReverse, callback : callback } );
             Strike.currentPage = toPage;
 
             // Rebind scrollers

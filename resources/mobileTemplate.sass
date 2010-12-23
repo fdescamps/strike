@@ -1,0 +1,55 @@
+// Set your theme colours here
+!colortheme = #888
+
+@import sass/strike-iphone.sass
+// Now you also have colordark & colorlight
+
+body, html
+    height: 100%
+
+.strike-page
+    +v-gradient(!colortheme,!colordark)
+    width: 100%
+    min-height: 100%
+
+.strike-page > h1
+    +iphone-header(!colortheme)
+    width: 100%
+    padding: 0
+    
+.strike-page h2
+    margin-top: 20px
+    font-size: 16pt
+    text-shadow: #222 1px 1px 1px
+    color: #fff
+    padding-left: 20px
+
+.strike-page ul
+    background-color: #eee
+    +v-gradient(#e5e5e5,#ffffff)
+    padding: 10px
+    margin: 10px
+    -webkit-border-radius: 5px
+    -webkit-box-shadow: 1px 1px 3px #222
+    li:first-child
+        border-top: 0
+    li:last-child
+        border-bottom: 0
+    li
+        font-size: 14pt
+        padding: 10px
+        border-bottom: 1px solid #ccc
+        border-top: 1px solid #fff
+        a
+            display: block
+            background: transparent url(/public/images/mobile/arrow.png) no-repeat 0px right
+            padding-right: 20px
+            min-height: 25px
+
+.back
+    +iphone-back-button
+    +iphone-left-button
+
+.about-button
+    +iphone-button
+    +iphone-right-button

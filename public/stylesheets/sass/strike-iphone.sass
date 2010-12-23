@@ -62,11 +62,6 @@ body
     +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
     +ellipsis
 
-=page-title
-    color: $colordark
-    font-size: 24pt
-    +text-shadow(lighten($colortheme, 60), 1px, 1px, 0px)
-
 =iphone-page
     width: 100%
     height: 100%
@@ -92,11 +87,36 @@ body
     left: 5px
     right: auto
 
-=iphone-button($color: $colortheme)
+=iphone-button-theme($color: $colortheme)
     +fancy-button($color)
+    
+=iphone-native-base($imagebase: $images+ /back_button, $pixels: 0 11 0 11)
+    -webkit-mask-box-image: url($imagebase+"_mask.png") $pixels repeat stretch
+    -webkit-border-image: url($imagebase+".png") $pixels repeat stretch
+    font-family: Helvetica
+    font-weight: bold
+    font-size: 11px
+    color: rgb(255, 255, 255)
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0px
+    text-align: center
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+    height: 30px
+    width: 44px
+    line-height: 30px
+    border-width: 0 11px 0 11px
+    &.selected
+        -webkit-border-image: url($imagebase+"_active.png") $pixels repeat stretch
+    &:active
+        -webkit-border-image: url($imagebase+"_active.png") $pixels repeat stretch
+    -webkit-user-select: none
 
+=iphone-button($imagebase: $images+ /button, $pixels: 0 11 0 11)
+    +iphone-top-button
+    +iphone-native-base($images + /button)
 
-=iphone-back-button($imagebase: $images+ /back_button, $pixels: 0 4 0 11)
+=iphone-page-back-button($imagebase: $images+ /back_button, $pixels: 0 4 0 11)
     -webkit-mask-box-image: url($imagebase+"_mask.png") $pixels repeat stretch
     -webkit-border-image: url($imagebase+".png") $pixels repeat stretch
     font-family: Helvetica
@@ -118,9 +138,21 @@ body
         -webkit-border-image: url($imagebase+"_active.png") $pixels repeat stretch
     -webkit-user-select: none
 
-=iphone-forward-button
-    +iphone-back-button($images + /forward_button, 0 11 0 4)
+// Default to top button - use page-back-button for other places
+=iphone-back-button
+    +iphone-top-button
+    +iphone-page-back-button
+
+=iphone-page-forward-button
+    +iphone-page-back-button($images + /forward_button, 0 11 0 4)
     border-width: 0 11px 0 4px
+
+// Default to top button - use page-back-button for other places    
+=iphone-forward-button
+    +iphone-top-button
+    +iphone-page-forward-button
+
+
 =iphone-list
     list-style: none
     margin: 0
@@ -147,3 +179,14 @@ body
 .strike-page
     display: none
     position: absolute !important
+
+
+=page-title
+    color: $colordark
+    font-size: 18pt
+    +text-shadow($colorlight, 1px, 1px, 0px)
+    
+.strike-title
+    +page-title
+
+

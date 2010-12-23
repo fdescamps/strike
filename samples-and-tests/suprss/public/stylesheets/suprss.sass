@@ -1,5 +1,6 @@
-!colortheme = #666
-!coloraux = #909
+!colortheme = #aaa
+!coloraux = blue
+
 @import sass/strike-iphone.sass
 
 body, html
@@ -10,11 +11,7 @@ body > div
 
 .back
     +iphone-back-button
-    position: absolute
-    z-index: 10
-    left: auto
-    right: 10px
-    top: 15px
+    +iphone-left-button
 a
     text-decoration: none
     color: #000
@@ -36,7 +33,7 @@ h3
 
 .tabBarView h1
     +iphone-header()
-    +v-gradient(#a6a6a6, #727272)
+
     font-size: 18pt
     color: #000
     text-shadow: #ddd 1px 1px 1px
@@ -88,8 +85,8 @@ h3
                 border-bottom: 0
 
 .tabBarControls
-    +iphone-header(!coloraux)
-    +v-gradient(#a6a6a6, #727272)
+    +iphone-header()
+    /*+v-gradient(#a6a6a6, #727272)*/
     height: 40px
     position: absolute
     bottom: 0

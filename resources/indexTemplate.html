@@ -1,0 +1,36 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<!-- home -->
+<div id="home" class="strike-page">
+    <h1>
+        <span class="strike-title">Welcome</span>
+        <span class="about-button" ontouchend="StrikeMan.flip('about')">About</span>
+    </h1>
+    <h2>Strike!</h2>
+    <ul>
+        <li>Buy milk</li>
+        <li>Take out the trash</li>
+        <li>Learn Strike!</li>
+    </ul>
+</div>
+
+<!-- about -->
+<div id="about" class="strike-page">
+    <h1>
+        <span class="strike-title">About</span>
+        <div class="back button" ontouchend="StrikeMan.message('back')">Back</div>
+    </h1>
+    <ul>
+        <li>About my app...</li>
+    </ul>
+</div>
+
+<!-- page scripts -->
+<script type="text/javascript" charset="utf-8" src="@{'/public/javascripts/mobile.js'}"></script>
+<script type="text/javascript" charset="utf-8">
+    // mobileApp object is defined in javascripts/mobile.js
+    Strike.onready(function(){
+        mobileApp.init();
+    });
+</script>
