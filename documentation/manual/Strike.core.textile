@@ -114,6 +114,8 @@ h2. The manager
 
 Overview of the MVC manager *TODO* is this in Strike?
 
+See Strike.Manager
+
 h3. The events/messaging system
 
 bc. Observing events: Manager.observe('favorites-updated', function(){
@@ -180,6 +182,8 @@ Use Strike.Transition
 h2. Overlays and panels
 
 Using overlays
+
+Overlay for Ajax
 
 Using panels. *TODO* do any apps use this?
 
@@ -298,7 +302,7 @@ bc. var messages = {
 
 h3. Set up
 
-Pass your messages and teh lang you want to use:
+Pass your messages and the language you want to use:
 
 Strike.setMessages(message,'fr');
 Strike.setMessages(message,'en');
@@ -322,7 +326,6 @@ h3. Using
 
 <h1 id="profile.heading" class='i18n'>User Profile</h1>
 <label id="profile.age" class='i18n'>Age</label>:<input type="text" id="age" />
-
 
 Strike.message('no_geolocation')
 

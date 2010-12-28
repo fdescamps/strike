@@ -6,7 +6,7 @@ If you have your favorite Ajax library that you just can't live without, then fr
 
 h2. Methods
 
-Strike$ is a small library for working with the DOM
+Strike$ is a small library for working with the DOM. The impro It doesn't use the "jQuery" builder
 
 * $('selector', context)
 * Iterators and helpers
@@ -87,14 +87,14 @@ h3. Ajax commands
 
 Strike provides a helper for making AJAX requests. There are two ways to call the function:
 
-$.ajax(method, url, callback)
+@$.ajax(method, url, callback)@
     
 Providing a method, url, and callback to the $.ajax function will return the JSON data at the url location.
 method: HTTP method (eg: GET, POST)
 url: location of the data to fetch (must be on the current domain, due to cross-domain restrictions)
 callback: the code to run once the data has been fetched. The function accepts one parameter, which is the data that is returned.
 
-$.ajax( "GET", "data.js", function(items){
+bc. $.ajax( "GET", "data.js", function(items){
     // Do something with "items"
     alert(items.length);
 });

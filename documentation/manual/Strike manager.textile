@@ -11,6 +11,8 @@ Manager.show('#page'); (or fade,flip,next) - short for ...
 
 h1. Events
 
+Manger uses events to 
+
 h2. ready event
 
 Fires after Strike.onready

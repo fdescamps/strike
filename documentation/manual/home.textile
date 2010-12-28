@@ -15,7 +15,7 @@ QUESTIONS:
 
 h1. Here is Strike mobile
 
-Welcome to the Strike Module. Ready to make stuff for your fingers? Strike is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!
+Welcome to the Strike Mobile. Ready to make stuff for your fingers? Strike is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!
 
 You can use as little or as much as you need - you can combine it with your favorite DOM library, or use ours.
 
@@ -42,8 +42,14 @@ iScroll - fixed position with scrollable area
 h1. Starting a new project
 
 Once you have your killer idea, it's time to get to work.
-
 Sketch out your app in HTML - defining the pages as DIV elements
+
+h2. With Play
+
+play new myProject --with strike 
+(requires the sass module)
+
+h2. By hand
 
 * add javascript lucky library
 
@@ -58,7 +64,6 @@ The Strike framework includes a handy web-based iPhone emulator for doing quick 
 http://localhost:9000/@emulator
 
 The emulator can be rotated by using the shift key, with the left and right arrow keys. The "phone" will be rotated to the left or right, and the orientation event will fire.
-
 
 h3.GEO simulation
 
