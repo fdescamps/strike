@@ -20,10 +20,22 @@ def after(**kargs):
     if command == 'new':
         print "Installing mobile template"
         module_dir = inspect.getfile(inspect.currentframe()).replace("commands.py", "")
-        shutil.copyfile(os.path.join(module_dir, 'resources', 'indexTemplate.html'), os.path.join(app.path, 'app', 'views', 'Application', 'index.html'))
-        shutil.copyfile(os.path.join(module_dir, 'resources', 'mainTemplate.html'), os.path.join(app.path, 'app', 'views', 'main.html'))
-        shutil.copyfile(os.path.join(module_dir, 'resources', 'mobileTemplate.sass'), os.path.join(app.path, 'public', 'stylesheets', 'mobile.sass'))
-        shutil.copyfile(os.path.join(module_dir, 'resources', 'mobileTemplate.js'), os.path.join(app.path, 'public', 'javascripts', 'mobile.js'))
+        src_dir = os.path.join(module_dir, 'resources', 'skeleton')
+
+        # TODO: automatically recurse skeleton (shutil.copytree won't work when dest folder exists)
+        template_files = [
+            'app/views/Application/index.html',
+            'app/views/main.html',
+            'public/javascripts/mobile.js',
+            'public/stylesheets/mobile.sass'
+        ]
+        
+        # copy the files to the project
+        for url in template_files:
+            os_url = os.path.join(*url.split('/'))
+            src_file = os.path.join(module_dir, src_dir, os_url)
+            dst_file = os.path.join(app.path, os_url)
+            shutil.copyfile(src_file, dst_file)
         
         print "Adding SASS module requirement to conf"
         ac = open(os.path.join(app.path, 'conf/application.conf'), 'r')
@@ -39,4 +51,3 @@ def after(**kargs):
         ac = open(os.path.join(app.path, 'conf/application.conf'), 'w')
         ac.write(conf)
         print "done"
-

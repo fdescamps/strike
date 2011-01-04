@@ -1,5 +1,168 @@
-/* 
-TODO:
+h1. Strike mobile
+
+Welcome to the Strike Mobile. Ready to make stuff for your fingers? Strike is a toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more! You can use as little or as much as you need - you can combine it with your favorite DOM library, or use ours.
+
+p(note). To get started quickly, jump to the "Starting a new project":#Startinganewproject (or if you are using the Play! framework - check out "using play")
+
+h2. An overview
+
+Tech overview - features and "comprised of 4 components"
+
+h3. Features
+
+* transitions
+* templating
+* geo location
+* internationalization
+* Web-based iPhone emulator
+
+
+Strike is comprised of a few parts that are organised like this:
+
+!images/strikelayers!
+
+h3. "Strike - the core":Strike.core
+
+At the base is the core library
+
+h3. "Strike$ - the DOM helper":Strike$
+
+Also at the base level is the dom helper
+
+h3. "StrikeMan - the manager":StrikeMan
+
+On top of the base is a manager for organising your logic
+
+h3. "StrikeCon - controls library":StrikeControls
+
+And a controls library for implementing some higher level behaviour
+
+h2. Starting a new project
+
+Once you have your killer idea, it's time to get to work.
+Sketch out your app in HTML - defining the pages as DIV elements
+
+h3. The Strike approach
+
+It's different to other frameworks - focused on more full featured applications
+
+h3. Using the Play! framework
+
+play new my-project --with strike 
+(requires the sass module)
+
+This will..
+
+bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/build/strike-min.js'}"></script>
+
+bc. Strike.onready(function(){
+    StrikeMan.show("home");
+});
+
+
+h3. In a standalone project
+
+* add javascript lucky library
+
+bc. <script type="text/javascript" charset="utf-8" src="path/to/strike-min.js"></script>
+
+On ready...
+
+bc. Strike.onready(function(){
+    Strike.show("#home");
+})
+
+
+h2. Strike tools
+
+Strike has some built in tools...
+
+h3. Going Native
+
+TODO: what to outline?
+
+h3. Testing with emulator
+
+The Strike framework includes a handy web-based iPhone emulator for doing quick tests on your app as you develop. It requires a webkit-based browser.
+
+http://localhost:9000/@emulator
+
+The emulator can be rotated by using the shift key, with the left and right arrow keys. The "phone" will be rotated to the left or right, and the orientation event will fire.
+
+h4. GEO simulation
+
+The play!mobile emulator includes a handy "map picker" for faking your geolocation - 
+Strike.locate() will popup a map. Can search, or drag to a point. Single click to select.
+
+h3. Theming
+
+SASS.
+
+h3. Helpful play tags
+
+* add iPhone/iPod meta for handling zoom, screen size.
+in main.html : 
+
+bc. 
+#{meta-iphone-webapp /}
+
+h2. Development
+
+h3. Modifying & Building
+
+This module should help any developers to make a web mobile application
+
+* provide a unifying way to switch betwwen mobile and desktop version
+* simulate geolocation
+* simulate screen size
+* simulate touch events
+* simulate orientation change
+* provide tools for handling offline data and affline events
+
+h3. Unit testing
+
+* provide unit and functional testing for the application
+
+h2. Dependencies
+
+Strike builds on some cool libraries
+
+h3. Third party libraries
+
+It makes use of: 
+* Base.js -  simple object-oriented class extension
+* SASS - for CSS generation
+* John Resig's microtemplating - templating
+* iScroll - fixed position with scrollable area
+
+h3. "Reserved" words
+
+Global scoped variables:
+* iScroll
+* Base
+* StrikeMan
+* Strike$ 
+* $ (can be changed with Strike$.noConflict)
+* StrikeMan
+* StrikeCon
+
+DEPRECATED: Prototype additions (See Strike$ docs)
+
+h3. CSS Class & IDs
+
+Classes and IDs that are meaningful to Strike
+
+* .back
+* .button
+* .page
+* .i18n
+
+h2. Road Map
+
+Where we are headed...
+
+h4. TODO
+
 * fix generalised buttons (or enforce ontouchend="code()")
 * document autotitle standards
 * figure out tabBaView for real.
@@ -11,129 +174,5 @@ QUESTIONS:
 * autotitles - deafult/override behaviour?
 * do window.scrollTo(0,1) automatically?
 * message system in core, or in manager? - can't use messaging in core if seperate.
-*/
-
-h1. Here is Strike mobile
-
-Welcome to the Strike Mobile. Ready to make stuff for your fingers? Strike is a small Javascript toolbox and framework to help you quickly develop mobile web applications for modern smart phones and mobile devices. It provides page transitions, commonly used styles for UI elements, GEO location and orientation handling, test tools, and more!
-
-You can use as little or as much as you need - you can combine it with your favorite DOM library, or use ours.
-
-h2. Overview
-
-Strike is comprised of a few parts:
-* Strike$ DOM helper
-* The Strike core library
-* Web-based iPhone emulator
-
-Features:
-* transitions
-* templating
-* geo location
-* internationalization
-
-Third party:
-It makes use of: 
-Base.js -  simple object-oriented class extension
-SASS - for CSS generation
-John Resig's microtemplating - templating
-iScroll - fixed position with scrollable area
-
-h1. Starting a new project
-
-Once you have your killer idea, it's time to get to work.
-Sketch out your app in HTML - defining the pages as DIV elements
-
-h2. With Play
-
-play new myProject --with strike 
-(requires the sass module)
-
-h2. By hand
-
-* add javascript lucky library
-
-bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
-
-Add Strike.onready() - Strike.show("#home");
-
-h2. Testing with emulator
-
-The Strike framework includes a handy web-based iPhone emulator for doing quick tests on your app as you develop. It requires a webkit-based browser.
-
-http://localhost:9000/@emulator
-
-The emulator can be rotated by using the shift key, with the left and right arrow keys. The "phone" will be rotated to the left or right, and the orientation event will fire.
-
-h3.GEO simulation
-
-The play!mobile emulator includes a handy "map picker" for faking your geolocation - 
-Strike.locate() will popup a map. Can search, or drag to a point. Single click to select.
-
-h1. Reference
-
-* Strike core
-See core docs
-* Strike $
-See $ docs
-* Strike controls
-included?
-* Developing and extending Strike
-See core docs
-
-h1. Some tricks
-
-* add iPhone/iPod meta for handling zoom, screen size.
-in main.html : 
-
-bc. 
-#{meta-iphone-webapp /}
 
 
-
-h2. Road Map
-
-We are trying to describe what this mobile module can do
-
-h3. Development
-
-h4. Day to day development 
-
-This module should help any developers to make a web mobile application
-
-    * provide a unifying way to switch betwwen mobile and desktop version
-    * simulate geolocation
-    * simulate screen size
-    * simulate touch events
-    * simulate orientation change
-    * provide tools for handling offline data and affline events
-
-h4. Continous integration
-
-    * provide unit and functional testing for the application
-    
-h3. Production
-
-This module will bring a production mode for managing
-
-    * file size: compression of css/html/images in 1 file
-    * application cache
-    
-h2. Strike reserved words & classes
-
-* Global scoped variables:
-iScroll
-Base
-Strike$
-$ (can be changed with Strike$.noConflict)
-Strike
-StrikeMan
-StrikeCon
-
-DEPRECATED: Prototype additions (See Strike$ docs)
-
-* Classes and IDs that are meaningful to Strike
-.back
-.button
-.page
-.i18n

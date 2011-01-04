@@ -1,0 +1,95 @@
+h1. The Strike Manager
+
+If your Strike app moves beyond a bunch of static "brochure" pages then it's smart to think about how your application logic is structured. Strike includes an event system and application manager (called "StrikeMan") for this purpose: it handles the state of your application and lets you know when things are done, or need to be done: for example; when pages are transitioned, or when you need to load some data.
+
+p(note). StrikeMan, the Strike manager, provides you with a useful structure as your application grows!
+
+h2. Overview
+
+There are two components to StrikeMan: the "generic events system":#Eventsystem, and the "application manager":#Manager. The application manager uses the event system for creating and responding to messages - but you are free to use it too if you like!
+
+The manager uses a very small javascript library: Base.js for implementing class-based inheritance. Base.js is packaged into Strike, so you don't need to include it (see "Dependencies":./home#Dependencies).
+
+h2. Event system
+
+One part of the manager is responsible for dealing with a generic event system. 
+
+h3. Creating events
+
+bc. StrikeMan.message({ eventType: 'my-event',
+    data: { } 
+});
+
+h3. Subscring to events
+
+bc. StrikeMan.observe( "my-event", function() { 
+});
+
+h3. Adding data
+
+bc. StrikeMan.message({ eventType: 'my-event',
+    data: {
+        id: 100,
+        name: "todo-item"
+    } 
+});
+
+h2. Manager
+
+bc. StrikeMan.message({
+    type: 'load',
+    id: "home",
+    transition:'show'
+});
+StrikeMan.show( "home" );
+StrikeMan.flip( "settings" );
+
+
+bc. StrikeMan.add('widget', {
+    label: 'My Widgets',
+    init: function() {},
+    load: function(data) {
+        var linkUrl = data.link.href;
+        $("#widget_shell").src = linkUrl;
+        StrikeMan.message('loaded');
+    },
+    loaded: function(data) {}
+});
+
+h3. Aliases
+
+Man.show => StrikeMan.event{}
+
+h2. Setup
+
+Can have a page with no controller, or a controller with no page - if you want.
+
+h2. Kicking things off.
+
+Start with
+Manager.show('#page'); (or fade,flip,next) - short for ...
+
+h2. Events
+
+Manger uses events to 
+
+h3. ready event
+
+Fires after Strike.onready
+
+h3. Load event
+
+Fires when someone calles Manager.message('load') on the controller (or the shortcut Manager.show('id') )
+You must call Manager.message('loaded') when done.
+
+h3. Loaded event
+
+If there was a load event on the controller, it needs to call the 
+Manager.message('loaded');
+when compleete.
+
+h2. Types of managers
+
+h2. Customising
+
+h3. Calling parent

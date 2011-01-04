@@ -23,7 +23,6 @@ define a page: block level element (typically a div) "strike-page"
 
 strike-title
 
-
 h2. Helpers
 
 *Strike.onMobile*

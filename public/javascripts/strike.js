@@ -26,7 +26,7 @@
                 return func.apply(this, [element].concat(restOfArgs));
             }
             else {
-                $.each(element, function(item){
+                return $.each(element, function(item){
                     mapElements(func, [item].concat(restOfArgs));
                 });
             }
@@ -421,8 +421,8 @@
             });
         },
         touchStart = function(e) {
-            var node = e.target;
-            var it = 0;
+            var node = e.target,
+		it = 0;
             // TODO: what?! it < 10??
             while(node != null && it < 10) {
                 if(node.tagName) {
@@ -444,8 +444,8 @@
             }
         },
         touchEnd = function(e) {
-            var node = e.target;
-            var it = 0;
+            var node = e.target,
+		it = 0;
             // TODO: what?! it < 10??
             while(node != null && it < 10) {
                 if(node.className) {

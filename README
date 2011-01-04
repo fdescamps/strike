@@ -5,6 +5,4 @@ you can also add state resolution in your commit message with :
 
 [#1 state:resolved]
 
-This is cool!
-
 documentation is in documentation/ directory

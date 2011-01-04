@@ -26,16 +26,16 @@
        completes.
 */
 var mobileApp = {
-    init: function(){
+    init: function() {
         StrikeMan.show("home");
     }
 };
 
-StrikeMan.add( 'home', {
-    ready: function(){},
-    load: function(){
+StrikeMan.add("home", {
+    ready: function() {},
+    load: function() {
         // Don't forget to tell Strike when you are ready to transition!
-        StrikeMan.message('loaded');
+        StrikeMan.message("loaded");
     },
-    loaded: function(){}
+    loaded: function() {}
 });

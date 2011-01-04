@@ -102,7 +102,7 @@
         show: function(id){ StrikeMan.message({ type:'load', id: id, transition:'show' }); },
         fade: function(id){ StrikeMan.message({ type:'load', id: id, transition:'fade' }); },
         next: function(id){ StrikeMan.message({ type:'load', id: id, transition:'next' }); },
-        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); },
+        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); }
     };
     
     // Expose to global object
@@ -111,7 +111,7 @@
 
 
 // Controller set up and helpers
-(function($){
+(function($, Base){
     // Private variables and methods
     var controllerDefs = [],
         Controllers = {};
@@ -161,4 +161,4 @@
     
     // Expose to global object
     this.StrikeMan.Controllers = Controllers;
-})(Strike$);
+})(Strike$, Base);

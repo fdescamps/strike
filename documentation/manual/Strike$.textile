@@ -115,6 +115,8 @@ HTMLElement.prototype.on
 
 h2. Working with another library
 
-* noconflict
-    
-h2. Strike Controls
++ noconflict
+
+Works just like jQuery
+
+
