@@ -61,7 +61,7 @@ $fb_gradient: 1 !default
     $border_color: darken($color, 15)
   @if saturation($color) > 0
     $color: saturate($color, 40)
-  @else if luminosity($lumins) >= luminosity(#aaaaaa)
+  @else if lightness($lumins) >= lightness(#aaaaaa)
     $color: lighten($color, 20)
   +fb-state-colors($color, $gradient_top, $gradient_bottom, $border_color, $state, $lumins)
 
@@ -89,7 +89,7 @@ $fb_gradient: 1 !default
   $text_shadow_settings: unquote("0px 1px 1px")
   @if $fb_invert_on_click != 0 and $state == "active"
     $text_shadow_settings: unquote("0px -1px -1px")
-  @if luminosity($lumins) < luminosity(#aaaaaa)
+  @if lightness($lumins) < lightness(#aaaaaa)
     text-shadow: darken($color, 25) $text_shadow_settings
     color: $fb_light_text
   @else

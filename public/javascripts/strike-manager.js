@@ -102,7 +102,8 @@
         show: function(id){ StrikeMan.message({ type:'load', id: id, transition:'show' }); },
         fade: function(id){ StrikeMan.message({ type:'load', id: id, transition:'fade' }); },
         next: function(id){ StrikeMan.message({ type:'load', id: id, transition:'next' }); },
-        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); }
+        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); },
+        prev: function(id){ StrikeMan.message({ type:'load', id: id, transition:'prev' }); }
     };
     
     // Expose to global object
