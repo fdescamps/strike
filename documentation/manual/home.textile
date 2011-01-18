@@ -112,12 +112,12 @@ h3. Modifying & Building
 
 This module should help any developers to make a web mobile application
 
-* provide a unifying way to switch betwwen mobile and desktop version
+* provide a unifying way to switch between mobile and desktop version
 * simulate geolocation
 * simulate screen size
 * simulate touch events
 * simulate orientation change
-* provide tools for handling offline data and affline events
+* provide tools for handling offline data and offline events
 
 h3. Unit testing
 

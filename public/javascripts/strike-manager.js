@@ -6,6 +6,7 @@
     
     // StrikeMan object
     var StrikeMan = {
+        current: null,
         controllers: {},
         register: function(id, controller) {
             this.controllers[id] = controller
@@ -35,7 +36,7 @@
                     break;
 
                 case 'load':
-                    controller = this.controllers[message.id];
+                    controller = this.current = this.controllers[message.id];
                     currentState = {
                         transition: message.transition ? message.transition: 'show',
                         id: message.id,
@@ -71,10 +72,12 @@
                     
                 case 'back':
                     StrikeMan.trigger('strike-page-back', {});
-                    // Fire reload method on previous controller
+                    // Fire reload method on previous controller (if exists)
                     if (this.controllers[breadcrumbs[breadcrumbs.length - 2].id]) {
-                        var prevController = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
+                        var prevController = this.current = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
                         if (prevController && prevController.reload) prevController.reload()
+                    } else {
+                        alert('no back controller...')
                     }
                     this.precedent();
                     break;
@@ -103,7 +106,8 @@
         fade: function(id){ StrikeMan.message({ type:'load', id: id, transition:'fade' }); },
         next: function(id){ StrikeMan.message({ type:'load', id: id, transition:'next' }); },
         flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); },
-        prev: function(id){ StrikeMan.message({ type:'load', id: id, transition:'prev' }); }
+        prev: function(id){ StrikeMan.message({ type:'load', id: id, transition:'prev' }); },
+        back: function(id){ StrikeMan.message({ type:'back' })}
     };
     
     // Expose to global object
@@ -155,7 +159,7 @@
     // Set up controllers on load
     Strike.onready(function(){
         $.each(controllerDefs, function(controller){
-            controller = new (Controllers[controller.extend].extend(controller.defn))(controller.id);            
+            controller = new (Controllers[controller.extend].extend(controller.defn))(controller.id);
             controller.ready && controller.ready();
         });
     });

@@ -8,24 +8,37 @@ h2. Overview
 
 There are two components to StrikeMan: the "generic events system":#Eventsystem, and the "application manager":#Manager. The application manager uses the event system for creating and responding to messages - but you are free to use it too if you like!
 
-The manager uses a very small javascript library: Base.js for implementing class-based inheritance. Base.js is packaged into Strike, so you don't need to include it (see "Dependencies":./home#Dependencies).
+Also, The manager uses a very small javascript library: Base.js for implementing class-based inheritance. Base.js is packaged into Strike, so you don't need to include it (see "Dependencies":./home#Dependencies).
 
 h2. Event system
 
-One part of the manager is responsible for dealing with a generic event system. 
+The manager is driven by a generic event system for implementing "subscribers" and "publishers". You can use this event system to if you need to fire (publish) and catch (subscribe to) custom events. It is not necessary to use this system in your Strike applications - but it is a good tool for managing complexity.
 
-h3. Creating events
+p(note). Custom events are a great way to decouple parts of your application: for example, you might have a button called "delete item". In your JavaScript, "delete item" might call some Ajax _and_ update the page to remove the item. You could fire a custom event like "item-deleted" and have two listeners - one for updating the UI and one for doing Ajax requests. That way the Ajax code is separated from the UI code.
 
-bc. StrikeMan.message({ eventType: 'my-event',
-    data: { } 
-});
+h3. Publishing events
+
+All you need for your custom event is a name. This will be the identifier that your subscribers will look for. For example, if you want to fire an event when your delete button is pressed you might fire a "item-deleted" event (you can call it whatever is appropriate).
+
+bc. delete_button.onclick = function(){
+    StrikeMan.message({ eventType: 'item-deleted' });
+}
+
+Upon receiving this message, the Strike manager will pass the event to any subscribers who are listening to that message.
 
 h3. Subscring to events
 
-bc. StrikeMan.observe( "my-event", function() { 
+To be notified when an event occurs, you can subscribe to it. You need to use the same identifier as the publisher, and supply a callback function that will be executed when an event is received.
+
+For our example above, we can catch when the delete button has been click, and do our delete logic:
+
+bc. StrikeMan.observe( "item-deleted", function() { 
+    alert( "item has been deleted!" );
 });
 
 h3. Adding data
+
+Sometimes it is useful to pass some extra data along with your events. For example, you might want to store the ID of the item the user is trying to delete. You can pass a data object as another value in the event message. 
 
 bc. StrikeMan.message({ eventType: 'my-event',
     data: {
@@ -33,6 +46,13 @@ bc. StrikeMan.message({ eventType: 'my-event',
         name: "todo-item"
     } 
 });
+
+This object will then be available to any subscribers as a parameter in the callback function.
+
+bc. StrikeMan.observe( "item-deleted", function( data ) {
+    alert( "item #" + data.id + " has been deleted!" );
+});
+
 
 h2. Manager
 

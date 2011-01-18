@@ -70,7 +70,15 @@
                 (type == "array" && Array.isArray && Array.isArray(o)) ||
                 Object.prototype.toString.call(o).slice(8, -1).toLowerCase() == type;
     };
-    
+    $.index = function(el){
+        var siblings = el.parentNode.children;
+        for (var i = 0, j = siblings.length; i < j; i++) {
+            if(siblings[i] === el){
+                return i;
+            }
+        };
+    };
+        
     // Class and styles
     $.hasClass = function(element, className){
         element = $(element);
@@ -121,15 +129,24 @@
     $.height = function(element){ return $.css(element,"height"); }
 
     // Events
-    $.on = function(element, event, handler, bubble) {
+    $.on = function(element, event, handler, useCapture) {
         if( !Strike.onMobile ){
             event = event == 'touchend' ? 'mouseup' : event;
             event = event == 'touchstart' ? 'mousedown' : event;
         }
-        var eventAdd = function(element, event, handler, bubble){
-            element.addEventListener(event, handler, bubble);
+        var eventAdd = function(element, event, handler, useCapture){
+            element.addEventListener(event, handler, useCapture);
         }
         mapElements(eventAdd, arguments);
+    };
+    $.off = function(elment, event, handler, useCapture){
+        if( !Strike.onMobile ){
+            event = event == 'touchend' ? 'mouseup' : event;
+            event = event == 'touchstart' ? 'mousedown' : event;
+        }
+        mapElements(function(element, event, handler, useCapture){
+            element.removeEventListener(event, handler, useCapture);
+        }, arguments);
     };
     $.once = function(element, event, handler, bubble){
         var eventAdd = function(element, event, handler, bubble){
@@ -290,8 +307,7 @@
             options = options || {};
             options.type = options.type || "push";
             options.reverse = options.reverse || false;
-            
-            
+
             $.addClass( toPage, options.type + " in current" + ( options.reverse ? " reverse" : "" ) );
             $.addClass( fromPage, options.type + " out" + ( options.reverse ? " reverse" : "" ) );
 

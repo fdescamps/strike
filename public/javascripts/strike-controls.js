@@ -1,5 +1,6 @@
 (function( $, StrikeMan ) {
     var StrikeCon = {
+        fn: {},
         autoTitles: true,
         titleClass: '#{view} .strike-title',
         
