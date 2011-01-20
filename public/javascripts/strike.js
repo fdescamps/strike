@@ -376,18 +376,26 @@
             }, 500);
         },
         showOverlay: function(page, opacity) {
-            var el = $(page);
-            el.style.position = 'absolute';
-            el.style.top = '0';
-            el.style.left = '0';
-            el.style.bottom = '0';
-            el.style.right = '0';
-            el.style.opacity = '0';
-            el.style.zIndex = '1000';
-            el.style.display = 'block';
+            var el = $(page).style,
+                docHeight = (function(){
+                    body = document.body,
+                    html = document.documentElement;
+                    return  Math.max(
+                        body.scrollHeight, body.offsetHeight,
+                        html.clientHeight, html.scrollHeight,
+                        html.offsetHeight
+                    );
+                })();
+            
+            el.height = docHeight + 'px';
+            el.position = 'absolute';
+            el.top = el.left = el.bottom = el.right = 0
+            el.opacity = 0;
+            el.zIndex = 1000;
+            el.display = 'block';
             setTimeout(function() {
-                el.style.webkitTransition = 'opacity .25s linear';
-                el.style.opacity = opacity ? opacity : '1';
+                el.webkitTransition = 'opacity .25s linear';
+                el.opacity = opacity ? opacity : '1';
             }, 0);
             Strike.currentOverlay = page;
         },
@@ -405,7 +413,7 @@
                     el.addEventListener('webkitTransitionEnd', onend, false);
                 }
                 el.style.opacity = '0';
-            }            
+            }
         }
     }
 
