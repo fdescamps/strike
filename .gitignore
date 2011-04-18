@@ -6,3 +6,4 @@ samples-and-tests/suprss/nbproject/*
 samples-and-tests/suprss/logs/*
 dist/
 mobile.0.1
+commands.pyc
