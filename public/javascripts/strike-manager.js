@@ -21,7 +21,6 @@
             var type = typeof(message) == 'string' ? message: message.type,
                 controller,
                 handlers;
-                
             switch (type) {
                 case 'event':
                     handlers = observers[message.eventType] || [];
@@ -37,6 +36,7 @@
 
                 case 'load':
                     controller = this.current = this.controllers[message.id];
+                    
                     currentState = {
                         transition: message.transition ? message.transition: 'show',
                         id: message.id,
@@ -77,14 +77,14 @@
                         var prevController = this.current = this.controllers[breadcrumbs[breadcrumbs.length - 2].id]
                         if (prevController && prevController.reload) prevController.reload()
                     } else {
-                        alert('no back controller...')
+                        //alert('no back controller...')
                     }
                     this.precedent();
                     break;
 
                 default:
                     console.log("no handler for message : " + message)
-            }        
+            }
         },
         precedent: function() {
             var current = breadcrumbs.pop()
@@ -102,14 +102,13 @@
         },
         /* Some event helper methods */
         trigger: function(eventType, data){ StrikeMan.message({ type: 'event', eventType: eventType, data: data }); },
-        show: function(id){ StrikeMan.message({ type:'load', id: id, transition:'show' }); },
-        fade: function(id){ StrikeMan.message({ type:'load', id: id, transition:'fade' }); },
-        next: function(id){ StrikeMan.message({ type:'load', id: id, transition:'next' }); },
-        flip: function(id){ StrikeMan.message({ type:'load', id: id, transition:'flip' }); },
-        prev: function(id){ StrikeMan.message({ type:'load', id: id, transition:'prev' }); },
         back: function(id){ StrikeMan.message({ type:'back' })}
     };
-    
+    // Add animation shortcuts   
+    $.each(["show","fade","next","flip","prev"], function(item){
+       StrikeMan[item] = function(id){ StrikeMan.message({ type:'load', id: id, transition:item }); }; 
+    });
+
     // Expose to global object
     this.StrikeMan = StrikeMan;
 })();

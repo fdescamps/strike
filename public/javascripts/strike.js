@@ -430,7 +430,7 @@
                     window.applicationCache.addEventListener(cacheEvents[i], function(e){
                         var message = 'online: ' + (navigator.onLine) ? 'yes' : 'no';
                         message+= ', event: ' + e.type;
-                        message+= ', status: ' + cacheStatusValues[e.status];
+                        message+= ', status: ' + cacheStatusValues[window.applicationCache.status];
                         if (e.type == 'error' && navigator.onLine) {
                             message+= ' (probably a syntax error in manifest)';
                         }
