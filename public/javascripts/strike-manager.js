@@ -29,7 +29,7 @@
                             handlers[i](message.data)
                         }
                         catch(error) {
-                            console.log('error when executing handler for event ' + message.eventType, error)
+                            throw(error)
                         }
                     }
                     break;
@@ -83,7 +83,7 @@
                     break;
 
                 default:
-                    console.log("no handler for message : " + message)
+                    throw new error("no handler for message : " + message);
             }
         },
         precedent: function() {

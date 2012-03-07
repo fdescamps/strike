@@ -1,3 +1,18 @@
+if (!window.console) 
+{
+    window.console = {
+        log :  function log() {} ,
+        info :  function info() {} ,
+        warn :  function warn() {} ,
+        error :  function error() {} ,
+        assert :  function assert()  {} ,
+        dir :  function dir() {} ,
+        clear :  function clear() {} ,
+        profile :  function profile() {} ,
+        profileEnd :  function profileEnd()  {} 
+    }
+}
+
 // Strike$ - DOM helper
 (function(){
     var root = this,
@@ -188,7 +203,7 @@
                         complete();
                     }
                 } catch (e){
-                    console.log('cannot parse json because of '+e)
+                   
                     error(e)
                     complete();
                 }
@@ -220,7 +235,7 @@
 
         // Internationalisation 
         fallbackLanguage : 'en',
-        browserLanguage : navigator.language.substring(0,2),
+        browserLanguage :  (navigator.language ? navigator.language:navigator.browserLanguage).substring(0,2),
         
         messages : {},
 
@@ -310,17 +325,28 @@
 
             $.addClass( toPage, options.type + " in current" + ( options.reverse ? " reverse" : "" ) );
             $.addClass( fromPage, options.type + " out" + ( options.reverse ? " reverse" : "" ) );
-
-            toPage.addEventListener("webkitAnimationEnd", function webAnimEnd(){
+            
+            var changeClasses = function(){
                 $.removeClass(fromPage, "current " + options.type + " out");
                 $.removeClass(toPage, options.type + " in" );
                 if(options.reverse){
                     $.removeClass(toPage, "reverse");
                     $.removeClass(fromPage, "reverse");
                 }
+               
+            }
+            if (navigator.userAgent.toLowerCase().indexOf('webkit') != -1){
+                toPage.addEventListener("webkitAnimationEnd", function webAnimEnd(){
+                changeClasses()    
                 this.removeEventListener("webkitAnimationEnd", webAnimEnd, false);
                 if (options.callback) options.callback();
-            }, false);
+                }, false);
+            } else {
+                changeClasses()
+                if (options.callback) options.callback();
+            }
+            
+            
         },
         show: function(page, callback){ transition( 'show', 0.35, 'linear', false, page, null, callback ); },
         flip: function(page, callback){ transition( 'flip', 0.65, 'linear', false, page, null, callback ); },
@@ -331,7 +357,9 @@
         rotateLeft: function(page, callback){ transition( 'cube', 0.55, 'ease', true, page, null, callback ); },
         fade: function(page, callback){ transition( 'fade', 0.35, 'linear', false, page, null, callback ); },
         swap: function(page, callback){ transition( 'swap', 0.55, 'linear', false, page, null, callback ); },
-
+        slideup: function(page, callback){ transition( 'slideup', null, null, false, page, null, callback )},
+        slidedown: function(page, callback){ transition( 'slidedown', null, null, true, page, null, callback )},
+        
         reverseTransitions : {
             'rotateRight': 'rotateLeft',
             'rotateLeft': 'rotateRight',
@@ -339,8 +367,10 @@
             'next': 'prev',
             'show': 'show',
             'fade': 'fade',
-            'flip': 'unflip'
-        },
+            'flip': 'unflip',
+            'slideup': 'slidedown'
+        },        
+        
         // TODO: slideUp, slideDown
         back: function(){
             if(Strike.previousPage){
@@ -422,7 +452,7 @@
         onReadyHandlers = [],
         onOrientationChangeHandlers = [],
         cacheLog = function(){
-            if (!Strike.onMobile){
+            if (window.applicationCache && !Strike.onMobile){
                 var cacheStatusValues = ['uncached','idle','checking', 'downloading', 'updateready', 'obsolete'],
                     cacheEvents = ['cached','checking','downloading','error','noupdate','obsolete','progress','updateready'];
 
@@ -434,7 +464,6 @@
                         if (e.type == 'error' && navigator.onLine) {
                             message+= ' (probably a syntax error in manifest)';
                         }
-                        console.log(message);
                     }, false);
                 }
             }
@@ -521,7 +550,6 @@
 
     $.on(window.applicationCache, 'updateready', function(){
         window.applicationCache.swapCache();
-        console.log('swap cache has been called');
     });
 
     // Export Strike to global scope.
@@ -544,7 +572,7 @@
             if (!cache[str]){
               cache[str] = tmpl(document.getElementById(str).innerHTML)
             }
-          }catch (error){console.log('error when rendering #'+str+' :: '+error.message)}
+          }catch (error){throw error}
           fn = cache[str]
         } else {
           fn =
